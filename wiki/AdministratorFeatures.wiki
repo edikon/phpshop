@@ -46,7 +46,7 @@ Documentation on the format will be forthcoming (sample files currently located 
 
 == Security ==
  
-Administrative users are defined in the _Users_ object.  Authentication will be form-based and will allow global access to the administrative interface.  
+Administrative users are defined in the _User_ model.  Authentication will be form-based and will allow global access to the administrative interface.  
 
 == Payment Processing ==
 
