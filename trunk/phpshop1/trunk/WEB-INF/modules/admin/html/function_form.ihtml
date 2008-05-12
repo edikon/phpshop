@@ -1,0 +1,87 @@
+<?php if ($function_id) {
+  $q = "SELECT * from function where function_id='$function_id'";
+  $db->query($q);
+  $db->next_record();
+}
+?>
+ <form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="function_form"> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable"> 
+     <tr> 
+      <td colspan="2" class="RecordsTableHeader"> 
+         <p class="HeaderText"><?php echo $function_form_lbl ?></p> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td colspan="2">&nbsp;</td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right"><?php echo $function_form_name ?>:</td> 
+      <td width="76%"> 
+         <input type="text" name="function_name" value="<?php $db->sp("function_name") ?>" /> 
+         <input type="hidden" name="function_id" value="<?php echo $function_id ?>" /> 
+         <input type="hidden" name="module_id" value="<?php echo $module_id ?>" /> 
+         <input type="hidden" name="func" value="<?php if ($function_id) echo "functionUpdate"; else echo "functionAdd"; ?>" /> 
+         <input type="hidden" name="page" value="<?php echo $modulename ?>/function_list" /> 
+         <b> 
+        <?php
+$sess->hidden_session();
+?> 
+        </b> </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right"><?php echo $function_form_class ?>:</td> 
+      <td width="76%"> 
+         <input type="text" name="function_class" value="<?php $db->sp("function_class") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right"><?php echo $function_form_method ?>:</td> 
+      <td width="76%"> 
+         <input type="text" name="function_method" value="<?php $db->sp("function_method") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right"><?php echo $function_form_perms ?>:</td> 
+      <td width="76%"> 
+         <input type="text" name="function_perms" value="<?php $db->sp("function_perms") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" colspan="2" align="right">&nbsp; </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" align="right"><?php echo $function_form_description ?>:</td> 
+      <td valign="top">&nbsp;</td> 
+    </tr> 
+     <tr align="center"> 
+      <td valign="top" colspan="2"> 
+         <textarea name="function_description" cols="60" rows="10"><?php echo htmlentities($db->sf("function_description")) ?>
+</textarea> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" colspan="2" align="center"> 
+         <?php if ($function_id) { ?> 
+         <table width="50%" border="0" cellspacing="0" cellpadding="0"> 
+          <tr align="center"> 
+             <td width="100%" align="center"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/function_list&amp;module_id=$module_id&amp;func=functionDelete&amp;function_id=$function_id") ?>');" /> 
+            </td> 
+           </tr> 
+        </table> 
+         <?php }
+else { ?> 
+         <table width="50%" border="0" cellspacing="0" cellpadding="0"> 
+          <tr align="center"> 
+             <td width="100%" align="center"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/function_form&amp;module_id=$module_id"); ?>';" /> 
+            </td> 
+           </tr> 
+        </table> 
+         <?php } ?> 
+       </td> 
+    </tr> 
+   </table> 
+</form> 

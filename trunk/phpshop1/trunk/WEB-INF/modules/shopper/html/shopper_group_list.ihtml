@@ -1,0 +1,71 @@
+<?php 
+  search_header($shopper_group_list_lbl, $modulename, "shopper_group_list"); 
+?>
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list = "SELECT * FROM shopper_group WHERE ";
+     $count = "SELECT count(*) as num_rows FROM shopper_group WHERE ";
+     $q = "vendor_id='$ps_vendor_id' ";
+     $q .= "AND (shopper_group_name LIKE '%$keyword%' ";
+     $q .= "OR shopper_group_desc LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "ORDER BY shopper_group_name "; 
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else
+  {
+     $list = "SELECT * FROM shopper_group WHERE ";
+     $count = "SELECT count(*) as num_rows FROM shopper_group WHERE ";
+     $q = "vendor_id='$ps_vendor_id' ";
+     $q .= "ORDER BY shopper_group_name "; 
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+<table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable">
+  <tr> 
+    <td width="30%" class="RecordsTableHeader"><?php echo $shopper_group_list_name ?> </td>
+    <td class="RecordsTableHeader"><?php echo $shopper_group_list_description ?></td>
+  </tr>
+  <?php
+
+$db->query($list);
+$i=0;
+while ($db->next_record()) { 
+             if ($i++ % 2) 
+                $bgcolor=SEARCH_COLOR_1;
+             else
+                $bgcolor=SEARCH_COLOR_2;
+?> 
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+    <td valign="top" nowrap="nowrap"><?php
+$url = SECUREURL . "?page=$modulename/shopper_group_form&amp;shopper_group_id=";
+$url .= $db->f("shopper_group_id");
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+echo $db->f("shopper_group_name"); 
+echo "</a>";
+?> </td>
+    <td valign="top" nowrap="nowrap"><?php $db->p("shopper_group_desc"); ?></td>
+  </tr>
+  <?php } ?> 
+  <tr> 
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<?php 
+  search_footer($modulename, "shopper_group_list", $offset, $num_rows, $keyword); 
+}
+?> 

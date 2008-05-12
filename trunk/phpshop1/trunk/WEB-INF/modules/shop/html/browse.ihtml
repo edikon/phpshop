@@ -1,0 +1,174 @@
+<h1><?php echo $browse_lbl ?></h1>
+<?php 
+  require_once("product/lib/ps_product.inc");
+  $ps_product = new ps_product;
+  require_once("product/lib/ps_product_attribute.inc");
+  $ps_product_attribute = new ps_product_attribute;
+  require_once("product/lib/ps_product_category.inc");
+  $ps_product_category = new ps_product_category;
+
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+
+  // Check to see if this is a search or a browse by category
+  // Default is to show all products
+if ($category) {
+       $db = new ps_DB;
+       $q = "SELECT category_id FROM category ";
+       $q .= "WHERE category_url='$category' ";
+       $db->query($q);
+       $db->next_record();
+       $category_id = $db->f("category_id");
+  ?>-> <strong><?php $ps_product_category->navigation_list($category_id); ?></strong>
+  <br />
+   <?php
+     $ps_product_category->print_child_list($category_id);
+   ?>
+   <br />
+   <?php
+     $list  = "SELECT * FROM product, category, product_category_xref WHERE ";
+     $count  = "SELECT count(*) as num_rows FROM product, 
+		product_category_xref, category WHERE ";
+     $q  = "product_category_xref.category_id='$category_id' "; 
+     $q .= "AND category.category_id=product_category_xref.category_id ";
+     $q .= "AND product.product_id=product_category_xref.product_id ";
+     $q .= "AND product.product_parent_id='' ";
+     $q .= "AND product.product_publish='Y' ";
+     $q .= "ORDER BY category.category_name ASC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;
+  }
+  elseif ($keyword) {
+     echo "<table width=\"100%\" align=\"center\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"MenuTable\"><tr valign=\"top\"><td valign=\"middle\" align=\"left\">&nbsp;Search</td></tr></table><br />";
+     $list  = "SELECT * FROM product, product_category_xref, category WHERE ";
+     $count = "SELECT count(*) as num_rows FROM product, 
+	       product_category_xref, category WHERE ";
+     $q  = "(product.product_name LIKE '%$keyword%' OR ";
+     $q .= "product.product_sku LIKE '%$keyword%' OR ";
+     $q .= "product.product_s_desc LIKE '%$keyword%' OR ";
+     $q .= "category.category_name LIKE '%$keyword%' OR ";
+     $q .= "product.product_desc LIKE '%$keyword%'";
+     $q .= ") ";
+     $q .= "AND product.product_parent_id='' ";
+     $q .= "AND product.product_id=product_category_xref.product_id ";
+     $q .= "AND category.category_id=product_category_xref.category_id ";
+     $q .= "AND product.product_publish='Y' ";
+     $q .= "ORDER BY category.category_name ASC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     #echo "<table width=\"100%\" align=\"center\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"MenuTable\"></table>";
+     $list  = "SELECT * FROM product, product_category_xref, category WHERE ";
+     $count = "SELECT count(*) as num_rows FROM product, 
+              product_category_xref, category WHERE ";
+     $q = "product_parent_id=''";
+     $q .= "AND product.product_id=product_category_xref.product_id ";
+     $q .= "AND category.category_id=product_category_xref.category_id ";
+     $q .= "AND product.product_publish='Y' ";
+     $q .= "ORDER BY category.category_name ASC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "<table width=\"100%\" align=\"center\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"MenuTable\"><tr valign=\"top\"><td valign=\"middle\" align=\"left\">&nbsp;Your search returned 0 results.</td></tr></table>";
+  }
+  else {
+?>
+<table width="100%" border="0" cellspacing="0" cellpadding="4" class="RecordsTable">
+  <tr align="left">
+    <th width="18%" class="RecordsTableHeader"><?php echo $product_name_title ?></th>
+    <th width="18%" class="RecordsTableHeader"><?php echo $product_price_title ?></th>
+    <th width="19%" class="RecordsTableHeader"><?php echo $product_thumb_title ?></th>
+    <th width="63%" class="RecordsTableHeader"><?php echo $product_desc_title ?></th>
+</tr>
+<?php
+
+  $db->query($list);
+  while ($db->next_record()) {
+?>
+  <tr valign="top">
+  <?php 
+  // Set the flypage for this product based on the category.
+  // If no flypage is set then use the default as set in phpshop.cfg.
+  $flypage = $ps_product->get_flypage($db->f("product_id"));
+  ?>
+    <td width="10%" class="Record"><a href="<?php $sess->purl(URL . "?page=$flypage&amp;product_id=" . 
+              $db->f("product_id") . "&amp;category_id=" . $db->f("category_id")); ?>"
+      ><?php $db->p("product_name"); ?></a></td>
+    <td width="10%" class="Record">Price - <?php
+      $price = $ps_product->get_price($db->f("product_id"));
+      if($db->f("product_discount_id")>"0"){
+        echo "<font color=\"red\"><strike><b>Was:</b> $";
+        printf("%.2f", $price["product_price"]/(100-$db->f("product_discount_id"))*100);
+        echo "</strike></font><br />";
+      }
+      if ($price) {
+        echo $price["product_price"] . " " .  $price["product_currency"];
+      } else {
+        echo "Call for Pricing";
+      }
+     ?></td>
+    <td width="20%" class="Record" align="center"> 
+	<table width="100%" border="1" cellspacing="0" cellpadding="0">
+	<tr><td align="center" bgcolor="#FFFFFF">
+	    <a href="<?php $sess->purl(URL . "?page=$flypage&amp;product_id=" . $db->f("product_id") . "&amp;category_id=" . $db->f("category_id")); ?>">
+   <?php $ps_product->show_image($db->f("product_thumb_image"),"width=\"80\" alt=\"" . $db->f("product_name") . "\""); ?></a>
+	</td></tr>
+	</table>   
+   </td>
+    <td width="60%" class="Record"> <?php $db->p("product_s_desc"); ?></td>
+  </tr>
+<?php
+  }
+?>
+
+<tr align="center"><td colspan="4" class="RecordsTableHeader">-
+<!-- Build previous/next navigation links -->
+<?php
+   // Check to see if we need to have previous button
+   if ($offset >= SEARCH_ROWS) {
+     $prevoffset=$offset-SEARCH_ROWS;
+     echo "<a href=\"";
+     $sess->purl(URL . "?page=$modulename/browse&amp;category=$category&amp;category_id=$category_id&amp;keyword=$keyword&amp;offset=$prevoffset");
+     echo "\">PREV</a>&nbsp;";
+   }
+
+   // Get total pages
+   $num_pages = intval($num_rows / SEARCH_ROWS);
+   if ($num_rows % SEARCH_ROWS) {
+      $num_pages++;
+   }
+   if ($num_pages != 1)
+     for ($i=1;$i<=$num_pages;$i++) {
+        if (($offset < $i*SEARCH_ROWS) && ($offset >= ($i-1)*SEARCH_ROWS)) {
+           $pagenumber = "$i";
+        }
+        else
+           $pagenumber = $i;
+
+        $newoffset = SEARCH_ROWS * ($i-1);
+        echo "<a href=\"";
+        $sess->purl(URL . "?page=$modulename/browse&amp;offset=$newoffset&amp;category=$category&amp;category_id=$category_id&amp;keyword=$keyword");
+        echo "\">$pagenumber</a>&nbsp;";
+     }
+   
+   if (($offset+SEARCH_ROWS < $num_rows) && $num_pages != 1) {
+      $newoffset = $offset + SEARCH_ROWS;
+      echo "<a href=\"";
+      $sess->purl(URL . "?page=$modulename/browse&amp;offset=$newoffset&amp;category=$category&amp;category_id=$category_id&amp;keyword=$keyword");
+      echo "\">NEXT</a>\n";
+   }
+
+?>
+</td></tr></table>
+<!-- Body ends here -->
+
+<?php 
+}
+?>

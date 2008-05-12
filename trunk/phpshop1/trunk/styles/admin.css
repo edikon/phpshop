@@ -1,0 +1,140 @@
+A, BODY, INPUT, OPTION, SELECT, TABLE, TD, TR, TEXTAREA {
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:12px;
+}
+body { 
+	margin: 0px;
+	Background-color: #FFFFFF;
+}
+
+A:Link, A:Visited, A:Active {
+	Color: #000000;
+	Text-Decoration: none;
+}
+
+A:Hover {
+	Color: #FF0000;
+	Text-Decoration: Underline;
+}
+
+A:Link.bLink, A:Visited.bLink { 
+	Font-Family: Verdana, Arial, Tahoma; Font-Size: 12px; Font-Weight: None; Color: #BF0000; text-decoration: underline;
+}
+
+A:Hover.bLink {
+  Font-Family: Verdana, Arial, Tahoma; Font-Size: 12px; Font-Weight: None; Color: #ff0000;
+}
+
+A.hLink, A:Visited.hLink { 
+	Font-Family: Verdana, Arial, Tahoma; Font-Size: 12px; Font-Weight: None; Color: #FFFFFF;
+}
+A:Hover.hLink { 
+	Font-Family: Verdana, Arial, Tahoma; Font-Size: 12px; Font-Weight: None; Color: #FFFFFF;
+}
+
+#leftmenu { 
+  width:200px; 
+  border-right:1px solid #cccccc;
+}
+
+TABLE.RecordsTable {
+	border: 1px outset #000000;
+}
+
+TABLE.SearchTable {
+	border: 1px outset #000000;
+	background-color: #8B8BA9;
+}
+
+.HeaderTable {
+	background-color: #444455;
+}
+
+.MenuTable {
+	background-color: #444455;
+	border: 1px outset #000000;
+}
+
+.ErrorTable {
+    width: 100%;
+	padding: 10px;
+	background-color: #FFEEEE;
+	font-weight: none;
+	border: 1px solid #000000;
+}
+
+.FooterTable {
+	background-color: #444455;
+	font-weight: none;
+	color: #FFFFFF;
+	padding: 5px;
+}
+
+.RecordsTableHeader {
+	background-color: #606082;
+	font-weight: bold;
+	color: #FFFFFF;
+	Border-Bottom: #000000 1px outset;
+	white-space: nowrap;
+	padding: 4px;
+}
+.RecordsTableAlternateHeader {
+	background-color: #606082;
+	font-weight: bold;
+	color: #FFFFFF;
+	Border-Bottom: #000000 1px outset;
+	Border-Top: #000000 1px outset;
+	white-space: nowrap;
+	padding: 4px;
+}
+
+.RecordsTableHeaderVertical {
+	background-color: #E0B571;
+	font-weight: bold;
+	color: #000000;
+	Border-Right: #000000 1px outset;
+	padding: 4px;
+}
+
+.RowSelected {
+	background-color: #FFFFCC;
+}
+
+.HeaderText {
+	font-weight: bold;
+	font-size: 14px; 
+	color: #FFFFFF;
+	white-space: nowrap;
+}
+
+.bHeaderText {
+	font-weight: bold;
+	font-size: 14px; 
+	color: #000000;
+	white-space: nowrap;
+}
+
+.Button {
+	Color: #FFFFFF;
+	font-weight: bold;
+	BackGround-Color: #65658D;
+	border: 1px outset #000000;
+	cursor: hand;
+}
+.ButtonRollover {
+	Color: #FFFFFF;
+	Background: #000000;
+	border: 1px outset #FFFFFF;
+	cursor: hand;
+}
+
+
+.ErrorText {
+	font-size: 10px; 
+	color: #FFFFFF;
+	white-space: nowrap;
+}
+.white {
+	font-size: 12px;
+	color: #FFFFFF;
+}

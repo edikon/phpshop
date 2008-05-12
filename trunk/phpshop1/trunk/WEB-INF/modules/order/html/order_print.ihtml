@@ -1,0 +1,436 @@
+<?php
+require_once("product/lib/ps_product.inc");
+$ps_product = new ps_product;
+?>
+<table width="100%" border="0" cellspacing="0" cellpadding="1" class="SearchTable">
+  <tr> 
+    <td colspan="2" class="HeaderText" align="center">
+<?php 
+$q = "SELECT * FROM orders WHERE order_id='$order_id'";
+$db->query($q);
+$db->next_record();
+?> 
+<?php
+// PAVLO: 8.28.00
+$navi_db = new ps_DB;
+
+$navigation = "<center><b>";
+$q = "SELECT order_id FROM orders WHERE ";
+$q .= "order_id < '$order_id' ORDER BY order_id DESC";
+$navi_db->query($q);
+$navi_db->next_record();
+if ($navi_db->f("order_id")) {
+   $url = SECUREURL . "?page=$modulename/order_print&amp;order_id=";
+   $url .= $navi_db->f("order_id");
+   $navigation .= "<a href=\"" . $sess->url($url) . "\">&lt;&lt; PREV</a> | ";
+} else
+   $navigation .= "&lt;&lt; PREV | ";
+
+$q = "SELECT order_id FROM orders WHERE ";
+$q .= "order_id > '$order_id' ORDER BY order_id";
+$navi_db->query($q);
+$navi_db->next_record();
+if ($navi_db->f("order_id")) {
+   $url = SECUREURL . "?page=$modulename/order_print&amp;order_id=";
+   $url .= $navi_db->f("order_id");
+   $navigation .= "<a href=\"" . $sess->url($url) . "\">NEXT &gt;&gt;</a>";
+} else
+   $navigation .= "NEXT &gt;&gt;";
+
+$navigation .= "\n</b>\n</center>\n";
+echo $navigation;
+?>
+    </td>
+  </tr>
+</table>
+<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="1" class="RecordsTable">
+  <tr> 
+    <td colspan="2" class="RecordsTableHeader"><?php echo $order_print_po_lbl ?>
+    </td>
+  </tr>
+  <tr> 
+    <td height="118"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="1">
+        <tr> 
+          <td width="26%"><b><?php echo $order_print_po_number ?>:</b></td>
+          <td width="74%"><?php 
+printf("%08d", $db->f("order_id"));
+
+?></td>
+        </tr>
+        <tr> 
+          <td width="26%"><b><?php echo $order_print_po_date ?>:</b></td>
+          <td width="74%"><?php 
+echo date("d-M-Y:H:i",(int)$db->f("cdate"));
+
+?></td>
+        </tr>
+        <tr> 
+          <td width="26%"><b><?php echo $order_print_po_status ?>:</b></td>
+          <td width="74%">
+            <form method="post" action="<?php echo SECUREURL ?>"><?php 
+$ps_order_status->list_order_status($db->f("order_status"));
+$sess->hidden_session();?><input type="submit" name="Submit" value="Update Status" />
+              <input type="hidden" name="page" value="order/order_print" />
+              <input type="hidden" name="func" value="orderStatusSet" />
+              <input type="hidden" name="order_id" value="<?php echo $order_id ?>" />
+            </form>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td>&nbsp; </td>
+  </tr>
+  <tr> 
+    <td colspan="2" class="RecordsTableAlternateHeader"><?php echo $order_print_cust_info_lbl ?>
+    </td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="1">
+        <tr> 
+          <td width="48%" valign="top" bgcolor="#CCCCCC"><?php echo $order_print_bill_to_lbl ?></td>
+          <td width="52%" valign="top" bgcolor="#CCCCCC"><?php echo $order_print_ship_to_lbl ?></td>
+        </tr>
+        <tr> 
+          <td width="48%" valign="top"><?php
+$user_id = $db->f("user_id");
+$dbt = new ps_DB;
+$qt = "SELECT * from auth_user_md5,user_info where ";
+$qt .= "user_info.user_id='$user_id' AND ";
+$qt .= "user_info.address_type='BT'"; 
+
+$dbt->query($qt);
+$dbt->next_record();
+
+?> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="1">
+              <tr> 
+                <td width="35%" align="right"><b> &nbsp;<?php echo $order_print_name ?>:</b></td>
+                <td width="65%"><?php
+if ($dbt->f("title")) {
+  echo $dbt->f("title") . " ";
+}
+echo $dbt->f("first_name") . " ";
+if ($dbt->f("middle_name")) {
+  echo $dbt->f("middle_name") . " ";
+}
+echo $dbt->f("last_name");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_company ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("company");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_address_1 ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("address_1");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_address_2 ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("address_2");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_city ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("city");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_state ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("state");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_zip ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("zip");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_country ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("country");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_phone ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("phone_1");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_fax ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("fax");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_email ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("user_email");
+?></td>
+              </tr>
+            </table>
+          </td>
+          <td width="52%" valign="top"><?php
+$dbt = new ps_DB; 
+$qt = "SELECT * from user_info where ";
+$qt .= "user_info_id='" . $db->f("user_info_id") . "'";
+
+$dbt->query($qt);
+$dbt->next_record();
+
+?> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="1">
+              <tr> 
+                <td width="35%" align="right"><b> &nbsp;<?php echo $order_print_name ?>:</b></td>
+                <td width="65%"><?php
+if ($dbt->f("title")) {
+  echo $dbt->f("title") . " ";
+}
+echo $dbt->f("first_name") . " ";
+if ($dbt->f("middle_name")) {
+  echo $dbt->f("middle_name") . " ";
+}
+echo $dbt->f("last_name");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_company ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("company");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_address_1 ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("address_1");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_address_2 ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("address_2");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_city ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("city");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_state ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("state");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_zip ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("zip");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_country ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("country");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_phone ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("phone_1");
+?></td>
+              </tr>
+              <tr> 
+                <td width="35%" align="right"><b><?php echo $order_print_fax ?>:</b></td>
+                <td width="65%"><?php
+echo $dbt->p("fax");
+?></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td colspan="2" class="RecordsTableAlternateHeader"><?php echo $order_print_items_lbl ?>
+    </td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="1">
+        <tr> 
+          <td width="5%" bgcolor="#CCCCCC"><b><?php echo $order_print_quantity ?></b></td>
+          <td width="42%" bgcolor="#CCCCCC"><b><?php echo $order_print_name ?></b></td>
+          <td width="9%" bgcolor="#CCCCCC"><b><?php echo $order_print_sku ?></b></td>
+          <td width="12%" bgcolor="#CCCCCC"><b><?php echo $order_print_price ?></b></td>
+          <td width="19%" bgcolor="#CCCCCC"><b><?php echo $order_print_total ?></b></td>
+        </tr>
+        <?php
+$dbt = new ps_DB;
+$qt  = "SELECT * from orders,order_item,product ";
+$qt .= "WHERE orders.order_id='$order_id' ";
+$qt .= "AND order_item.order_id=orders.order_id ";
+$qt .= "AND product.product_id=order_item.product_id ";
+$dbt->query($qt);
+$i = 0;
+while ($dbt->next_record()){
+?> 
+        <tr bgcolor="<?php echo $bgcolor; ?>" valign="top"> 
+          <td width="5%"> <?php $dbt->p("product_quantity") ?></td>
+          <td width="42%"><?php 
+if ($dbt->f("product_parent_id")) {
+  echo $ps_product->get_field($dbt->f("product_parent_id"), "product_name"); 
+}
+else {
+  $dbt->p("product_name");
+}
+?></td>
+          <td width="9%"><?php 
+$dbt->p("product_sku"); 
+?>&nbsp;</td>
+          <td width="12%"> <?php 
+$price_info = $ps_product->get_price($dbt->f("product_id"));
+printf("%8.2f%s", $dbt->f("product_item_price"), $price_info["product_currency"]);
+?> </td>
+          <td width="19%"><?php 
+$t = $dbt->f("product_quantity") * $dbt->f("product_item_price");
+printf("%8.2f%s", $t, $price_info["product_currency"]);
+?></td>
+        </tr>
+        <?php } ?> 
+        <tr> 
+          <td colspan="5">&nbsp; </td>
+        </tr>
+        <tr> 
+          <td width="5%">&nbsp;</td>
+          <td width="42%">&nbsp;</td>
+          <td colspan="2" align="right"><b> <?php echo $order_print_subtotal ?>:</b></td>
+          <td width="19%"><?php 
+$t = $db->f("order_subtotal");
+printf("%.2f%s", $t, $price_info["product_currency"]);
+?></td>
+        </tr>
+        <tr> 
+          <td width="5%">&nbsp;</td>
+          <td width="42%">&nbsp;</td>
+          <td colspan="2" align="right"><b><?php echo $order_print_total_tax ?>:</b></td>
+          <td width="19%"><?php 
+$t = $db->f("order_tax");
+printf("%.2f%s", $t,$price_info["product_currency"]);
+?></td>
+        </tr>
+        <tr> 
+          <td width="5%">&nbsp;</td>
+          <td width="42%">&nbsp;</td>
+          <td colspan="2" align="right"><b><?php echo $order_print_shipping ?>:</b></td>
+          <td width="19%"><?php 
+$t = $db->f("order_shipping");
+printf("%.2f%s", $t,$price_info["product_currency"]);
+?></td>
+        </tr>
+        <tr> 
+          <td width="5%">&nbsp;</td>
+          <td width="42%">&nbsp;</td>
+          <td colspan="2" align="right"><b><?php echo $order_print_shipping_tax ?>:</b></td>
+          <td width="19%"><?php 
+$t = $db->f("order_shipping_tax");
+printf("%.2f%s", $t,$price_info["product_currency"]);
+?></td>
+        </tr>
+        <tr> 
+          <td width="5%" height="24">&nbsp;</td>
+          <td width="42%" height="24">&nbsp;</td>
+          <td colspan="2" align="right" height="24"><b><?php echo $order_print_total ?>:</b></td>
+          <td width="19%" height="24"><?php 
+$t = $db->f("order_subtotal") + 
+     $db->f("order_tax") +
+     $db->f("order_shipping") +
+     $db->f("order_shipping_tax");
+printf("%.2f%s", $t,$price_info["product_currency"]);
+?></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td colspan="2" class="RecordsTableAlternateHeader"><?php echo $order_print_payment_lbl ?>
+    </td>
+  </tr>
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="1">
+        <tr bgcolor="#CCCCCC"> 
+          <td width="13%"><?php echo $order_print_payment_lbl ?></td>
+          <td width="40%"><b><?php echo $order_print_account_name ?></b></td>
+          <td width="30%"><b><?php echo $order_print_account_number ?> <?php
+  $dbpm = new ps_DB;
+  $q  = "SELECT * FROM payment_method, order_payment WHERE order_payment.order_id='$order_id' ";
+  $q .= "AND payment_method.payment_method_id=order_payment.payment_method_id";
+  $dbpm->query($q);
+  $dbpm->next_record();
+ 
+  // DECODE Account Number
+  $dbaccount = new ps_DB;
+ $q = "SELECT DECODE(order_payment_number,'".ENCODE_KEY."') 
+      as account_number from order_payment  
+      where order_id='".$order_id."'";
+  $dbaccount->query($q);
+  $dbaccount->next_record();
+?> </b></td>
+          <td width="17%"><?php echo $order_print_expire_date ?></td>
+        </tr>
+        <tr> 
+          <td width="13%"><?php 
+$dbpm->p("payment_method_name");
+?> </td>
+          <td width="40%"><?php 
+$dbpm->p("order_payment_name");
+?></td>
+          <td width="30%"><?php 
+$dbaccount->p("account_number");
+?></td>
+          <td width="17%"><?php 
+echo date("M-Y", (int)$dbpm->f("order_payment_expire"));
+
+?></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td colspan="2" class="RecordsTableAlternateHeader"><?php echo $order_print_payment_log_lbl ?>
+    </td>
+  </tr>
+  <tr> 
+    <td><?php 
+$dbpm->p("order_payment_log");
+?></td>
+  </tr>
+</table>

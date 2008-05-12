@@ -1,0 +1,330 @@
+<?php
+/****************************************************************************
+*    Copyright (C) 2000 Edikon Corporation.
+*
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program; if not, write to the Free Software
+*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+****************************************************************************/   
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- #BeginTemplate "/Templates/popup.dwt" -->
+<head>
+<title>PHPShop.Org</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="/phpshop.css" />
+</head>
+
+<body link="#CE9A31" vlink="#CE9A31" alink="#FFCF00" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr valign="top">
+    <td width="50%"><img src="/ps_image/upper_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td align="right" valign="bottom" width="50%"><img src="/ps_image/bottom_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="#000000" valign="top" width="11" align="center">&nbsp;</td>
+    <td valign="top" width="10"><img src="/ps_image/top-corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" width="741">
+      <script type="text/javascript" language="javascript">
+window.focus();
+</script>
+      </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#000000" valign="top" width="11" align="center"> &nbsp; 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p> 
+    </td>
+    <td valign="top" width="10">&nbsp;</td>
+    <td valign="top" width="741"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr> 
+          <td width="81%" class="title"> <!-- #BeginEditable "title" --><font face="Verdana, Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">User 
+            Management</font></font><!-- #EndEditable --></td>
+          <td width="19%" align="center" valign="bottom"></td>
+        </tr>
+      </table>
+       
+      <table width="100%" border="0" cellspacing="0" cellpadding="1" bgcolor="#000000">
+        <tr> 
+          <td> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFCC99">
+              <tr align="center"> 
+                <td><?php echo $error; ?></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- #BeginEditable "main" --> 
+      <font face="Arial, Helvetica, sans-serif" size="2">PHPShop offers the ability 
+      to not only manage users by vendor, but also by user group. This enables 
+      storekeepers to create user groups for whatever need (e.g. site access, 
+      customer rating, etc.). These user groups can then be used to provide special 
+      services, discounts, or access to a specific group of users. Because users 
+      and user groups are associated to a particular vendor, it is important to 
+      create your vendor records before creating the user and user group records.</font> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">PHPShop also provides 
+        the ability to create any number of addresses for a particular user. Not 
+        only can a user have separate bill to and ship to addresses, but addresses 
+        for home and business as well.</font></P>
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td><font size="-2"><b><font face="Arial, Helvetica, sans-serif">User 
+            Groups</font></b></font></td>
+          <td><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#cug">Adding</a></font></td>
+          <td><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#eug">Editing</a></font></td>
+          <td><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#dug">Deleting</a></font></td>
+        </tr>
+        <tr> 
+          <td><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Users</font></b></font></td>
+          <td><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#cu">Adding</a></font></td>
+          <td><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#eu">Editing</a></font></td>
+          <td><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#du">Deleting</a></font></td>
+        </tr>
+      </table>
+      <br />
+      <font face="Arial, Helvetica, sans-serif"><a name="cug"></a><b>Adding User 
+      Groups</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">To create a new user 
+        group, click on the Users button at the top of the PHPShop Administration 
+        pages to display a list of users. Then click on the Add Group button on 
+        the left side of the screen to display the user group entry form. Complete 
+        the <a href="#ugf">user group entry form</a> and click the Save button 
+        at the end of the form to save the new user group.</font> </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="eug"></a><b>Editing 
+      User Groups</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">To edit an existing 
+        user group, click on the Users button at the top of the PHPShop Administration 
+        pages to display a list of users. Then click on the List Groups button 
+        on the left side of the screen to display a list of all user groups. Click 
+        on the name of the user group you want to edit to display the <a href="#ugf">user 
+        group entry form</a> for that user group. Make your changes and click 
+        the Save button at the end of the form to update the user group.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="dug"></a><b>Deleting 
+      User Groups</b></font><FONT SIZE=2> 
+      <P><FONT SIZE=2><font face="Arial, Helvetica, sans-serif">Before deleting 
+        an existing user group, all users associated to that user group must be 
+        removed through either deletion or re-association. PHPShop will not allow 
+        the deletion of a user group while users still exist for that user group. 
+        Once the users have been removed, click on the Users button at the top 
+        of the PHPShop Administration pages to display a list of users. Then click 
+        on the List Groups button on the left side of the screen to display a 
+        list of all user groups. Click on the name of the user group you want 
+        to delete to display the <a href="#ugf">user group entry form</a> for 
+        that user group. Then click on the Delete button at the end of the form 
+        to delete the user group</font></FONT><font face="Arial, Helvetica, sans-serif" size="2">.</font> 
+      </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="cu"></a><b>Adding 
+      Users</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">To create a new user, 
+        click on the Users button at the top of the PHPShop Administration pages 
+        to display a list of users. Then click on the Add User button on the left 
+        side of the screen to display the user entry form. Complete the <a href="#uf">user 
+        entry form</a> and click the Save button at the end of the form to save 
+        the new user.</font> </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="eu"></a><b>Editing 
+      Users</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">To edit an existing 
+        user, click on the Users button at the top of the PHPShop Administration 
+        pages to display a list of users. Then click on the name of the user you 
+        want to edit to display the <a href="#uf">user entry form</a> for that 
+        user. Make your changes and click the Save button at the end of the form 
+        to update the user.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="du"></a><b>Deleting 
+      Users</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">To delete an existing 
+        user, click on the Users button at the top of the PHPShop Administration 
+        pages to display a list of users. Then click on the name of the user you 
+        want to delete to display the <a href="#uf">user entry form</a> for that 
+        user. Then click on the Delete button at the end of the form to delete 
+        the user.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="ugf"></a><b>User 
+      Group Form Fields</b></font> 
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top" width="25%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Group 
+            Name</font></b></font></td>
+          <td align="left" valign="top" width="63%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            name used to identify the group.</font></td>
+          <td align="right" valign="top" width="12%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="25%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Group 
+            Description </font></b></font></td>
+          <td align="left" valign="top" width="63%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            description of the group.</font></td>
+          <td align="right" valign="top" width="12%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+      </table>
+      <br />
+      <font face="Arial, Helvetica, sans-serif"><a name="uf"></a><b>User Form 
+      Fields</b></font> 
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">First 
+            Name</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's first name.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Last 
+            Name</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's last name.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Middle 
+            Name</font></b></font></td>
+          <td align="left" valign="top"> 
+            <p><font face="Arial, Helvetica, sans-serif" size="-2">The user's 
+              middle name.</font></p>
+          </td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Title</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's title.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Username</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">A 
+            unique name used to identify the user at login.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Password</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            password used at login.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Confirm 
+            Password</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Used 
+            to confirm the password.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Group</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            group with which the user will be associated.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Company 
+            Name</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            name of the company the user belongs to.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Address 
+            1</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's address.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Address 
+            2</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Extra 
+            address information for the user.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">City</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's city.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">State</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's state.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Zip</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's zip code.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Country</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's country.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Day 
+            Phone</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's daytime phone number.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Evening 
+            Phone</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's evening phone number.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Email</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            user's email address.</font></td>
+          <td align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+      </table>
+      <!-- #EndEditable --> 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp; </td>
+  </tr>
+  <tr> 
+    <td width="11" bgcolor="#000000" valign="bottom">&nbsp; </td>
+    <td valign="bottom" width="10"><img src="/ps_image/bottom-corner.gif" align="bottom" alt="" /></td>
+    <td width="741" valign="top" align="center"> 
+      <p><br />
+        </p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr>
+    <td valign="bottom"><img src="/ps_image/bottom_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" align="right"><img src="/ps_image/top_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td width="100%" colspan="3" align="left">Copyright 
+      1999-2000 <a href="http://www.edikon.com/">Edikon Corporation</a>. </td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>

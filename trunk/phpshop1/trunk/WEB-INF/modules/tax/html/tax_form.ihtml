@@ -1,0 +1,76 @@
+<?php 
+if ($tax_rate_id) {
+  $q = "SELECT * FROM tax_rate WHERE tax_rate_id='$tax_rate_id'"; 
+  $db->query($q);  
+  $db->next_record();
+}  
+?><br />
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" enctype="multipart/form-data">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center" class="RecordsTable">
+
+    <tr> 
+      <td colspan="2" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $tax_form_lbl ?></p></td>
+    </tr>
+    <tr> 
+      <td><b>&nbsp;<?php echo $tax_form_lbl ?></b></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $tax_form_country ?>:</td>
+      <td>
+        <?php $ps_html->list_country("tax_country", $db->sf("tax_country")) ?> 
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $tax_form_state ?>:</td>
+      <td> 
+        <input type="text" name="tax_state" value="<?php $db->sp("tax_state") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $tax_form_rate ?>:</td>
+      <td> 
+        <input type="text" name="tax_rate" value="<?php $db->sp("tax_rate") ?>" size="16" />
+      </td>
+    </tr>
+    <tr align="center">
+      <td colspan="2" >&nbsp;</td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" > 
+        <input type="hidden" name="tax_rate_id" value="<?php echo $tax_rate_id ?>" />
+        <input type="hidden" name="func" value="<?php if ($tax_rate_id) echo "updateTaxRate"; else echo "addTaxRate"; ?>" />
+        <input type="hidden" name="page" value="tax/tax_list" />
+      </td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" ><?php if ($tax_rate_id) { ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%"><input type="submit" class="Button" value="Save" /> 
+            <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=tax/tax_list&amp;func=deleteTaxRate&amp;tax_rate_id=$tax_rate_id"); ?>');" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%"><br />
+            </td>
+          </tr>
+        </table>
+        <?php }
+else {
+ ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%"><input type="submit" class="Button" value="Save" /> 
+            <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=tax/tax_form&amp;tax_rate_id") ?>';" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%"><br />
+            </td>
+          </tr>
+        </table>
+        <?php } ?></td>
+    </tr>
+  </table>
+</form>

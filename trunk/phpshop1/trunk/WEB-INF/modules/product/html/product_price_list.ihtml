@@ -1,0 +1,86 @@
+ <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="RecordsTable">
+  <tr> 
+    <td class="RecordsTableHeader"><p class="HeaderText">&nbsp;
+<?php
+if (!$product_parent_id) {
+  echo $product_form_product_lbl;
+} else {
+  echo  $product_form_item_lbl;
+}
+?> <?php echo $price_list_for_lbl ?> <?php
+$url = SECUREURL . "?page=$modulename/product_form&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id";
+echo "<a class=\"hLink\" href=\"" . $sess->url($url) . "\">";
+echo $ps_product->get_field($product_id,"product_name");
+echo "</a>"; 
+?>     
+    </p>
+    </td> 
+  </tr> 
+
+  <tr> 
+    <td> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2">
+        <tr> 
+          <td width="55%"><?php echo $price_list_group_name ?></td>
+          <td width="17%"><?php echo $price_list_price ?></td>
+          <td width="28%"><?php echo $price_list_currency ?></td>
+        </tr>
+        <?php
+$q  = "SELECT shopper_group_name,product_price_id,product_price,product_currency ";
+$q .= "FROM shopper_group,product_price ";
+$q .= "WHERE product_id = '$product_id' ";
+$q .= "AND shopper_group.vendor_id = '$ps_vendor_id' ";
+$q .= "AND shopper_group.shopper_group_id = product_price.shopper_group_id ";
+$q .= "ORDER BY shopper_group_name,product_price"; 
+$db->query($q);
+while ($db->next_record()) { ?> 
+        <tr> 
+          <td width="55%" nowrap="nowrap"><?php
+$url = SECUREURL . "?page=$modulename/product_price_form&amp;product_price_id=" . $db->f("product_price_id") . "&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args);
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+$db->sp("shopper_group_name"); 
+echo "</a>"; 
+?></td>
+          <td width="17%" nowrap="nowrap"><?php
+echo $db->f("product_price"); 
+?></td>
+          <td width="28%" nowrap="nowrap"><?php echo $db->f("product_currency"); ?></td>
+        </tr>
+        <?php } ?> 
+        <tr> 
+          <td width="100%" colspan="4" nowrap="nowrap"> 
+            <div align="left">&nbsp;</div>
+          </td>
+        </tr>
+        <tr> 
+          <td width="100%" colspan="4" nowrap="nowrap"> <?php
+$num_rows = $db->num_rows();
+$q  = "SELECT * FROM shopper_group ";
+$q .= "WHERE vendor_id = '$ps_vendor_id' ";
+$db->query($q);
+if ($num_rows < $db->num_rows()) {
+?> 
+            <div align="center"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td width="100%" align="center"><input type="button" class="Button" value="Add" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/product_price_form&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>'" /> 
+                  <input type="button" class="Button" value="Done" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?$return_args"); ?>'" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <?php } else { ?> 
+            <div align="center"> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr> 
+                  <td colspan="2" align="center"><input type="button" class="Button" value="Done" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?$return_args"); ?>'" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <?php } ?> </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

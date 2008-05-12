@@ -1,0 +1,99 @@
+<div class="dtree">
+	<p><a href="javascript: d.openAll();">open all</a> | <a href="javascript: d.closeAll();">close all</a></p>
+	<script type="text/javascript" language="javascript">
+	<!--
+	
+	d = new dTree('d');
+	d.icon = {
+		root				: 'images/dtree/base.gif',
+		folder				: 'images/dtree/folder.gif',
+		folderOpen			: 'images/dtree/folderopen.gif',
+		node				: 'images/dtree/page.gif',
+		empty				: 'images/dtree/empty.gif',
+		line				: 'images/dtree/line.gif',
+		join				: 'images/dtree/join.gif',
+		joinBottom			: 'images/dtree/joinbottom.gif',
+		plus				: 'images/dtree/plus.gif',
+		plusBottom			: 'images/dtree/plusbottom.gif',
+		minus				: 'images/dtree/minus.gif',
+		minusBottom			: 'images/dtree/minusbottom.gif',
+		nlPlus				: 'images/dtree/nolines_plus.gif',
+		nlMinus				: 'images/dtree/nolines_minus.gif'
+	};
+	
+	/* Menu Definition */
+	d.add(0,-1,'Administrative Menu');
+	d.add(1,0,'Admin','?page=admin/index');
+	d.add(2,1,'Users','?page=admin/user_list');
+	d.add(21,2,'Add','?page=admin/user_form');
+	d.add(4,1,'Modules','?page=admin/module_list');
+	d.add(41,4,'Add','?page=admin/module_form');
+	<?php if (isset($_REQUEST['module_id'])) { ?>
+	d.add(42,04,'Functions','?page=admin/function_list&amp;module_id=<?php echo $_REQUEST['module_id'] ?>');
+	d.add(421,42,'Add','?page=admin/function_form&amp;module_id=<?php echo $_REQUEST['module_id'] ?>');
+	<?php } ?>
+	d.add(20,0,'Store','?page=store/index');
+	d.add(201,20,'Info','?page=store/store_form&amp;vendor_id=1');
+	d.add(202,20,'Users','?page=store/user_list');
+	d.add(2021,22,'Add','?page=store/user_form');
+	d.add(21,20,'Payment Methods','?page=store/payment_method_list');
+	d.add(211,21,'Add','?page=store/payment_method_form');
+	d.add(22,20,'Tax Rates','?page=tax/tax_list');
+	d.add(221,22,'Add','?page=tax/tax_form');
+	d.add(23,20,'Vendors','?page=vendor/vendor_list');
+	d.add(231,23,'Add','?page=vendor/vendor_form');
+	d.add(24,20,'Vendor Categories','?page=vendor/vendor_category_list');
+	d.add(241,24,'Add','?page=vendor/vendor_category_form');
+	
+	d.add(30,0,'Products','?page=product/index');
+	d.add(31,30,'Inventory','?page=product/product_inventory');
+	d.add(33,30,'Specials','?page=product/product_specials');
+	d.add(32,30,'Products','?page=product/product_list');
+	d.add(321,32,'Add Product','?page=product/product_form');
+	<?php
+	$product_id = $vars["product_id"];
+	$product_parent_id = $vars["product_parent_id"];
+	if (!$return_args) {
+		$return_args = "page=$page&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id";
+	}
+	if ($product_id and !$product_parent_id) {
+		?>
+		d.add(322,32,'Attributes','<?php echo "?page=$modulename/product_attribute_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args);?>');
+		d.add(3221,322,'Add Attribute','<?php echo "?page=$modulename/product_attribute_form&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args) ?>');
+		d.add(323,32,'Prices','<?php echo "?page=$modulename/product_price_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args) ?>');
+		<?php if ($ps_product->product_has_attributes($product_id)) { ?>
+		d.add(324,32,'Add item','<?php echo "?page=$modulename/product_form&amp;product_parent_id=" . $product_id ?>');
+           <?php } ?>
+      <?php } elseif ($product_parent_id) { ?> 
+        <?php if ($product_id) { ?>
+         d.add(325,32,'Prices','<?php echo "?page=$modulename/product_price_list&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id&amp;return_args=" . urlencode($return_args) ?>');
+         d.add(326,32,'Add Item','<?php echo "?page=$modulename/product_form&amp;product_parent_id=" . $product_parent_id ?>');     
+        <?php } ?>     
+      <?php }  ?> 
+           d.add(34,30,'Categories','?page=product/product_category_list');
+		d.add(341,34,'Add Category','?page=product/product_category_form');
+		
+		d.add(40,0,'Orders','?page=order/index');
+		d.add(401,40,'Orders','?page=order/order_list');
+		d.add(402,40,'Status Codes','?page=order/order_status_list');
+		d.add(4021,402,'Add','?page=order/order_status_form');
+		
+		d.add(50,0,'Customers','?page=shopper/index');
+		d.add(501,50,'Members','?page=shopper/shopper_list');
+		d.add(5011,51,'Add','?page=shopper/shopper_form');
+		d.add(502,50,'Member Groups','?page=shopper/shopper_group_list');
+		d.add(5021,52,'Add','?page=shopper/shopper_group_form');
+		
+		d.add(60,0,'Shipping','?page=zone/index');
+		d.add(601,60,'Assign Zones','?page=zone/assign_zones');
+		d.add(602,60,'Zones','?page=zone/zone_list');
+			d.add(6021,602,'Add Zone','?page=zone/zone_form');
+		
+		d.add(70,0,'Go to Store','?page=shop/index');
+		d.add(71,0,'Logout','?page=shop/index&amp;func=userLogout');
+		
+		document.write(d);
+		
+		//-->
+	</script>
+</div>

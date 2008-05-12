@@ -1,0 +1,92 @@
+!!Step 1. 
+Make sure you have PHP 4.3.4 or higher
+a.  Make sure that magic_quotes_gpc is ENABLED.  This can be done by editing the php.ini file. For more information on how to do this, please refer to the PHP manual.
+
+!!Step 2.
+Make sure you are running MySQL 3.23 or higher.
+
+!!Step 3.
+Uncompress the phpshop distribution anywhere inside your web tree.
+
+!!Step 4. 
+Now we have to create the phpShop database. You will need a MySQL user with sufficient permissions to do this. If you use a HOSTING server, you might have to use the tools they provide (ie. phpMyAdmin). You might also need to add the user and password options to the commands (-u <user> -p<password>) in the following examples, which use the command line programs usually provided in MySQL distributions.
+
+   a. Create a database on MySQL:
+
+   EXAMPLE:
+   mysqladmin create phpshop
+
+   b. We need to make sure we have a user with SELECT, INSERT
+   UPDATE, DELETE, CREATE, ALTER, and DROP privileges:
+
+   EXAMPLE:
+
+   $ mysql -e "GRANT select, insert, update, create, alter, delete, drop
+   ON phpshop TO dbuser@localhost IDENTIFIED BY 'dbpass'" phpshop
+   $ mysqladmin reload
+
+   where you replace the relevant information (i.e. phpshop (db name),
+   dbuser, and dbpass).
+
+
+   c. We then import the tables and data from the phpShop distribution. This
+   includes the demo data. The file is found at ./db/phpshop.sql
+
+   EXAMPLE:
+   mysql -u dbuser -p dbpass -h localhost phpshop < ./db/phpshop.sql
+
+If you use a hosting service, they may provide tools that automate much of the process described above.  Simply create the phpshop database and import the SQL file.
+
+!!Step 5. 
+Next we need to setup the WEB-INF/etc/config.php.  This is the main configuration file for the phpShop system. First off, we need to rename the etc/config-dist.php to etc/config.php.
+
+Then edit etc/config.php.  You will need to edit the following entries: URL, SECUREURL, DB_HOST, DB_NAME, DB_USER, DB_PWD
+
+   EXAMPLE:
+     define("URL","http://your.site.org/demo/");
+     define("SECUREURL","http://your.site.org/demo/");
+     define("DB_HOST","localhost");
+     define("DB_NAME","phpshop");
+     define("DB_USER","dbuser");
+     define("DB_PWD","dbpass");
+
+    ** NOTE: If you do not have a secure server, you still must set the
+       SECUREURL variable.  You can simply set it to be the same
+       as the URL variable.  If you have a secure server then use the
+       url to your secure sever (i.e. https://your.site.org/demo/).
+
+You'll see a bunch of other stuff, but this will get you going for now. You can play with the rest later.  Beware of the beginning and ending slashes on the directory names.
+
+!!Step 6. 
+Open your web browser and go to the directory where you installed the index.php file:
+
+   EXAMPLE:
+     http://your.site.org/demo
+
+You should see the demo store.
+
+To get into the administration area, login as:
+
+   username:  admin
+   password:  test
+
+In the administrative area, go the the phpShop Administrator and immediately change the admin's password to something else.
+
+NOTE:  The following users are preinstalled in the phpShop distribution:
+
+      UID            PWD       PERMS
+      -------------- --------- ----------
+      test           test      shopper
+      storeadmin     test      storeadmin
+      demo           demo      demo
+      admin          test      admin
+
+You should remove these users or reset their passwords before going live.
+
+Study the demo store. Study both the shop and the way it is set up in the administrative area and you should be off to a good start!
+
+Create your own store by editing "Washupito's Tiendita".
+
+Let us know if anything goes wrong.  phpShop has quite a few lines of code which makes debugging a real... pleasant experience.  But we would not be able to enjoy the peace and tranquility of a soothing summer afternoon sitting - debugging, without your help.
+
+Please report bugs at the phpShop.org website, http://www.phpshop.org/ under "Bugs". Please make sure you specify the version number, operating system and PHP version in use.

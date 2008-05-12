@@ -1,0 +1,118 @@
+<?php
+/*
+ *
+    Copyright (C) Mike Wattier  <geek@devcompany.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * 
+ *
+ */
+?>
+
+<h1><?php echo $zone_form_lbl ?></h1>
+<?php 
+if ($zone_id) {
+  $q = "SELECT * FROM zone_shipping WHERE zone_id='$zone_id'"; 
+  $db->query($q);  
+  $db->next_record();
+}  
+?><br />
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" enctype="multipart/form-data">
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="RecordsTable">
+	<tr class="RecordsTableHeader">
+	  <td colspan="2" valign="top">Add Zone </td>
+    </tr>
+	<tr>
+		<td valign="top">
+			<p align="right"><?php echo $zone_form_name_lbl;?>&nbsp;:&nbsp;
+		</p>
+		</td>
+		<td valign="top">
+<input type="text" name="zone_name" size="25" value="<?php echo $db->sp("zone_name");?>" />
+</td>
+	</tr>
+	<tr>
+		<td valign="top">
+			<p align="right"><?php echo $zone_form_desc_lbl;?>&nbsp;:&nbsp;
+		</p>
+		</td>
+		<td valign="top">
+<textarea name="zone_description" rows="7" cols="35">
+<?php echo htmlentities($db->sf("zone_description")) ?>
+</textarea>
+</td>
+	</tr>
+	<tr>
+		<td valign="top">
+			<p align="right"><?php echo $zone_form_cost_per_lbl;?>&nbsp;:&nbsp;
+		</p>
+		</td>
+		<td valign="top">
+<input type="text" name="zone_cost" size="5" value="<?php echo $db->sp("zone_cost");?>" />
+</td>
+	</tr>
+	<tr>
+		<td valign="top">
+			<p align="right"><?php echo $zone_form_cost_limit_lbl;?>&nbsp;:&nbsp;
+		</p>
+		</td>
+		<td valign="top">
+<input type="text" name="zone_limit" size="5" value="<?php echo $db->sp("zone_limit");?>" />
+</td>
+	</tr>
+  <tr>
+	<td valign="top" colspan="2">
+
+<?php if ($zone_id) { ?> 
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="50%"> <input type="submit" class="Button" value="Save" /> 
+            <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=zone/zone_list&amp;func=deletezone&amp;zone_id=$zone_id"); ?>');" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%" align="center"><br />
+            </td>
+          </tr>
+        </table>
+        <?php }
+else {
+ ?> 
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%" align="center"> 
+                        <input type="submit" class="Button" value="Save" /> 
+                        <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=zone/zone_form&amp;zone_id") ?>';" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%" align="center"><br />
+            </td>
+          </tr>
+        </table>
+		        <?php } ?>
+
+        <input type="hidden" name="zone_id" value="<?php echo $zone_id ?>" />
+        <input type="hidden" name="func" value="<?php if ($zone_id) echo "updatezone"; else echo "addzone"; ?>" />
+        <input type="hidden" name="page" value="zone/zone_list" />
+</td>
+  </tr></table>
+</form>
+
+
+
+
+

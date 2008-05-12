@@ -1,0 +1,91 @@
+<?php
+require_once("shopper/lib/ps_shopper_group.inc");
+$ps_shopper_group = new ps_shopper_group;
+?>
+<?php 
+$q = "SELECT * FROM payment_method WHERE vendor_id='$ps_vendor_id' AND ";
+$q .= "payment_method_id='$payment_method_id'"; 
+$db->query($q);  
+$db->next_record();
+?><br />
+
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable">
+    <tr> 
+      <td width="100%" colspan="2" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $payment_method_form_lbl ?></p></td>
+    </tr> 
+    <tr> 
+      <td width="31%"> 
+        <input type="hidden" name="func" value="<?php if ($payment_method_id) echo "paymentMethodUpdate"; else echo "paymentMethodAdd"; ?>" />
+        <input type="hidden" name="page" value="<?php echo $modulename?>/payment_method_list" />
+        <input type="hidden" name="payment_method_id" value="<?php echo $payment_method_id ?>" />
+        <?php $sess->hidden_session(); ?> </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right" nowrap="nowrap" ><?php echo $payment_method_form_name ?>:</td>
+      <td width="69%" > 
+        <input type="text" name="payment_method_name" value="<?php $db->sp("payment_method_name") ?>" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right" nowrap="nowrap" ><?php echo $payment_method_form_code ?>:</td>
+      <td width="69%" > 
+        <input type="text" name="payment_method_code" value="<?php $db->sp("payment_method_code") ?>" size="4" maxlength="8" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right" nowrap="nowrap" ><?php echo $payment_method_form_enable_processor ?>:</td>
+      <td width="69%" > 
+	<?php echo "<input type=\"checkbox\" name=\"enable_processor\" value=\"Y\"";
+	if ($db->sf("enable_processor") == "Y") { 
+    	echo " checked=\checked\"";
+    }
+    echo " />";
+?>
+      </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right"  valign="top"><?php echo $payment_method_form_shopper_group ?>:</td>
+      <td width="69%" ><?php $ps_shopper_group->list_shopper_groups("shopper_group_id", $db->sf("shopper_group_id")) ?> 
+      </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right"  valign="top"><?php echo $payment_method_form_discount ?>:</td>
+      <td width="69%" > 
+        <input type="text" name="payment_method_discount" size="4" maxlength="4" value="<?php $db->sp("payment_method_discount"); ?>" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right"  valign="top"><?php echo $payment_method_form_list_order ?>:</td>
+      <td width="69%" > 
+        <input type="text" name="list_order" size="4" maxlength="4" value="<?php $db->sp("list_order"); ?>" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right"  valign="top">&nbsp;</td>
+      <td width="69%" >&nbsp; </td>
+    </tr>
+    <tr> 
+      <td width="31%" align="right"  valign="top">&nbsp;</td>
+      <td width="69%" ><?php if ($payment_method_id) { ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%"> 
+		<input type="submit" class="Button" value="Save" /> 
+		<input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?func=paymentMethodDelete&amp;page=store/payment_method_list&amp;payment_method_id=" . $db->f('payment_method_id')); ?>');" />
+            </td>
+          </tr>
+        </table>
+        <?php }
+else { ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%"><input type="submit" class="Button" value="Save" /> 
+            <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=store/payment_method_form&amp;payment_method_id") ?>';" />
+            </td>
+          </tr>
+        </table>
+        <?php } ?></td>
+    </tr>
+  </table>
+</form>

@@ -1,0 +1,75 @@
+<?php 
+  search_header($order_list_lbl, $modulename, "order_list"); 
+?>
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM order_status WHERE ";
+     $count = "SELECT count(*) as num_rows FROM order_status WHERE ";
+     $q  = "(order_status_code LIKE '%$keyword%' ";
+     $q .= "OR order_status_name LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "vendor_id='$ps_vendor_id' ";
+     $q .= "ORDER BY list_order ASC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $q = "";
+     $list  = "SELECT * FROM order_status WHERE ";
+     $count = "SELECT count(*) as num_rows FROM order_status WHERE ";
+     $q .= "vendor_id='$ps_vendor_id' ";
+     $q .= "ORDER BY list_order ASC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr> 
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_status_list_code ?></td>
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_status_list_name ?></td>
+  </tr>
+  
+<?php 
+$db->query($list);
+$i = 0;
+while ($db->next_record()) { 
+
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?>
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+    <td><?php
+$url = SECUREURL . "?page=$modulename/order_status_form&amp;order_status_id=";
+$url .= $db->f("order_status_id");
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+echo $db->f("order_status_code");
+echo "</a><br />";
+?></td>
+    <td nowrap="nowrap"><?php 
+		 echo $db->f("order_status_name");
+		 ?></td>
+</tr>
+  <?php } ?> 
+</table>
+
+<?php 
+  search_footer($modulename, "order_status_list", $offset, $num_rows, $keyword); 
+}
+?>
+
+

@@ -1,0 +1,7 @@
+!!!phpShop ToDo List
+
+* Need to add VAT tax capabilities
+* Need to make product attributes easier to manage
+* Need to fix formatting of overall admin screens
+* Create an alternative shipping module for international shipping.
+* Allow items to be place in more than one category.

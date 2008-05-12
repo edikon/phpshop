@@ -1,0 +1,3 @@
+<h1><?php echo $module[$modulename]["title"] ?></h1>
+<p><?php echo $module_description; ?></p>
+<a class="bLink" href="<?php $sess->purl(URL . "?page=admin/show_cfg") ?>">Show phpShop Configuration</a>

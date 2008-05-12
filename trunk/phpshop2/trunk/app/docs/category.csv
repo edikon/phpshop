@@ -1,0 +1,8 @@
+name|category_parent|handle|description|active|image
+Home||home|Welcome to Washupito's Tiendita. We carry the products that you need! We are proud to bring you the best line of tools and equipment for your use and enjoyment. If you need any assistance with your purchase, please do not hesitate to contact us.|0|
+Indoor Tools|home|indoortools||1|
+Outdoor Tools|home|outdoortools||1|
+Hand Tools|indoortools|handtools||1|
+Power Tools|indoortools|powertools||1|
+Garden Tools|outdoortools|gardentools||1|
+Specials|home|specials||1|

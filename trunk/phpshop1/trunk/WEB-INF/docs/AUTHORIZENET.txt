@@ -1,0 +1,40 @@
+Edikon Release 0.7 of PHPShop
+
+Using Authorize.net with phpShop
+
+Authorize.net integration was added in version 0.7.0 of phpshop
+using Authorize.Net's Advanced Integration Method (AIM) using 
+OpenSSL and sockets to send and receive information securely.
+Read Authorize.Net implementation guides to better understand 
+how to implement it.
+
+Requirements:
+- PHP 4.3.0 or later, compiled with OpenSSL support.
+
+  NOTE: There was a bug in Windows PHP with using fsockopen() in 
+        SSL mode. A patch is offered at:
+        http://ftp.proventum.net/pub/php/win32/misc/openssl/
+        (use at your own risk)
+
+Installation:
+1. In the phpshop.cfg file you need to set 4 variables:
+   AN_ENABLE, AN_LOGIN, AN_TRAN_KEY, AN_TYPE, AN_TEST_REQUEST
+
+   - AN explanation and an example of each is provided in the 
+     phpshop.cfg file.
+
+2. You must also enable each "Payment Method" to be used with authorization
+   methods (ie. Authorize.net). This is done in the Administration area of
+   phpshop:
+     - In "Store", choose "List Payment Methods"
+     - Make sure that the desired Payment Methods have a "Y" for "Authorize".
+
+This should enable Authorize.Net
+
+Advanced Settings:
+------------------
+Authorize.Net has many configurations. You can set all these in:
+./modules/checkout/lib/ps_checkout.inc
+on the authnet_process() function.
+(Careful editing this file. Make sure you understand what you are
+doing)

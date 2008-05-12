@@ -1,0 +1,80 @@
+<?php 
+  search_header($vendor_list_lbl, $modulename, "vendor_list"); 
+?>
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM vendor WHERE ";
+     $count = "SELECT count(*) as num_rows FROM vendor WHERE ";
+     $q  = "(vendor_name LIKE '%$keyword%' OR ";
+     $q .= "vendor_store_desc LIKE '%$keyword%'";
+     $q .= ") ";
+     $q .= "ORDER BY vendor_name ASC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  elseif ($vendor_category_id) 
+  {
+     $q = "";
+     $list="SELECT * FROM vendor, vendor_category WHERE ";
+     $count="SELECT count(*) as num_rows FROM vendor,vendor_category WHERE "; 
+     $q = "vendor.vendor_category_id=vendor_category.vendor_category_id ";
+     $q .= "ORDER BY vendor.vendor_name ASC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $q = "";
+     $list  = "SELECT * FROM vendor ORDER BY vendor_name ASC ";
+     $count = "SELECT count(*) as num_rows FROM vendor"; 
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+   <tr > 
+    <td width="44%" class="RecordsTableHeader"><?php echo $vendor_list_vendor_name ?></td>
+    <td width="38%" class="RecordsTableHeader">&nbsp;</td>
+    <td width="18%" class="RecordsTableHeader"><?php echo $vendor_list_admin ?></td>
+  </tr>
+<?php
+$db->query($list);
+$i = 0;
+while ($db->next_record()) {
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?>
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+    <td width="44%" nowrap="nowrap">
+   <?php
+    $url = SECUREURL . "?page=$modulename/vendor_form&amp;vendor_id=";
+    $url .= $db->f("vendor_id");
+    echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+    echo $db->f("vendor_name");
+    echo "</a><br />";
+   ?>
+   </td>
+    <td width="38%">&nbsp;</td>
+    <td width="18%"><a class="bLink" href="<?php $sess->purl(SECUREURL . "?page=$modulename/vendor_form&amp;vendor_id=" . $db->f("vendor_id")) ?>">go</a></td>
+  </tr>
+  <?php } ?> 
+</table>
+
+<?php 
+  search_footer($modulename, "vendor_list", $offset, $num_rows, $keyword); 
+}
+?>

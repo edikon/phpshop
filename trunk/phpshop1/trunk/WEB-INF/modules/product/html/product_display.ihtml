@@ -1,0 +1,240 @@
+<h4> 
+  <?php
+require_once("vendor/lib/ps_vendor.inc");
+$ps_vendor = new ps_vendor;
+
+$product_id = $vars["product_id"];
+if ($product_parent_id = $vars["product_parent_id"]) {
+  if ($func == "productAdd") {
+    $action = $product_display_add_item_lbl; 
+  } else {
+    $action = $product_display_update_item_lbl; 
+  }
+  $info_label = $product_form_item_info_lbl;
+  $status_label = $product_form_item_status_lbl;
+  $dim_weight_label = $product_form_item_dim_weight_lbl;
+  $images_label = $product_form_item_images_lbl;
+} else {
+  if ($func == "productAdd") {
+    $action = $product_display_add_product_lbl; 
+  } else {
+    $action = $product_display_update_product_lbl; 
+  }
+  $info_label = $product_form_product_info_lbl;
+  $status_label = $product_form_product_status_lbl;
+  $dim_weight_label = $product_form_product_dim_weight_lbl;
+  $images_label = $product_form_product_images_lbl;
+}
+
+echo "$action:";
+
+$url = SECUREURL . "?page=$modulename/product_form&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id";
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+echo $ps_product->get_field($product_id,"product_name");
+echo "</a>"; 
+?> 
+</h4>
+<?php
+  $q  = "SELECT * FROM product WHERE product_id='$product_id' ";
+  $db->query($q);                                                                                    
+  $db->next_record();
+?> 
+<table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable"> 
+  <tr> 
+    <td colspan="2" class="RecordsTableHeader"> 
+      <p class="HeaderText">&nbsp;<?php echo $info_label ?></p> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" height="18" valign="top"  align="right"> <?php echo $product_form_vendor ?>:</td> 
+    <td width="79%" height="18" valign="top"> <?php print $ps_vendor->get_name($db->f("vendor_id")); ?></td> 
+  </tr> 
+  <tr> 
+    <td width="21%" height="17" valign="top"  align="right"> <?php echo $product_form_sku ?>:</td> 
+    <td width="79%" height="17" valign="top"> 
+      <?php $db->p("product_sku"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" valign="top"  align="right"> <?php echo $product_form_name ?>:</td> 
+    <td width="79%" valign="top"> 
+      <?php $db->p("product_name"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" valign="top"  align="right"> <?php echo $product_form_url ?>:</td> 
+    <td width="79%" valign="top"> 
+      <?php $db->p("product_url"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" valign="top"  align="right"> 
+      <?php if(!$product_parent_id) { ?> 
+      <?php echo $product_form_category ?>: 
+      <?php } ?> 
+    </td> 
+    <td width="79%" valign="top"> 
+      <?php
+if(!$product_parent_id) {
+  echo $ps_product_category->get_name($product_id);
+}
+?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right"  valign="top"> <?php echo $product_form_s_desc ?>:</td> 
+    <td width="79%"> 
+      <?php $db->p("product_s_desc"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right"  valign="top"> <?php echo $product_form_description ?>:</td> 
+    <td width="79%"> 
+      <?php $db->p("product_desc"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%">&nbsp;</td> 
+    <td width="79%">&nbsp;</td> 
+  </tr> 
+  <tr> 
+    <td colspan="2" class="RecordsTableAlternateHeader"> 
+      <p class="HeaderText">&nbsp;<?php echo $status_label ?></p> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" > <?php echo $product_form_in_stock ?>:</td> 
+    <td width="79%" valign="top"> 
+      <?php $db->p("product_in_stock"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" > <?php echo $product_form_available_date ?>:</td> 
+    <td width="79%" valign="top"> 
+      <?php
+if ($db->f("product_available_date")) { 
+  echo date("m/j/Y", (int)$db->f("product_available_date"));
+}
+?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" > <?php echo $product_form_special ?>:</td> 
+    <td width="79%" valign="top"> 
+      <?php $db->p("product_special"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" height="17" > <?php echo $product_form_discount_type ?>:</td> 
+    <td width="79%" valign="top" height="17"> 
+      <?php $db->p("product_discount_id"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" height="17" > <?php echo $product_form_publish ?>:</td> 
+    <td width="79%" valign="top" height="17"> 
+      <?php $db->p("product_publish"); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%">&nbsp;</td> 
+    <td width="79%">&nbsp;</td> 
+  </tr> 
+  <?php
+if ($product_parent_id) { 
+  $db2 = new ps_DB; 
+?> 
+  <tr> 
+    <td colspan="2" class="RecordsTableAlternateHeader"> 
+      <p class="HeaderText">&nbsp;<?php echo $product_form_item_attributes_lbl ?></p> 
+    </td> 
+  </tr> 
+  <?php
+  $q2 = "SELECT * FROM product_attribute,product_attribute_sku ";
+  $q2 .= "WHERE product_attribute.product_id = $product_id ";
+  $q2 .= "AND product_attribute_sku.product_id = $product_parent_id ";
+  $q2 .= "AND product_attribute.attribute_name = product_attribute_sku.attribute_name ";
+  $q2 .= "ORDER BY attribute_list,product_attribute.attribute_name"; 
+  $db2->query($q2);
+  while ($db2->next_record()) {
+  ?> 
+  <tr> 
+    <td width="21%" height="18" align="right" nowrap="nowrap"> 
+      <?php $db2->sp("attribute_name") ?> 
+      :</td> 
+    <td width="79%" height="18" nowrap="nowrap"> 
+      <?php $db2->p("attribute_value"); ?> 
+    </td> 
+  </tr> 
+  <?php
+  } ?> 
+  <?php
+} 
+?> 
+  <tr> 
+    <td colspan="2" class="RecordsTableHeader"> 
+      <p class="HeaderText">&nbsp;<?php echo $dim_weight_label ?></p> 
+    </td> 
+  </tr> 
+  <tr valign="top"> 
+    <td width="21%" height="19"  align="right"> <?php echo $product_form_length ?>:</td> 
+    <td width="79%" height="19"> 
+      <?php 
+echo $db->f("product_length") . " " . $db->f("product_lwh_uom"); 
+?> 
+    </td> 
+  </tr> 
+  <tr valign="top"> 
+    <td width="21%" height="19"  align="right"> <?php echo $product_form_width ?>:</td> 
+    <td width="79%" height="19"> 
+      <?php
+echo $db->f("product_width") . " " . $db->f("product_lwh_uom"); 
+?> 
+    </td> 
+  </tr> 
+  <tr valign="top"> 
+    <td width="21%"  align="right"> <?php echo $product_form_height ?>:</td> 
+    <td width="79%"> 
+      <?php
+echo $db->f("product_height") . " " . $db->f("product_lwh_uom"); 
+?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right">&nbsp;</td> 
+    <td width="79%">&nbsp;</td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" > <?php echo $product_form_weight ?>:</td> 
+    <td width="79%"> 
+      <?php
+echo $db->f("product_weight") . " " . $db->f("product_weight_uom");
+?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%">&nbsp;</td> 
+    <td width="79%">&nbsp;</td> 
+  </tr> 
+  <tr> 
+    <td colspan="2" class="RecordsTableHeader"> 
+      <p class="HeaderText">&nbsp;<?php echo $images_label ?></p> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" > <?php echo $product_form_thumb_image ?>:</td> 
+    <td width="79%"> 
+      <?php $ps_product->show_image($db->f("product_thumb_image")); ?> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right">&nbsp;</td> 
+    <td width="79%">&nbsp;</td> 
+  </tr> 
+  <tr> 
+    <td width="21%" align="right" > <?php echo $product_form_full_image ?>:</td> 
+    <td width="79%"> 
+      <?php $ps_product->show_image($db->f("product_full_image")); ?> 
+    </td> 
+  </tr> 
+</table>

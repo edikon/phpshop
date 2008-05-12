@@ -1,0 +1,183 @@
+<?php if ($user_id) {
+   $q = "SELECT * from auth_user_md5, user_info, shopper_vendor_xref ";
+   $q .= "where auth_user_md5.user_id=user_info.user_id ";
+   $q .= "AND auth_user_md5.user_id='$user_id' ";
+   $q .= "AND shopper_vendor_xref.user_id='$user_id' ";
+   $q .= "AND user_info.address_type='BT'";
+   $db->query($q);
+   $db->next_record();
+}
+?>
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="shopper_form"> 
+  <table width="95%" border="0" cellspacing="0" cellpadding="0" class="RecordsTable"> 
+  <tr> 
+    <td colspan="2" valign="top" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $shopper_form_lbl ?></p></td> 
+   </tr> 
+  <tr> 
+  <td colspan="2" valign="top"> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="2"> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_first_name ?>:</td> 
+      <td width="76%" > <input type="text" name="first_name" size="18" value="<?php $db->sp("first_name") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_last_name ?>:</td> 
+      <td width="76%" > <input type="text" name="last_name" size="18" value="<?php $db->sp("last_name") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_middle_name ?>:</td> 
+      <td width="76%" > <input type="text" name="middle_name" size="16" value="<?php $db->sp("middle_name") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_title ?>:</td> 
+      <td width="76%" > <?php list_user_title($db->sf("title")); ?></td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_username ?>:</td> 
+      <td width="76%" > <input type="text" name="username" size="16" value="<?php $db->sp("username") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_password_1 ?>:</td> 
+      <td width="76%" > <input type="password" name="password_1" size="12" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $shopper_form_password_2 ?>:</td> 
+      <td width="76%" > <input type="password" name="password_2" size="12" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" > <?php echo $shopper_form_group ?>:</td> 
+      <td width="76%" ><?php
+$ps_shopper_group->list_shopper_groups("shopper_group_id",$db->sf("shopper_group_id"));
+?> 
+         <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>" /> 
+         <input type="hidden" name="cache" value="0" /> 
+         <input type="hidden" name="func" value="<?php if ($user_id) echo "shopperUpdate"; else echo "shopperAdd"; ?>" /> 
+         <input type="hidden" name="page" value="<?php echo $modulename?>/shopper_list" /> 
+         <input type="hidden" name="nologin" value="1" /> 
+         </td> 
+    </tr> 
+     <tr> 
+      <td colspan="2" nowrap="nowrap">&nbsp;</td> 
+    </tr> 
+     <tr> 
+      <td colspan="2" class="RecordsTableAlternateHeader"><p class="HeaderText">&nbsp;<?php echo $shopper_form_billto_lbl ?></p></td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_company_name ?>:</td> 
+      <td width="76%" > <input type="text" name="company" size="24" value="<?php $db->sp("company") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_address_1 ?>:</td> 
+      <td width="76%" > <input type="text" name="address_1" size="24" value="<?php $db->sp("address_1") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_address_2 ?>:</td> 
+      <td width="76%" > <input type="text" name="address_2" size="24" value="<?php $db->sp("address_2") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_city ?>:</td> 
+      <td width="76%" > <input type="text" name="city" size="18" value="<?php $db->sp("city") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_state ?>:</td> 
+      <td width="76%" > <input type="text" name="state" size="3" value="<?php $db->sp("state") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_zip ?>:</td> 
+      <td width="76%" > <input type="text" name="zip" size="10" value="<?php $db->sp("zip") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_country ?>:</td> 
+      <td width="76%" > <?php $ps_html->list_country("country",$db->sf("country")) ?> </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" > <?php echo $shopper_form_phone ?>:</td> 
+      <td width="76%" > <input type="text" name="phone_1" size="12" value="<?php $db->sp("phone_1") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_fax ?>:</td> 
+      <td width="76%" > <input type="text" name="fax" size="12" value="<?php $db->sp("fax") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_email ?>:</td> 
+      <td width="76%" > <input type="text" name="user_email" size="24" value="<?php $db->sp("user_email") ?>" /> 
+      </td> 
+    </tr> 
+     <tr> 
+      <td nowrap="nowrap">&nbsp; </td> 
+      <td nowrap="nowrap">&nbsp;</td>
+    </tr> 
+     <?php if ($user_id) { ?> 
+     <tr> 
+      <td colspan="2" class="RecordsTableAlternateHeader"><p class="HeaderText"><?php echo $shopper_form_shipto_lbl ?></p> 
+         <a href="<?php $sess->purl(SECUREURL . "?page=$modulename/shopper_address_form&amp;user_id=$user_id") ?>">(<?php echo $shopper_form_add_shipto_lbl ?>)</a></td> 
+    </tr> 
+     <tr> 
+      <td colspan="2"><?php
+$qt = "SELECT * from user_info where user_id='$user_id' ";
+$qt .= "AND address_type='ST'"; 
+$dbt = new ps_DB;
+$dbt->query($qt);
+if (!$dbt->num_rows()) {
+  echo "No shipping addresses.";
+}
+else {
+  while ($dbt->next_record()) {
+    $url = SECUREURL . "?page=$modulename/shopper_address_form&amp;user_info_id=" . $dbt->f("user_info_id");
+    echo "&raquo;<a class=\"bLink\" href=\"" . $sess->url($url) . "\"> ";    
+    echo $dbt->f("address_type_name") . "</a><br />";
+  }
+} ?></td> 
+    </tr> 
+     <?php } ?> 
+       <tr> 
+      <td colspan="2" nowrap="nowrap">&nbsp;</td> 
+    </tr> 
+       <tr> 
+      <td nowrap="nowrap" colspan="2" align="center">&nbsp;</td> 
+    </tr> 
+     <tr> 
+      <td nowrap="nowrap" colspan="2" align="center"><?php
+$sess->hidden_session();
+?> </td> 
+    </tr> 
+     <tr> 
+      <td nowrap="nowrap" colspan="2" align="center"> 
+	  <?php if ($user_id) { ?> 
+         <table width="50%" border="0" cellspacing="0" cellpadding="0"> 
+          <tr align="center"> 
+             <td width="100%"> <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?func=userDelete&amp;page=$modulename/shopper_list&amp;user_id=" . $db->f('user_id')); ?>');" /> 
+              </td> 
+           </tr> 
+        </table> 
+         <?php }
+else { ?> 
+         <table width="50%" border="0" cellspacing="0" cellpadding="0"> 
+          <tr align="center"> 
+             <td width="100%"><input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/shopper_form&amp;user_id") ?>';" /> 
+              </td> 
+           </tr> 
+        </table> 
+         <?php } ?></td> 
+    </tr> 
+  </table> 
+  </td> 
+   </tr> 
+  </table>
+</form> 

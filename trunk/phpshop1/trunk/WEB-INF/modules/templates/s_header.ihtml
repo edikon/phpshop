@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Washupito's Tiendita</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="styles/demo.css" rel="stylesheet" type="text/css" />
+</head>
+<body> 
+<table width="100%" border="0" cellpadding="0" cellspacing="0"> 
+  <tr> 
+    <td height="1" valign="top"><table width="100%" border="0" cellpadding="6" cellspacing="0" class="header"> 
+        <tr> 
+          <td><?php echo $vendor_image ?>&nbsp;</td> 
+        </tr> 
+      </table> 
+      <table width="100%"  border="0" cellpadding="0" cellspacing="0" class="mainmenu"> 
+        <tr> 
+          <td><table width="400" border="0" cellpadding="4" cellspacing="0"> 
+              <tr> 
+                <td align="center">&nbsp;&nbsp;<a class="wLink" href="<?php $sess->purl(URL . "?page=shop/index");?>"
+   ><?php echo $home_title ?></a></td> 
+                <td align="center" nowrap="nowrap"><a class="wLink" href="<?php $sess->purl(URL . "?page=shop/cart");?>"
+   ><?php echo $cart_title ?></a></td> 
+                <td align="center" nowrap="nowrap"><a class="wLink" href="<?php $sess->purl(SECUREURL . "?page=checkout/index");?>"
+   ><?php echo $checkout_title ?></a></td> 
+                <td align="center" nowrap="nowrap"><?php
+   if ($auth["perms"]) {
+      echo "<a class=\"wLink\" href=\"";
+      $sess->purl(URL . "?page=$modulename/index&amp;func=userLogout");
+      echo "\">$logout_title</a>";
+   }
+   else {
+	echo "<a class=\"wLink\" href=\"";
+ 	$sess->purl(SECUREURL . "?login=1&amp;$QUERY_STRING");
+        echo "\">$login_title</a>";
+   }
+   
+?></td> 
+              </tr> 
+            </table></td> 
+        </tr> 
+      </table></td> 
+  </tr> 
+  <tr> 
+    <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="4"> 
+        <tr> 
+          <td width="150" valign="top">&nbsp;</td> 
+          <td width="2">&nbsp;</td> 
+          <td align="right"><?php if ($auth["user_id"]) { 
+                                       echo "Logged in as " . $auth["first_name"]. " ";
+ 										echo $auth["last_name"] . ".<br />";
+                                       }
+                ?> </td> 
+          <td width="150" align="right">&nbsp;</td>
+        </tr> 
+        <tr> 
+          <td width="150" valign="top"><?php require_once("product/lib/ps_product_category.inc");
+$ps_product_category = new ps_product_category;
+?>
+<!-- Start leftbar --> 
+  <!-- Welcome notice --> <?php 
+  if ($perm->check("admin,storeadmin,demo")) {
+?> 
+<table width="100%" border="0" cellspacing="0" cellpadding="1">
+  <tr align="center"> 
+    <td class="RecordsTableHeader"> <a class="wLink" href="<?php $sess->purl(SECUREURL . "?page=store/index"); ?>">Administration</a></td>
+  </tr>
+  <tr align="center"> 
+    <td><br />
+  </td>
+  </tr>
+</table>
+  <?php
+ }
+?> <!-- Begin Navigation --> 
+<table width="100%" border="0" cellspacing="0" cellpadding="1" class="MenuTable">
+  <tr> 
+    <td class="RecordsTableHeader"><span class="RecordsTableHeader"><?php echo $navigation_title ?></span> </td>
+  </tr>
+  <tr> 
+    <td> 
+	<ul>
+      <li><a href="<?php $sess->purl(URL . "?page=shop/index");?>"
+   ><?php echo $home_title ?></a></li>
+      <li><a href="<?php $sess->purl(URL . "?page=shop/browse");?>"
+   ><?php echo $browse_title ?></a></li>
+      <li><a href="<?php $sess->purl(URL . "?page=shop/cart");?>"
+   ><?php echo $cart_title ?></a></li>
+      <li><a href="<?php $sess->purl(SECUREURL . "?page=checkout/index");?>"
+   ><?php echo $checkout_title ?></a></li>
+      <li><a href="<?php $sess->purl(SECUREURL . "?page=account/index");?>"
+   ><?php echo $account_title ?></a></li>
+    </ul></td>
+  </tr>
+  <?php 
+ if ($auth["user_id"]) {
+?>
+ 
+  <?php
+  }
+?> <!-- End Navigation -->  
+<!-- Begin Browse Categories --> 
+  <tr> 
+    <td class="RecordsTableHeader"><span class="RecordsTableHeader"><?php echo $department_title ?></span> </td>
+  </tr>
+  <tr><td>
+  <ul>
+  <?php 
+  // Show only top level categories and categories that are
+  // being published
+  $q  = "SELECT * FROM category, category_xref ";
+  $q .= "WHERE category.category_publish='Y' AND ";
+  $q .= "category_xref.category_parent_id='0' AND ";
+  $q .= "category.category_id=category_xref.category_child_id ";
+  $q .= "ORDER BY category.category_name ASC";
+  $db->query($q);
+  while ($db->next_record()) {
+?> 
+  <li><a href="<?php $sess->purl(URL . "?page=shop/browse&amp;category=" 
+			     . $db->f("category_url"));?>"><?php echo $db->f("category_name"); ?></a></li> 
+<?php
+  }
+?></ul></td></tr>
+<!-- End browse categories --> 
+  <!-- Search Box --> 
+  <tr> 
+    <td height="21" class="RecordsTableHeader"><span class="RecordsTableHeader"><?php echo $search_title ?></span> </td>
+  </tr>
+  <tr> 
+    <td> 
+      <form action="<?php echo URL ?>" method="post">
+        <?php $sess->hidden_session() ?> 
+        <input type="text" size="16" name="keyword" />
+        <input type="hidden" name="page" value="shop/browse" />
+        <br />
+        <input type="submit" name="Search" value="Search" />
+      </form>
+    </td>
+  </tr>
+  <!-- End Search Box --> 
+</table>
+<br />
+<?php include('shop/html/latestprod.ihtml'); ?>
+<!-- End leftbar --> 
+</td> 
+          <td width="2" valign="top">&nbsp;</td> 
+          <td valign="top"> 
+		  <?php if (isset($error)): ?>
+		  <table width="90%" border="0" cellspacing="0" cellpadding="0" align="center" class="ErrorTable"> 
+              <tr align="center"> 
+                <td><?php echo $error?></td> 
+              </tr> 
+            </table> 
+			<?php endif; ?>
+            <br /> 
+<!-- BEGIN BODY --> 

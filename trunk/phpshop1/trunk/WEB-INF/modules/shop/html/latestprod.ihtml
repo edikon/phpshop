@@ -1,0 +1,60 @@
+<?php 
+// ----------------------------------------------------------------------
+// Latest Products
+// ----------------------------------------------------------------------
+// Module designed by Mr PHP
+// W: www.mrphp.com.au
+// E: info@mrphp.com.au
+// P: +61 418 436 690
+// ----------------------------------------------------------------------
+// LICENSE
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License (GPL)
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// To read the license please visit http://www.gnu.org/copyleft/gpl.html
+// ----------------------------------------------------------------------
+
+
+$max_items = 2; //maximum number of items to display
+
+require_once('product/lib/ps_product.inc');
+$ps_product = new ps_product;
+
+
+  $db = new ps_DB;
+  $q  = "SELECT * FROM product, product_category_xref, category WHERE ";
+  $q .= "product.product_parent_id=''" ;
+  $q .= "AND product.product_id=product_category_xref.product_id ";
+  $q .= "AND category.category_id=product_category_xref.category_id ";
+  $q .= "AND product.product_publish='Y' ";
+  $q .= "ORDER BY product.product_id DESC ";
+  $q .= "LIMIT $max_items ";
+  $db->query($q);
+
+  if($db->num_rows() != 0){ ?>
+      <table width="100%" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFFF" class="RecordsTable">
+        <tr align="center">
+          <td class="RecordsTableHeader">Latest Products </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <?php
+            while($db->next_record()){
+              $ps_product->show_snapshot($db->f("product_sku"));
+              print "<br /><br />";
+            }
+            ?>
+          </td>
+        </tr>
+      </table>
+      <?php
+  }
+?>

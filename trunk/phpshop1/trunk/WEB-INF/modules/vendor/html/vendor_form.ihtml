@@ -1,0 +1,210 @@
+<?php 
+if ($vendor_id) {
+  $q = "SELECT * FROM vendor WHERE vendor_id='$vendor_id'"; 
+  $db->query($q);  
+  $db->next_record();
+} elseif (!$vars["error"]) {
+  $default["vendor_currency"] = "USD";
+} ?><br />
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" enctype="multipart/form-data">
+	<input type="hidden" name="func" value="<?php if ($vendor_id) echo "vendorUpdate"; else echo "vendorAdd"; ?>" />
+	<input type="hidden" name="page" value="<?php echo $modulename ?>/vendor_list" />
+	<input type="hidden" name="vendor_id" value="<?php $db->sp("vendor_id") ?>" />
+	<?php $sess->hidden_session(); ?>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="4" align="center"  class="RecordsTable">
+    <tr> 
+      <td class="RecordsTableHeader" colspan="2"><p class="HeaderText">&nbsp;<?php echo $vendor_form_lbl ?></p></td>
+    </tr>
+    <tr> 
+      <td colspan="2"><b>&nbsp;<?php echo $vendor_form_info_lbl ?></b></td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_full_image ?>:</td>
+      <td><?php  
+$ps_vendor->show_image($db->f("vendor_full_image"), "alt=\"Vendor Image\""); 
+?> 
+        <input type="hidden" name="vendor_full_image_curr" value="<?php $db->p("vendor_full_image"); ?>" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_upload ?>:</td>
+      <td> 
+        <input type="file" name="vendor_full_image" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_store_name ?>:</td>
+      <td> 
+        <input type="text" name="vendor_store_name" value="<?php $db->sp("vendor_store_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_company_name ?></td>
+      <td> 
+        <input type="text" name="vendor_name" value="<?php $db->sp("vendor_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_address_1 ?>:</td>
+      <td> 
+        <input type="text" name="vendor_address_1" value="<?php $db->sp("vendor_address_1") ?>" size="18" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_address_2 ?>:</td>
+      <td> 
+        <input type="text" name="vendor_address_2" value="<?php $db->sp("vendor_address_2") ?>" size="18" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_city ?>:</td>
+      <td> 
+        <input type="text" name="vendor_city" value="<?php $db->sp("vendor_city") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_state ?>:</td>
+      <td> 
+        <input type="text" name="vendor_state" value="<?php $db->sp("vendor_state") ?>" size="5" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_country ?>:</td>
+      <td> 
+        <?php $ps_html->list_country("vendor_country", $db->sf("vendor_country")) ?>
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_zip ?>:</td>
+      <td> 
+        <input type="text" name="vendor_zip" value="<?php $db->sp("vendor_zip") ?>" size="10" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_phone ?>:</td>
+      <td> 
+        <input type="text" name="vendor_phone" value="<?php $db->sp("vendor_phone") ?>" size="12" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_currency ?>:</td>
+      <td> 
+        <?php $ps_html->list_currency("vendor_currency", $db->sf("vendor_currency")); ?>
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_category ?>:</td>
+      <td ><?php 
+$ps_vendor_category->list_category($db->sf("vendor_category_id"));
+?></td>
+    </tr>
+    <tr> 
+      <td align="right" >&nbsp;</td>
+      <td >&nbsp;</td>
+    </tr>
+    <tr> 
+      <td colspan="2">&nbsp;<b><?php echo $vendor_form_contact_lbl ?></b></td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_last_name ?>:</td>
+      <td > 
+        <input type="text" name="contact_last_name" value="<?php $db->sp("contact_last_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_first_name ?>:</td>
+      <td > 
+        <input type="text" name="contact_first_name" value="<?php $db->sp("contact_first_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_middle_name ?>:</td>
+      <td> 
+        <input type="text" name="contact_middle_name" value="<?php $db->sp("contact_middle_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_title ?>:</td>
+      <td> 
+        <input type="text" name="contact_title" value="<?php $db->sp("contact_title") ?>" size="8" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_phone_1 ?>:</td>
+      <td> 
+        <input type="text" name="contact_phone_1" value="<?php $db->sp("contact_phone_1") ?>" size="10" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_phone_2 ?>:</td>
+      <td> 
+        <input type="text" name="contact_phone_2" value="<?php $db->sp("contact_phone_2") ?>" size="10" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_fax ?>:</td>
+      <td>
+        <input type="text" name="contact_fax" value="<?php $db->sp("contact_fax") ?>" size="10" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_email ?>:</td>
+      <td>
+        <input type="text" name="contact_email" value="<?php $db->sp("contact_email") ?>" size="18" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right"><?php echo $vendor_form_image_path ?>:</td>
+      <td> 
+        <input type="text" name="vendor_image_path" value="<?php $db->sp("vendor_image_path") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" >&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $vendor_form_description ?>:</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" > 
+        <textarea name="vendor_store_desc" cols="80" rows="8"><?php echo htmlentities($db->sf("vendor_store_desc")) ?></textarea>
+      </td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" >&nbsp;</td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" ><?php if ($vendor_id) { ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="50%"> <input type="submit" class="Button" value="Save" /> 
+            <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/vendor_list&amp;func=vendorDelete&amp;vendor_id=" . $db->f('vendor_id')); ?>');" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%" align="center"><br />
+            </td>
+          </tr>
+        </table>
+        <?php }
+else {
+ ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%" align="center"> 
+                        <input type="submit" class="Button" value="Save" /> 
+                        <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/vendor_form&amp;vendor_id") ?>';" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%" align="center"><br />
+            </td>
+          </tr>
+        </table>
+        <?php } ?></td>
+    </tr>
+  </table>
+</form>

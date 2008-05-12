@@ -1,0 +1,170 @@
+<?php
+/****************************************************************************
+*    Copyright (C) 2000 Edikon Corporation.
+*
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program; if not, write to the Free Software
+*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+****************************************************************************/   
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- #BeginTemplate "/Templates/popup.dwt" -->
+<head>
+<title>PHPShop.Org</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="/phpshop.css" />
+</head>
+
+<body link="#CE9A31" vlink="#CE9A31" alink="#FFCF00" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr valign="top">
+    <td width="50%"><img src="/ps_image/upper_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td align="right" valign="bottom" width="50%"><img src="/ps_image/bottom_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="#000000" valign="top" width="11" align="center">&nbsp;</td>
+    <td valign="top" width="10"><img src="/ps_image/top-corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" width="741">
+      <script type="text/javascript" language="javascript">
+window.focus();
+</script>
+      </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#000000" valign="top" width="11" align="center"> &nbsp; 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <br /> 
+    </td>
+    <td valign="top" width="10">&nbsp;</td>
+    <td valign="top" width="741"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr> 
+          <td width="81%" class="title"> <!-- #BeginEditable "title" --> 
+            Programming Conventions<!-- #EndEditable --></td>
+          <td width="19%" align="center" valign="bottom"></td>
+        </tr>
+      </table>
+       
+      <table width="100%" border="0" cellspacing="0" cellpadding="1" bgcolor="#000000">
+        <tr> 
+          <td> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFCC99">
+              <tr align="center"> 
+                <td><?php echo $error; ?></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- #BeginEditable "main" --> 
+      <b><font size="-2">Comments</font></b> 
+      <p><font size="-2">Use /* */ for comments:</font></p>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+        <tr> 
+          <td height="36"> 
+            <p><font size="-2" face="Verdana, Arial, Helvetica, sans-serif">/* 
+              <br />
+              ** This is an example of<br />
+              ** a programming comment.<br />
+              */ </font></p>
+          </td>
+        </tr>
+      </table>
+      <p><font size="-2"><b>Naming</b></font></p>
+      <p><font size="-2">Naming conventions are based on the DataBase table and 
+        field names. Try not to use plural (example: use &quot;product&quot; not 
+        &quot;products&quot;). Try not to abreviate words (example: use &quot;user_list&quot;, 
+        not &quot;usr_lst&quot;). Underscores are used to separate words.</font></p>
+      <p><font size="-2"><b>Variables<br />
+        </b>Use lowercase.</font></p>
+      <p><font size="-2"><b>Constants<br />
+        </b>GLOBAL constants are all upercase.</font> </p>
+      <p><font size="-2"><b>Class names</b><br />
+        Use lowercase.</font></p>
+      <p><font size="-2"><b>PHP Functions</b><br />
+        Use lowercase. Try not to repeat the class name in the function name. 
+        </font></p>
+      <p><font size="-2"><b>PHPShop functions<br />
+        </b>Use a &quot;nounVerb&quot; combination like &quot;itemAdd&quot; where 
+        the first word is not capitalized but the rest are</font></p>
+      <p><font size="-2"><b>IHTML Files</b>.<br />
+        Use the most general word up front, like &quot;product_form&quot;. The 
+        ending should specify the type of page it is. Endings used:</font></p>
+      <br /> 
+      <ul>
+        <li><font size="-2">_form = Page contains a form to be filled or updated 
+          by user.</font></li>
+        <li><font size="-2">_list = Page displays a list. Usually used to list 
+          one or more records from a DataBase query.</font></li>
+        <li><font size="-2">_display = page displays information. Usually for 
+          a specific record from a DataBase query.</font></li>
+      </ul>
+      <p><font size="-2"><b>Include Files<br />
+        </b>Use &quot;ps_&quot; at the begining of the file name and the filename 
+        extension should be &quot;.inc&quot;. Example: ps_group.inc</font></p>
+      <p><font size="-2"><b>Queries</b> </font></p>
+      <p><font size="-2">Use $q variable to build a query string. SQL commands 
+        should be all uppercase. Example:</font></p>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
+        <tr> 
+          <td height="13"> 
+            <p><font size="-2" face="Verdana, Arial, Helvetica, sans-serif">$q 
+              = &quot;SELECT vendor_id, vendor_name FROM vendor&quot;;<br />
+              $q .= &quot;WHERE vendor_name LIKE '%fish%'&quot;;<br />
+              $q .= &quot;ORDER BY vendor_name&quot;;</font></p>
+          </td>
+        </tr>
+      </table>
+      </font> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      <!-- #EndEditable --> 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp; </td>
+  </tr>
+  <tr> 
+    <td width="11" bgcolor="#000000" valign="bottom">&nbsp; </td>
+    <td valign="bottom" width="10"><img src="/ps_image/bottom-corner.gif" align="bottom" alt="" /></td>
+    <td width="741" valign="top" align="center"> 
+      <p><br />
+        </p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr>
+    <td valign="bottom"><img src="/ps_image/bottom_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" align="right"><img src="/ps_image/top_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td width="100%" colspan="3" align="left">Copyright 
+      1999-2000 <a href="http://www.edikon.com/">Edikon Corporation</a>. </td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>

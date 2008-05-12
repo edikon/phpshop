@@ -1,0 +1,196 @@
+These are release and configuration notes for PHPShop.  We hope to clearly 
+identify the state of the distribution and inform you of any 
+installation, configuration and programming changes to the software.  
+
+
+******
+NOTICE
+******
+If you enjoy this program and would like to help, please start by reporting any
+bugs to us.  This would help us tremendously.  You can report bugs at
+
+http://forums.edikon.com/
+under "phpShop Bugs". Please make sure you specify the version number, 
+operating system and PHP version in use.
+
+
+************
+FEATURES
+************
+This version of phpShop supports one store in your phpShop environment.
+
+The features available are:
+1.  Site Adminsitration
+    a.  Users
+    b.  Modules
+    c.  Functions
+2.  Vendor Administration
+    a.  Vendors
+    b.  Vendor Categories
+3.  Store Administration
+    a.  Store Profile
+    b.  Store Users
+    c.  Payment Methods
+    d.  Cybercash Administration
+4.  Product Administration
+    a.  Products
+    b.  Attributes
+    c.  Items
+    d.  Prices
+5.  Order Administration
+    a.  Orders
+    b.  Order Status
+6.  Shoppers
+    a.  Shoppers
+    b.  Shopper Groups
+7.  Tax Administration
+    a.  Tax by State
+8.  Shipping
+    a.  Shipping Capabilities via Zone Definitions
+
+Still have no support for multiple vendors.
+
+This version of phpShop is distributed user the GNU GPL License.  
+  
+************
+OVERVIEW
+************
+First off, architecture.  The phpShop system is all interpreted by one main
+php file called index.php.  index.php is in web space so that your Web 
+Server Root directory under Apache would look something like:
+
+     /home/httpd/html/          <- location of the web server root. 
+     /home/httpd/html/demo	<- location of phpShop interpreter (index.php3)
+
+The index.php interprets commands based on three bits of information.  
+
+    1.  the page you want to see and 
+    2.  if you want to perform a function before you view the page.  
+    3.  list of argument that are appropriate to the function called
+
+
+1.  Pages
+
+All navigation in phpShop is done via a call to the page parameter in the URL.
+For example, to view the main shop page you would issue a URL such as
+
+     http://www.phpshop.org/demo/?page=shop/index
+
+The key piece of this is the "?page=shop/index" bit. It tells the phpShop 
+interpreter to open the file:
+
+     "modules/shop/html/index.ihtml";
+
+We assume all paths are relative to the phpshop installation directory.
+
+Notice that the ".ihtml" is automatically appended to the page name 
+for inclusion and that shop is actually the name of a module installed
+in the phpShop modules directory.  
+
+The phpShop processor not only displays the page but also checks permissions 
+for the current user against the module register.  This lets administrators
+determine who gets access to what visual parts of the site.
+
+
+2.  Modules/Functions
+
+A word on modules.  In order to increase to ease with which new features can
+be added to phpShop, we employed the concept of using modules.  A module
+defines a feature set of phpShop by providing class files, html layouts,
+and the database definitions related to that particular module.  All of the 
+phpShop modules are located in the DOCROOT/modules directory.  The structure
+of each of the module is as follows:
+
+DOCROOT/modules/module_name
+	
+	html <- location of the ihtml files used for this module.
+	lib  <- location of the ps_*.inc files used for this module.
+	sql  <- location of the database definition file for this module.
+
+Each module is defined and set in the phpShop module register.  The module 
+definition form allows the site administrator to define the following bits 
+of information:
+
+   - module name:   The name of the module.  This must be the name of the
+		    directory of the module.  It is used in the page= statement 
+		    as the directory name.
+   - module perms:  The perms of this module.  Defines who has access to the 
+                    module html directory of this module.
+   - module header: Defines the name of the header file to use for this 
+                    module.  The header is prepended to every page loaded
+                    using the page= statement.  The header is found in the 
+		    DOCROOT/modules/templates directory.
+   - module footer: Defines the name of the footer file to use for this
+		    module.  The footer is appended to every page loaded
+		    using the page= statement.  The footer is found in the
+		    DOCROOT/modules/templates directory.
+   - module menu:   Specifies whether this module forms part of the 
+		    administrative interface main menu.  If set to YES,
+		    then the module is visible as a menu option for
+		    those users that have permission to browse the files
+		    in its html directory.
+   - display order: Used to give the module a number by which to sort its
+		    position in the administrative interface main menu.
+   - module description: Used to give this module a description so that other
+		    users can be informed of how to utilize this module or
+		    at least understand its purpose.
+   - language code: Defines a language code.
+   - language file: Sets the file associated to the language code for this
+		    module.  The language file is located in the modules's lib
+		    directory.
+   - language menu label: Sets the label to use in the administrative interface
+	            when the specified language is being used.
+
+   
+It is very important to understand how modules work since everything, including
+the shop, is a module. 
+
+Each phpShop module has a list of functions that can be called from the URL.  
+For example, to add a user into the system, you would issue a URL such as:
+  
+     http://www.phpshop.org/demo/?page=shop/index&func=userAdd&username=myuser\
+				&password=password&last_name=Smith&first_name=\
+				John
+
+The keys of this URL are the page and func=userAdd function call.  Everything 
+else following the page and func are arguments sent to the userAdd function.  
+Each function has its own list of arguments based on their use.
+
+Notice that the userAdd function is not part of the shop module, but can still
+be called.  This shows that even though a modules html directory cannot
+be accessed by a user without privelages, its function may be called since
+the module functions have their own permission settings.
+
+In this case, the userAdd function is called.  If the function is 
+successfull then the user will be routed to the "page=shop/index".  If the 
+function is unsuccessful, then the last page from which the function was
+called is shown again displaying the generated error message.
+
+What makes a function call successfull or not depends on a few things:
+
+  a.  The function must be registered with the phpShop
+      system.  This is done/maintained in the module register.
+	b.  The user must have permission to use this function.  The user 
+	    permissions are checked against the permissions in the 
+	    module register. 
+  c.  The function arguments are validated to make sure that all data
+      required for the operation was given accurately, as defined
+      in each of the class validation methods.
+  d.  The function is executed and flow to the next page is set to
+      "page=shop/index" if no errors were returned.
+
+
+*************
+INSTALLATION
+*************
+
+Please refer to INSTALL.txt for installation instructions.
+
+
+******************
+IN CASE OF TROUBLE
+******************
+
+If you need support you should check the online forums at:
+
+http://forums.edikon.com/

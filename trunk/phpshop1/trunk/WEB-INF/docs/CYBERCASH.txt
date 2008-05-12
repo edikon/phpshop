@@ -1,0 +1,49 @@
+CYBERCASH and phpShop
+
+* We are deprecating support for Cybercash as the payment gateway is no 
+longer used by Verisign.
+
+phpShop offers integration with the Cybercash CashRegister software.
+In order to use Cybercash with phpShop (or with PHP for that matter) you
+need to recompile your PHP intepreter with the cybercash extensions
+provided by the PHP team.  The extensions are in the ext/cyberlib directory 
+under your source distribution of PHP.   
+                
+In order to set up PHP for this, do the following:
+
+1.  Setup a cybercash account or get a demo account where they
+    will provide you with a Merchant ID.  
+
+2.  Download the Cybercask MCK for your OS type.  Install the C API by 
+    following the MCK installation instructions.
+
+3.  Setup your PHP source by running the configure script with your
+    regular setup options and add:
+  
+                      --with-cybercash=[DIR]
+    
+    if using PHP 3.x it will be
+
+		      --with-mck=[DIR]
+
+    where [DIR] is the path to the MCK C API files.    
+
+4.  In the phpshop.cfg file you need to set 4 variables.  They are:
+
+    CC_MERCHANT            => This is your Cybercash ID.
+    CC_MERCHANT_KEY"       => Your Cybercash Secret Merchant Key
+    CC_PAYMENT_URL"        => The Cybercash Payment URL
+    CC_AUTH_TYPE"          => The authentication type preceded by the 
+			      letter 'm' (e.g. mauthonly)
+
+    These fields are given to you immediately by Cybercash.  It's actually quite 
+    simple
+
+5.  The payment methods listed in the Store Administrator allow you to select which 
+    payment methods Cybercash is setup to handle. Select the cards you want to support
+    and enable the Cybercash processing by selecting it and saving the changes.
+
+You are now setup to handle Cybercash!
+
+
+The Cybercash transaction log is appended to each Order in the Order Administrator.

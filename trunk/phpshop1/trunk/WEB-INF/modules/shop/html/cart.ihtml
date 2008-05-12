@@ -1,0 +1,14 @@
+<!-- Cart Begins here -->
+<h1>Shopping Cart</h1>
+<?php include("shop/html/basket.ihtml"); ?> 
+
+
+      <!-- End Cart --> 
+      <?php
+  if ($cart["idx"]) {
+?> 
+     <div align="center"><a href="<?php $sess->purl(SECUREURL . "?page=checkout/index"); ?>">&lt; <?php echo $checkout_title ?> &gt; </a></div>
+<?php
+ // End if statement
+  }
+?> 

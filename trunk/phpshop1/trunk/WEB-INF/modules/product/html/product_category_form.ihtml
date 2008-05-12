@@ -1,0 +1,90 @@
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+  <tr> 
+    <td align="center"> <?php if ($category_id) {
+   $q = "SELECT * from category,category_xref ";
+   $q .= "where category.category_id='$category_id' ";
+   $q .= "AND category_xref.category_child_id=category.category_id";
+   $db->query($q);
+   $db->next_record();
+} elseif (!$vars["error"]) {
+  $default["category_publish"] = "Y";
+}
+?> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="RecordsTable">
+        <tr> 
+          <td class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $category_form_lbl ?></p>
+          </td> 
+        </tr> 
+        <tr> 
+          <td> 
+            <form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="product_category_form">
+              <table width="100%" border="0" cellspacing="0" cellpadding="2" align="center">
+                <tr> 
+                  <td width="100%" valign="top" colspan="2"> 
+                    <table width="100%" border="0" cellspacing="0" cellpadding="2" >
+                      <tr> 
+                        <td width="38%" nowrap="nowrap" align="right"><?php echo $category_form_name ?>:</td>
+                        <td width="62%"> 
+                          <input type="text" name="category_name" size="18" value="<?php $db->sp('category_name') ?>" />
+                          <input type="hidden" name="category_id" value="<?php echo $category_id ?>" />
+                          <input type="hidden" name="page" value="<?php echo $modulename ?>/product_category_list" />
+                          <input type="hidden" name="func" value="<?php if ($category_id) { echo "productCategoryUpdate";} else {echo "productCategoryAdd";} ?>" />
+                          <?php
+$sess->hidden_session();
+?> </td>
+                      </tr>
+                      <tr> 
+                        <td width="38%" nowrap="nowrap" align="right" valign="top"><?php echo $category_form_description ?>:</td>
+                        <td width="62%" valign="top"> 
+                          <textarea name="category_description" cols="40" rows="2"><?php echo htmlentities($db->sf('category_description')) ?></textarea>
+                        </td>
+                      </tr>
+                      <tr> 
+                        <td width="38%" nowrap="nowrap" align="right" valign="top"><?php echo $category_form_parent ?>:</td>
+                        <td width="62%" valign="top"> <?php if (!$category_id) {
+  $ps_product_category->list_all("parent_category_id", $category_id);
+}
+else {
+  $ps_product_category->list_all("category_parent_id", $category_id);
+} ?></td>
+                      </tr>
+		     <tr>
+			<td align="right"><?php echo $category_form_flypage ?>:</td>
+			<td valign="top">
+ 			<input type="text" name="category_flypage" value="<?php $db->sp("category_flypage"); ?>" />
+			</td>
+		    </tr>
+                      <tr> 
+                        <td width="38%" nowrap="nowrap" align="right"><?php echo $category_form_publish ?>:</td>
+                        <td width="62%">
+                        <?php echo "<input type=\"checkbox\" name=\"category_publish\" value=\"Y\"";
+                         if ($db->sf("category_publish") == "Y") { 
+    						echo " checked=\"checked\"";
+						} 
+    					echo " />";
+						?></td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr> 
+                  <td colspan="2" align="center">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td colspan="2" align="center"> 
+                    <table width="50%" border="0" cellspacing="0" cellpadding="0">
+                      <tr align="center"> 
+                        <td width="100%"> 
+                          <input type="submit" class="Button" value="Save" />
+                        <?php if ($category_id) { ?><input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/product_category_list&amp;func=productCategoryDelete&amp;category_id=" . $db->f('category_id')); ?>');" />
+                        <?php } ?> </td></tr>
+                        </table></td>
+                       </tr>
+                    </table>
+                  </form></td>
+                </tr>
+              </table>
+            
+          </td>
+        </tr>
+      </table>

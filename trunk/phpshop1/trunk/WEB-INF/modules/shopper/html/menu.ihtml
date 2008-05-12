@@ -1,0 +1,4 @@
+<li><a href="<?php $sess->purl(SECUREURL . "?page=shopper/shopper_list") ?>">List Shoppers</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=shopper/shopper_form") ?>">Add Shopper</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=shopper/shopper_group_list") ?>">Shopper Groups</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=shopper/shopper_group_form") ?>">Add Shopper Group</a></li>

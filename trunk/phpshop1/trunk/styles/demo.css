@@ -1,0 +1,86 @@
+A, BODY, INPUT, OPTION, SELECT, TABLE, TD, TR, LI, P, TEXTAREA {
+	font-family:Verdana, Arial, Helvetica, sans-serif; 
+	font-size:12px;
+}
+body { 
+	margin: 0px;
+	Background-color: #FFFFFF;
+}
+
+.mainmenu {
+  background-color: #003D00;
+}
+
+.header {
+  background-color: #77bb77;
+}
+
+A:Link {
+	Color: #000000;
+	Text-Decoration: none;
+}
+A:Visited {
+	Color: #000000;
+	Text-Decoration: None;
+}
+A:Active {
+	Color: #000000;
+	Text-Decoration: None;
+}
+A:Hover {
+	Color: #666666;
+	Text-Decoration: Underline;
+}
+
+TABLE.RecordsTable {
+	border: 1px outset #000000;
+	background-color: #FFFFFF;
+	font-size: 12px;
+}
+
+.RecordsTableHeader {
+	background-color: #003D00;
+	font-weight: bold;
+	color: #FFFFFF;
+	Border-Bottom: #000000 1px outset;
+	white-space: nowrap;
+	padding: 4px;
+}
+.Record {
+	background-color: #EFEAEA;
+	Border-Bottom: #000000 1px outset;
+}
+
+.MenuTable {
+	background-color: #EFEAEA;
+	font-weight: none;
+	color: #000000;
+	border: 1px outset #000000;
+	white-space: nowrap;
+}
+
+.FooterTable {
+	background-color: #003D00;
+	font-weight: none;
+	color: #FFFFFF;
+	border: 1px outset #000000;
+	white-space: nowrap;
+}
+
+.ErrorTable {
+    width: 100%;
+	padding: 10px;
+	background-color: #FFEEEE;
+	font-weight: none;
+	border: 1px solid #000000;
+}
+
+A.wLink { 
+	Color: #FFFFFF;
+}
+A:Hover.wLink { 
+	Color: #E9E9E9;
+}
+A:Visited.wLink { 
+	Color: #E9E9E9;
+}

@@ -1,0 +1,119 @@
+
+<h1>Store Checkout</h1>
+
+<?php include("shop/html/basket.ihtml"); ?>
+
+<br />
+<?php
+if ($checkout) {
+
+$q  = "SELECT * from user_info WHERE ";
+$q .= "user_id='" . $auth["user_id"] . "' ";
+$q .= "AND address_type='BT'";
+$db->query($q);
+$db->next_record();
+?>
+<form action="<?php echo SECUREURL ?>" method="post" name="Checkout" id="Checkout">
+<?php $sess->hidden_session(); ?>
+  <input type="hidden" name="zone_qty" value="<?php echo $zone_qty;?>" />
+  <input type="hidden" name="page" value="checkout/confirm" />
+  <input type="hidden" name="func" value="checkoutValidateST" />
+  <!-- Customer Information --> 
+  <table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr bgcolor="<?php echo $cart_header_color?>">
+   <td colspan="2"><b>Customer Billing Information</b></td>
+</tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">Company Name:</td>
+   <td width="90%">
+   <?php
+     $db->p("company");
+   ?>
+   </td></tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">Full Name:</td>
+   <td width="90%">
+   <?php
+     $db->p("first_name");
+     echo " ";
+     $db->p("middle_name");
+     echo " ";
+     $db->p("last_name");
+   ?>
+   </td></tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">Billing Address:</td>
+   <td width="90%">
+   <?php
+     $db->p("address_1");
+     echo "<br />";
+     $db->p("address_2");
+   ?>
+   </td></tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">&nbsp;</td>
+   <td width="90%">
+   <?php
+     $db->p("city");
+     echo ",";
+     $db->p("state");
+     echo " ";
+     $db->p("zip");
+     echo "<br /> ";
+     $db->p("country");
+   ?>
+   </td></tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">Telephone:</td>
+   <td width="90%">
+   <?php
+     $db->p("phone_1");
+   ?>
+   </td></tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">Fax:</td>
+   <td width="90%">
+   <?php
+     $db->p("fax");
+   ?>
+   </td></tr>
+<tr>
+   <td nowrap="nowrap" width="10%" align="right">Email:</td>
+   <td width="90%">
+   <?php
+     $db->p("user_email");
+   ?>
+   </td></tr>
+</table>
+<!-- Customer Information Ends -->
+<br />
+<!-- Customer Shipping -->
+<table border="0" cellspacing="0" cellpadding="2" width="100%">
+<tr bgcolor="<?php echo $cart_header_color?>">
+   <td colspan="2"><b>Customer Shipping Information</b></td>
+</tr>
+<tr><td colspan="2">
+Add a new <a href="<?php $sess->purl(SECUREURL . "?page=account/shipto&amp;next_page=checkout/index"); ?>">
+shipping address.</a>
+</td></tr>
+<tr><td colspan="2">
+<?php $ps_checkout->ship_to_addresses_radio($auth["user_id"], "ship_to_info_id", $ship_to_info_id); ?>
+</td></tr>
+</table>
+<!-- END Customer Shipping -->
+<br />
+  <!-- Begin Payment Infomation --> <!-- End payment information --> <br />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr align="center">
+  <td>
+        <input type="submit" name="Submit" value="Next" />
+      </td>
+</tr>
+</table>
+
+
+</form>
+<!-- Body ends here -->
+<?php 
+}
+?>

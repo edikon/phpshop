@@ -1,0 +1,106 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="6" bgcolor="#FF0000"> 
+  <tr> 
+    <td> 
+      <table width="100%" border="1" cellspacing="0" cellpadding="2" bgcolor="#DDDDDD"> 
+        <tr> 
+          <td nowrap="nowrap" colspan="4" align="center"><b>--DEBUG--</b></td> 
+        </tr> 
+        <tr> 
+          <td nowrap="nowrap" align="right" width="14%"><em>RunTime:</em></td> 
+          <td align="left" nowrap="nowrap" width="32%"><?php echo $runtime; ?>&nbsp;</td> 
+          <td width="18%" align="right" valign="top"><em>Current Page:</em></td> 
+          <td width="36%" valign="top"><?php echo $page; ?></td> 
+        </tr> 
+        <tr> 
+          <td width="14%" align="right" valign="top" nowrap="nowrap"><em>SessionID:</em></td> 
+          <td width="32%" valign="top" nowrap="nowrap"><?php echo session_id(); ?></td> 
+          <td width="18%" align="right" valign="top"><em>Last Page:</em></td> 
+          <td width="36%" valign="top"><?php echo $last_page; ?>&nbsp;</td> 
+        </tr> 
+        <tr> 
+          <td width="14%" align="right" nowrap="nowrap" valign="top"><em>UID:</em></td> 
+          <td width="32%" nowrap="nowrap" valign="top"><?php echo $auth["user_id"]; ?>&nbsp;</td> 
+          <td width="18%" align="right" valign="top"><em>Return To Page:</em></td> 
+          <td width="36%" valign="top"><?php echo $return_to_page; ?>&nbsp;</td> 
+        </tr> 
+        <tr> 
+          <td width="14%" align="right" valign="top"><em>Username:</em></td> 
+          <td width="32%" valign="top"><?php echo $auth["username"]; ?>&nbsp;</td> 
+          <td width="18%" align="right" valign="top"><em>Function:</em></td> 
+          <td width="36%" valign="top"><?php echo $func;?>&nbsp;</td> 
+        </tr> 
+        <tr> 
+          <td width="14%" align="right" valign="top"><em>Perms:</em></td> 
+          <td width="32%" valign="top"><?php echo $auth["perms"]; ?>&nbsp;</td> 
+          <td width="18%" align="right" valign="top"><em>Command:</em></td> 
+          <td width="36%" valign="top"><?php echo $cmd."<br />Result:"; 
+                  if ($ok) 
+                     echo "True"; 
+                  else  
+                     echo "False"; ?> &nbsp;</td> 
+        </tr> 
+        <tr> 
+          <td width="14%" align="right" valign="top" nowrap="nowrap"><em>$func_perms:</em></td> 
+          <td width="32%" valign="top" nowrap="nowrap"><?php echo $func_list["perms"]; ?>&nbsp;</td> 
+          <td width="18%" align="right" valign="top"><em>&nbsp;&nbsp;$ps_vendor_id:</em></td> 
+          <td width="36%" valign="top"> 
+            <?php
+echo $ps_vendor_id; 
+?> 
+&nbsp;&nbsp;</td> 
+        </tr> 
+        <tr> 
+          <td width="14%" align="right" valign="top" nowrap="nowrap"><em>&nbsp;&nbsp;$dir_perms:</em></td> 
+          <td width="32%" valign="top" nowrap="nowrap"><?php echo $dir_list["perms"]; ?>&nbsp;</td> 
+          <td width="18%" align="right" valign="top"><em>&nbsp;&nbsp;$error:</em></td> 
+          <td width="36%" valign="top">
+            <?php
+echo $error; 
+?> 
+&nbsp;&nbsp;</td> 
+        </tr> 
+        <tr> 
+          <td colspan="4"> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0"> 
+              <tr valign="top"> 
+                <td width="46%"> 
+                  <div align="left"> 
+                    <div align="left"><em>$_SESSION:</em></div> 
+                    <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center"> 
+                      <tr> 
+                        <td height="19"> 
+                          <pre><?php print_r($_SESSION);?></pre> 
+                        </td> 
+                      </tr> 
+                    </table> 
+                    </div> 
+                  </td> 
+                <td width="54%"> 
+                  <div align="left"> 
+                    <div align="left">
+                      <div align="left"><em>$_REQUEST:</em></div>
+                      <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center">
+                        <tr>
+                          <td height="19">
+                            <pre><?php print_r($_REQUEST);?></pre>
+                          </td>
+                        </tr>
+                      </table>
+                      <em>$vars: </em></div> 
+                    <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center"> 
+                      <tr> 
+                        <td height="19"> 
+                          <pre><?php print_r($vars);?></pre> 
+                        </td> 
+                      </tr> 
+                    </table> 
+                  </div> 
+                </td> 
+              </tr> 
+            </table> 
+          </td> 
+        </tr> 
+      </table> 
+    </td> 
+  </tr> 
+</table>

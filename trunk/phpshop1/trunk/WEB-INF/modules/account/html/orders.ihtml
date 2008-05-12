@@ -1,0 +1,28 @@
+<?php
+require_once("order/lib/ps_order.inc");
+$ps_order = new ps_order;
+
+$page_name = "Order Maintenance";
+?>
+<?php
+  $q  = "SELECT * FROM orders WHERE ";
+  $q .= "user_id='" . $auth["user_id"] . "' ";
+  $q .= "ORDER BY cdate DESC";
+  $db->query($q);
+?>
+<form action="<?php echo SECUREURL ?>" method="post">
+<?php $sess->hidden_session() ?>
+<input type="hidden" name="page" value="checkout/thankyou" />
+<table border="0" cellspacing="0" cellpadding="10" width="100%" align="center">
+<tr>
+   <td>
+   <b>Your Orders</b>
+   <br />
+	<?php $ps_order->list_order("A","1"); ?>
+   <br />
+   <input type="submit" name="SUBMIT" value="View" />
+   </td>
+</tr>
+</table>
+</form>
+<!-- Body ends here -->

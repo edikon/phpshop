@@ -1,0 +1,136 @@
+<!-- Body starts here -->
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="MenuTable">
+<tr><td align="center" class="RecordsTableHeader">If you are an existing customer please login now.
+</td></tr>
+</table>
+<form action="<?php echo SECUREURL ?>" method="post" name="Login" id="Login">
+<?php $sess->hidden_session() ?>
+<?php hide_vars() ?>
+<input type="hidden" name="page" value="<?php echo $last_page ?>" />
+<input type="hidden" name="func" value="userLogin" />
+<table align="center" width="100%" cellspacing="0" cellpadding="6" border="0" class="MenuTable">
+<tr><td align="center" class="RecordsTableHeader" colspan="2">Customer Login</td></tr>
+<tr>
+<td align="right">Username:</td>
+<td><input type="text" name="username" maxlength="32" size="16" />
+</td></tr>
+<tr>
+<td align="right">Password:</td>
+<td><input type="password" name="password" maxlength="32" size="16" />
+</td></tr>
+<tr><td colspan="2" align="center">
+
+
+<input type="submit" name="Login" value="Login" />
+<p><a href="<?php $sess->purl(URL."?page=shop/lost_password"); ?>">Forgot password?</a></p>
+</td></tr>
+</table>
+</form>
+<p><br />
+  If you are new to our store, please take a moment to register with us.  
+  By registering with us you avoid reentering your contact information 
+  the next time you purchase from us.
+</p>
+<form action="<?php echo SECUREURL ?>" method="post" name="Register" id="Register">
+<?php $sess->hidden_session() ?>
+<?php hide_vars() ?>
+<input type="hidden" name="func" value="shopperAdd" />
+<input type="hidden" name="login" value="1" />
+<table align="center" width="100%" cellspacing="0" cellpadding="6" border="0" class="MenuTable">
+  <tr>
+    <td align="center" class="RecordsTableHeader" colspan="2">Customer Registration </td>
+  </tr>
+<tr>
+<td align="right">Username:</td>
+<td>
+        <input type="text" name="username" maxlength="32" size="32" value="<?php echo $username ?>" />
+      </td></tr>
+<tr>
+<td align="right">Password:</td>
+<td>
+        <input type="password" name="password_1" maxlength="32" size="16" value="<?php echo $password_1 ?>" />
+      </td></tr>
+<tr>
+<td align="right">Password(again):</td>
+<td>
+        <input type="password" name="password_2" maxlength="32" size="16" value="<?php echo $password_2 ?>" />
+      </td></tr>
+
+<tr>
+<td align="right">Company Name:</td>
+<td>
+        <input type="text" name="company" maxlength="64" size="16" value="<?php echo $company ?>" />
+      </td></tr>
+<tr>
+<td align="right">Last Name:</td>
+<td>
+        <input type="text" name="last_name" maxlength="32" size="16" value="<?php echo $last_name ?>" />
+      </td></tr>
+<tr>
+<td align="right">First Name:</td>
+<td>
+        <input type="text" name="first_name" maxlength="32" size="16" value="<?php echo $first_name ?>" />
+      </td></tr>
+<tr>
+<td align="right">Middle Name:</td>
+<td>
+        <input type="text" name="middle_name" maxlength="32" size="16" value="<?php echo $middle_name ?>" />
+      </td></tr>
+
+<tr>
+<td align="right">Address:</td>
+<td>
+        <input type="text" name="address_1" maxlength="64" size="32" value="<?php echo $address_1 ?>" />
+      </td></tr>
+<tr>
+<td align="right">Address cont.:</td>
+<td>
+        <input type="text" name="address_2" maxlength="64" size="32" value="<?php echo $address_2 ?>" />
+      </td></tr>
+<tr>
+<td align="right">City:</td>
+<td>
+        <input type="text" name="city" maxlength="32" size="16" value="<?php echo $city ?>" />
+      </td></tr>
+<tr>
+<td align="right">State/Region:</td>
+<td>
+        <input type="text" name="state" maxlength="32" size="16" value="<?php echo $state ?>" />
+      </td></tr>
+<tr>
+<td align="right">Zip Code:</td>
+<td>
+        <input type="text" name="zip" maxlength="32" size="16" value="<?php echo $zip ?>" />
+      </td></tr>
+<tr>
+<td align="right">Country:</td>
+      <td><?php 
+$ps_html->list_country("country", $country);
+?> </td>
+    </tr>
+<tr>
+<td align="right">Telephone:</td>
+<td>
+        <input type="text" name="phone_1" maxlength="32" size="16" value="<?php echo $phone_1 ?>" />
+      </td></tr>
+<tr>
+<td align="right">Fax:</td>
+<td>
+        <input type="text" name="fax" maxlength="32" size="16" value="<?php echo $fax ?>" />
+      </td></tr>
+<tr>
+<td align="right">Email Address:</td>
+<td>
+        <input type="text" name="user_email" maxlength="32" size="32" value="<?php echo $user_email ?>" />
+      </td></tr>
+
+
+<tr><td colspan="2" align="center">
+<input type="submit" name="Register" value="Register" />
+</td></tr>
+</table>
+</form>
+<!-- Body ends here -->
+
+<?php 
+?>

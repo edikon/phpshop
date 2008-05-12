@@ -1,0 +1,142 @@
+<?php 
+  search_header($order_list_lbl, $modulename, "order_list"); 
+?>
+
+<center>
+<?php
+// PAVLO: 9.12.00
+$navi_db = new ps_DB;
+$q = "SELECT order_status_code, order_status_name ";
+$q .= "FROM order_status WHERE vendor_id = $ps_vendor_id";
+$navi_db->query($q);
+while ($navi_db->next_record()) {
+   $url = SECUREURL . "?page=$modulename/order_list&amp;show=";
+   $url .= $navi_db->f("order_status_code");
+   echo "<a class=\"bLink\" href=\"".$sess->url($url)."\"><b>";
+   echo $navi_db->f("order_status_name")."</b></a> | ";
+}
+$url = SECUREURL . "?page=$modulename/order_list&amp;show=";
+echo "<a class=\"bLink\" href=\"".$sess->url($url)."\"><b>List All</b></a>";
+?>
+</center><br />
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT order_id,orders.cdate,orders.mdate,order_subtotal,";
+     $list .= "order_tax, order_shipping, order_shipping_tax,";
+     $list .= "order_status FROM orders, user_info, auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM orders, user_info, auth_user_md5 WHERE ";
+     $q  = "(orders.order_id LIKE '%$keyword%' ";
+     $q .= "OR orders.order_status LIKE '%$keyword%' ";
+     $q .= "OR auth_user_md5.username LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "AND orders.user_id=auth_user_md5.user_id ";
+     $q .= "AND user_info.user_id=auth_user_md5.user_id ";
+     $q .= "AND user_info.user_info_id=orders.user_info_id ";
+     $q .= "AND orders.vendor_id='$ps_vendor_id' ";
+     $q .= "ORDER BY orders.cdate DESC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $q = "";
+     $list  = "SELECT order_id,orders.cdate,orders.mdate,order_subtotal,";
+     $list .= "order_tax, order_shipping, order_shipping_tax,";
+     $list .= "order_status FROM orders, user_info, auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM orders, user_info, auth_user_md5 WHERE ";
+     $q .= "orders.user_id=auth_user_md5.user_id ";
+     $q .= "AND user_info.user_id=auth_user_md5.user_id ";
+     $q .= "AND orders.vendor_id='$ps_vendor_id' ";
+     $q .= "AND user_info.user_info_id=orders.user_info_id ";
+     if ($show) 
+        $q .= "AND order_status = '$show' ";
+     $q .= "ORDER BY orders.cdate DESC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr > 
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_list_id ?></td>
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_list_cdate ?></td>
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_list_mdate ?></td>
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_list_status ?></td>
+    <td nowrap="nowrap" class="RecordsTableHeader"><?php echo $order_list_total ?></td>
+  </tr>
+  
+<?php 
+$db->query($list);
+$i = 0;
+while ($db->next_record()) { 
+
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?>
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+    <td><?php
+$url = SECUREURL . "?page=$modulename/order_print&amp;order_id=";
+$url .= $db->f("order_id");
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+printf("%08d", $db->f("order_id"));
+echo "</a><br />";
+?></td>
+    <td nowrap="nowrap"><?php 
+                 setlocale(LC_TIME,strtolower($lang)."_".$lang);
+		 echo strftime("%d-%b-%y %H:%M", $db->f("cdate"));
+		 ?></td>
+    <td nowrap="nowrap"><?php 
+    		     setlocale(LC_TIME,strtolower($lang)."_".$lang);
+                     echo strftime("%d-%b-%y %H:%M", $db->f("mdate"));
+               ?>
+    </td>
+    <td nowrap="nowrap"><?php
+         $q = "SELECT order_status_name FROM order_status WHERE ";
+         $q .= "order_status_code = '" . $db->f("order_status") . "'";
+         $dbos = new ps_DB;
+         $dbos->query($q);
+         $dbos->next_record();
+         ?> 
+    <form method="post" action="<?php echo SECUREURL ?>"><?php 
+      $ps_order_status->list_order_status($db->f("order_status"));
+      $sess->hidden_session();?>
+      <input type="submit" name="Submit" value="Update Status" />
+      <input type="hidden" name="page" value="order/order_list" />
+      <input type="hidden" name="func" value="orderStatusSet" />
+      <input type="hidden" name="order_id" value="<?php echo $db->f("order_id") ?>" />
+    </form>
+</td>
+    <td><?php
+         // Calculate order total
+         $subtotal = $db->f("order_subtotal");
+         $tax = $db->f("order_tax");
+         $shipping= $db->f("order_shipping");
+         $shipping_tax= $db->f("order_shipping_Tax");
+     
+         $total = $subtotal + $tax + $shipping + $shipping_tax;
+         printf("%.2f", $total);
+         ?> 
+</td>
+</tr>
+  <?php } ?> 
+</table>
+
+<?php 
+  search_footer($modulename, "order_list", $offset, $num_rows, $keyword); 
+}
+?>
+
+

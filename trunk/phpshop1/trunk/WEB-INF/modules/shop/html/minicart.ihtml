@@ -1,0 +1,58 @@
+<?php
+// ----------------------------------------------------------------------
+// Mini Cart
+// ----------------------------------------------------------------------
+// Module designed by Mr PHP
+// W: www.mrphp.com.au
+// E: info@mrphp.com.au
+// P: +61 418 436 690
+// ----------------------------------------------------------------------
+// LICENSE
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License (GPL)
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// To read the license please visit http://www.gnu.org/copyleft/gpl.html
+// ----------------------------------------------------------------------
+
+require_once('product/lib/ps_product.inc');
+$ps_product = new ps_product;
+require_once('product/lib/ps_product_category.inc');
+$ps_product_category = new ps_product_category;
+
+
+  if ($cart["idx"] == 0) {
+    $checkout = False;
+  }
+  else {
+    $checkout = True;
+    $total_qty = 0;
+    $total = 0;
+    for ($i=0;$i<$cart["idx"];$i++) {
+      $total_qty += $cart[$i]["quantity"];
+      $price = $ps_product->get_price($cart[$i]["product_id"]);
+      $subtotal = $price["product_price"] * $cart[$i]["quantity"];
+      $total += $subtotal;
+    } // End for loop
+?>
+<br />
+<table width="100%" cellspacing="0" class="RecordsTable">
+<tr ><td class="RecordsTableHeader">
+Your Cart</td></tr>
+<tr><td align="center">
+<?php
+  echo "You have $total_qty item(s) in your cart totaling $$total.<br />";
+  ?><a href="<?php $sess->purl(URL . "?page=shop/cart"); ?>">View Cart</a>
+  | <a href="<?php $sess->purl(SECUREURL . "?page=checkout/index"); ?>">Checkout</a>
+</td></tr></table>
+<br />
+<?php
+  }
+?>

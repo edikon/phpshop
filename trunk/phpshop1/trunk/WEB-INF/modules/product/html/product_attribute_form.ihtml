@@ -1,0 +1,91 @@
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="product_attribute_form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="2" cellspacing="0" class="RecordsTable">
+    <tr> 
+      <td valign="top" colspan="2" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $attribute_form_lbl ?> 
+<?php
+$product_id = $vars["product_id"];
+if ($attribute_name = $vars["attribute_name"]) {
+  if (!$product_parent_id) {
+    echo $attribute_form_update_for_product . " ";
+  } else {
+    echo $attribute_form_update_for_item . " ";
+  }
+} else {
+  if (!$product_parent_id) {
+    echo $attribute_form_new_for_product . " ";
+  } else {
+    echo $attribute_form_new_for_item . " ";
+  }
+}
+$url = SECUREURL . "?page=$modulename/product_form&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id";
+echo "<a class=\"hLink\" href=\"" . $sess->url($url) . "\">";
+echo $ps_product->get_field($product_id,"product_name");
+echo "</a>"; 
+
+if ($attribute_name) {
+  $db = new ps_DB;
+  $q = "SELECT * FROM product_attribute_sku WHERE product_id='$product_id' ";
+  $q .= "AND attribute_name = '$attribute_name' ";
+  $db->query($q); 
+  $db->next_record();}
+?>
+    </p>
+      </td>
+    </tr>
+    <tr> 
+      <td valign="top" colspan="2"> 
+        <input type="hidden" name="product_id" value="<?php echo $product_id; ?>" />
+        <input type="hidden" name="old_attribute_name" value="<?php echo $attribute_name; ?>" />
+        <input type="hidden" name="func" value="<?php if ($attribute_name) { echo "productAttributeUpdate";} else {echo "productAttributeAdd";} ?>" />
+        <input type="hidden" name="page" value="<?php echo $modulename?>/product_attribute_list" />
+        <input type="hidden" name="return_args" value="<?php echo $return_args; ?>" />
+        <?php
+$sess->hidden_session();
+?> </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="20" valign="top"> 
+        <div align="right"><?php echo $attribute_form_name ?>:</div>
+      </td>
+      <td width="77%" height="20"> 
+        <input type="text" name="attribute_name" value="<?php $db->sp("attribute_name"); ?>" size="32" maxlength="255" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="10" valign="top"> 
+        <div align="right"><?php echo $attribute_form_order ?>:</div>
+      </td>
+      <td width="77%" height="10"> 
+        <input type="text" name="attribute_list" value="<?php $db->sp("attribute_list"); ?>" size="5" maxlength="11" />
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" height="2"> </td>
+    </tr>
+    <tr> 
+      <td colspan="2" height="22">&nbsp;</td>
+    </tr>
+    <tr> 
+      <td colspan="2" height="22"> <?php if (!$attribute_name) { ?> 
+        <table width="75%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr align="center"> 
+            <td width="100%"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Cancel" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/product_attribute_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>'" />
+            </td>
+          </tr>
+        </table>
+        <?php } else { ?> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr align="center"> 
+            <td width="100%"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/product_attribute_list&amp;func=productAttributeDelete&amp;product_id=$product_id&amp;attribute_name=" . urlencode($attribute_name) . "&amp;return_args=" . urlencode($return_args)); ?>');" /> 
+              <input type="button" class="Button" value="Cancel" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/product_attribute_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>'" />
+          </td>
+          </tr>
+        </table>
+        <?php } ?> </td>
+    </tr>
+  </table>
+</form>

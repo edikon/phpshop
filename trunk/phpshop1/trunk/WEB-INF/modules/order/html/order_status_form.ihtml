@@ -1,0 +1,77 @@
+<?php 
+if ($order_status_id) {
+  $q = "SELECT * FROM order_status WHERE order_status_id='$order_status_id'"; 
+  $db->query($q);  
+  $db->next_record();
+}  
+?><br />
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" enctype="multipart/form-data">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" align="center" class="RecordsTable">
+    <tr> 
+      <td colspan="2" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $order_status_form_lbl ?></p></td>
+    </tr>
+    <tr> 
+      <td><b>&nbsp;<?php echo $order_status_form_lbl ?></b></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $order_status_form_code ?>:</td>
+      <td> 
+        <input type="text" name="order_status_code" value="<?php $db->sp("order_status_code") ?>" size="1" maxlength="1" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $order_status_form_name ?>:</td>
+      <td> 
+        <input type="text" name="order_status_name" value="<?php $db->sp("order_status_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right" ><?php echo $order_status_form_list_order ?>:</td>
+      <td> 
+        <input type="text" name="list_order" value="<?php $db->sp("list_order") ?>" size="2" />
+      </td>
+    </tr>
+    <tr align="center">
+      <td colspan="2" >&nbsp;</td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" > 
+        <input type="hidden" name="order_status_id" value="<?php echo $order_status_id ?>" />
+        <input type="hidden" name="func" value="<?php if ($order_status_id) echo "orderStatusUpdate"; else echo "orderStatusAdd"; ?>" />
+        <input type="hidden" name="page" value="order/order_status_list" />
+      </td>
+    </tr>
+    <tr align="center"> 
+      <td colspan="2" ><?php if ($order_status_id) { ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=order/order_status_list&amp;func=OrderStatusDelete&amp;order_status_id=$order_status_id"); ?>')" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%"><br />
+            </td> 
+          </tr>
+        </table>
+        <?php }
+else {
+ ?> 
+        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+          <tr align="center"> 
+            <td width="100%"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=order/order_status_form&amp;order_status_id") ?>'" />
+            </td>
+          </tr>
+          <tr align="center"> 
+            <td width="100%"><br />
+            </td> 
+          </tr>
+        </table>
+        <?php } ?></td>
+    </tr>
+  </table>
+</form>

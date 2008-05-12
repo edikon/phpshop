@@ -1,0 +1,18 @@
+<table width="80%" border="0" cellspacing="0" cellpadding="0" class="RecordsTable"> 
+  <tr> 
+    <td width="100%" align="left" colspan="2" class="RecordsTableHeader"> 
+      <p class="HeaderText">&nbsp;<?php echo $module[$modulename]["title"] ?></p> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td colspan="2" align="right"><br /> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td colspan="2" align="left"> &nbsp;<?php echo $module_description ?> </td> 
+  </tr> 
+  <tr> 
+    <td colspan="2" align="right"><br /> 
+    </td> 
+  </tr> 
+</table>

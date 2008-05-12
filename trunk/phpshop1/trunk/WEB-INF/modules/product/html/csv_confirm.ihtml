@@ -1,0 +1,57 @@
+<?php
+# This script is a companion to the csv_upload script
+# by John Syben (www.webme.co.nz)
+#
+# After you use the csv_upload script you need to 
+# FTP your images to the shop_image/product directory
+# to match the image names from the csv file.
+# This script will get all the image names from the product
+# table and check if the images are in the shop_image/product
+# folder and report which files are missing.
+#
+# Simply put this file in the product/html folder
+# and make a link to it in the menu.
+
+eval(load_class("vendor","ps_vendor"));
+$ps_vendor = new ps_vendor;
+
+$report = "";
+// Set path to product image directory
+$dir = WEBROOT;
+$dir .= $ps_vendor->get_field($ps_vendor_id,"vendor_image_path");
+$dir .= "product/";
+
+  // Check if directory exists
+  if (!is_dir($dir)) {
+    $report = "Directory <b>$dir</b> does not exist!<br /><br />";
+    $report .= " Please check the location of your product image directory";
+    $report .= " and either move it to <b>$dir</b> or change the path in the";
+    $report .= " \$dir variable in the <b>";
+    $report .= MODROOT . "product/html/confirm_images.ihtml</b> file.";
+  }
+  else { // is_dir
+    // Get all the image names from the db
+    $db = new ps_DB;
+    $q = "SELECT product_thumb_image, product_full_image FROM product";
+    $db->query($q);
+      while ($db->next_record()) {
+          // See if the thumbnail exists
+          if (!file_exists($dir . $db->f("product_thumb_image"))) {
+            $report .= $db->f("product_thumb_image") . "<br />";
+          }
+          // See if the full image exists
+          if (!file_exists($dir . $db->f("product_full_image"))) {
+            $report .= $db->f("product_full_image") . "<br />";
+          }
+      } // End while
+
+      if (!$report) {
+        $report = "No missing images";
+      }
+      else {
+        $report = "The following product images are missing:<br />" . $report;
+      }
+
+  } // end is_dir
+echo $report;
+?>

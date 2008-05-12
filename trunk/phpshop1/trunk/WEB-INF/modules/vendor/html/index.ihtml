@@ -1,0 +1,13 @@
+<table width="50%" border="0" cellspacing="0" cellpadding="0" class="RecordsTable">
+  <tr align="center"> 
+    <td width="100%" align="left" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $module[$modulename]["title"] ?></p></td>
+  </tr>
+  <tr> 
+    <td width="100%" align="center">&nbsp;<?php echo $module_description ?></td>
+  </tr>
+  <tr> 
+    <td width="100%" align="center"><br />
+    <br />
+    </td>
+  </tr>
+</table>

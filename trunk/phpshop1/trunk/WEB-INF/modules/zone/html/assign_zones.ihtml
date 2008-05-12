@@ -1,0 +1,122 @@
+<?php
+/*
+    Copyright (C) Mike Wattier  <geek@devcompany.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+*/
+  search_header($assign_zone_pg_lbl, $modulename, "assign_zones"); 
+?>
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM zone_country WHERE ";
+     $count = "SELECT count(*) as num_rows FROM zone_country WHERE ";
+     $q  = "(country_name LIKE '%$keyword%')";
+     $q .= "ORDER BY country_name ASC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else  
+  {
+     $q = "";
+     $list  = "SELECT * FROM zone_country ORDER BY country_id ASC ";
+     $count = "SELECT count(*) as num_rows FROM zone_country"; 
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%" class="RecordsTable">
+<tr class="RecordsTableHeader">
+<td width="25%" align="center">
+<b><?php echo $zone_assign_country_lbl;?></b>
+</td>
+<td width="25%" align="center">
+<b><?php echo $zone_assign_current_lbl;?></b>
+</td>
+<td width="25%" align="center">
+<b><?php echo $zone_assign_assign_lbl;?></b>
+</td>
+<td width="25%" align="center">
+<b><?php echo $zone_assign_update_lbl;?></b>
+</td>
+</tr>
+</table>
+
+<?php
+$db->query($list);
+$i = 0;
+while ($db->next_record()) {
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?>
+<form method="post" action="<?php echo SECUREURL ?>">
+<input type="hidden" name="country_id" value="<?php echo $db->f("country_id");?>" />
+<table border="0" cellpadding="2" cellspacing="0" width="100%" class="RecordsTable">
+<tr bgcolor="<?php echo $bgcolor ?>">
+<td width="25%" align="center">
+<?php $db->p("country_name") ?> </td>
+<td width="25%" align="center">
+<?php 
+// Get the zone rate for each country
+
+$per_item = $ps_zone->per_item($db->f("zone_id"));
+$zone_limit = $ps_zone->zone_limit($db->f("zone_id"));
+?>
+
+Per Item: <?php echo $per_item;?>        Limit: <?php echo $zone_limit;?><br />
+<?php
+    if($db->f("zone_id") > "1") {
+          $url = SECUREURL . "?page=$modulename/zone_form&amp;zone_id=" . $db->f("zone_id");
+       echo "<a href=\"" . $sess->url($url) . "\">";
+       echo "Edit This Zone"; 
+       echo "</a>"; 
+}
+?>
+</td>
+<td width="25%" align="center">
+<?php
+$ps_zone->list_zones("zone_id", $db->f("zone_id"));
+$sess->hidden_session();
+?>
+
+<input type="hidden" name="page" value="<?php echo $modulename;?>/assign_zones" />
+<input type="hidden" name="func" value="zoneassign" />
+</td>
+<td width="25%" align="center">
+<input type="submit" name="Submit" value="<?php echo $zone_assign_update_lbl;?>" />
+</td>
+</tr>
+</table>
+</form>
+
+<?php 
+}
+  search_footer($modulename, "assign_zones", $offset, $num_rows, $keyword); 
+}
+?>
