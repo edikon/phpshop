@@ -1,0 +1,90 @@
+<?php 
+  search_header($payment_method_list_lbl, $modulename, "payment_method_list"); 
+?>
+<?php
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM payment_method, shopper_group WHERE ";
+     $count = "SELECT count(*) as num_rows FROM payment_method,shopper_group WHERE ";
+     $q  = "(payment_method.payment_method_name LIKE '%$keyword%' ";
+     $q .= "AND payment_method.vendor_id='$ps_vendor_id' ";
+     $q .= "AND payment_method.shopper_group_id=shopper_group.shopper_group_id ";
+     $q .= ") ";
+     $q .= "ORDER BY payment_method.list_order ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $q = "";
+     $list  = "SELECT * FROM payment_method,shopper_group WHERE ";
+     $count = "SELECT count(*) as num_rows FROM payment_method,shopper_group WHERE ";
+     $q .= "payment_method.vendor_id='$ps_vendor_id' ";
+     $q .= "AND payment_method.shopper_group_id=shopper_group.shopper_group_id ";
+     $list .= $q;
+     $list .= "ORDER BY payment_method.list_order ";
+     $list .= "LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+<table width="100%" border="0" cellspacing="0" cellpadding="5" class="RecordsTable">
+  <tr>
+    <td class="RecordsTableHeader"><?php echo $payment_method_list_code ?></td>
+    <td class="RecordsTableHeader"><?php echo $payment_method_list_name ?></td>
+    <td class="RecordsTableHeader"><?php echo $payment_method_list_discount ?></td>
+    <td class="RecordsTableHeader"><?php echo $payment_method_list_shopper_group ?></td>
+    <td class="RecordsTableHeader"><?php echo $payment_method_list_enable_processor ?></td>
+  </tr>
+  <?php
+
+$db->query($list);
+ while ($db->next_record()) { 
+   if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+   else
+     $bgcolor=SEARCH_COLOR_2;
+?> 
+  <tr bgcolor="<?php echo $bgcolor ?>">
+    <td nowrap="nowrap"><?php
+	$url = SECUREURL . "?page=$modulename/payment_method_form&amp;payment_method_id=";
+	$url .= $db->f("payment_method_id");
+	echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+	echo $db->f("payment_method_code");
+	echo "</a>"; ?></td>
+    <td nowrap="nowrap"><?php
+	echo $db->f("payment_method_name");
+?></td>
+    <td nowrap="nowrap"><?php $db->p("payment_method_discount") ?></td>
+    <td nowrap="nowrap"><?php $db->p("shopper_group_name") ?></td>
+    <td nowrap="nowrap"><?php 
+          if ($db->f("enable_processor")=="") { 
+             echo "N";
+          } 
+          else { 
+	     $db->p("enable_processor");
+          }
+          ?></td>
+  </tr>
+  <?php } ?> 
+</table>
+<?php 
+  search_footer($modulename, "payment_method_list", $offset, $num_rows, $keyword); 
+}
+?>
+
+
+
+
+
+
+
+

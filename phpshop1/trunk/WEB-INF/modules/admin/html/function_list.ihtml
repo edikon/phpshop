@@ -1,0 +1,81 @@
+<?php 
+  // Get module name
+  $q = "SELECT * FROM module WHERE module_id='$module_id'";
+  $db->query($q);
+  $db->next_record();
+  $pagename = $function_list_lbl . ": " . $db->f("module_name");
+?>
+<?php 
+  search_header($pagename, $modulename, "function_list"); 
+?>
+<?php
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM function WHERE ";
+     $count = "SELECT count(*) as num_rows FROM function WHERE ";
+     $q  = "(function_name LIKE '%$keyword%' OR ";
+     $q .= "function_perms LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "AND module_id='$module_id' ";
+     $q .= "ORDER BY function_name ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $list  = "SELECT * FROM function WHERE module_id='$module_id' ";
+     $list .= "ORDER BY function_name ";
+     $list .= "LIMIT $offset, " . SEARCH_ROWS;
+     $count = "SELECT count(*) as num_rows FROM function ";
+     $count .= "WHERE module_id='$module_id' ";
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+ <table width="100%" border="0" cellspacing="0" cellpadding="5" class="RecordsTable"> 
+  <tr> 
+     <th align="left" class="RecordsTableHeader"><?php echo $function_list_name ?></th> 
+     <th align="left" class="RecordsTableHeader"><?php echo $function_list_class ?></th> 
+     <th align="center" class="RecordsTableHeader"><?php echo $function_list_method ?></th> 
+     <th align="left" class="RecordsTableHeader"><?php echo $function_list_perms ?></th> 
+   </tr> 
+  <?php
+  	$db->query($list);
+        while ($db->next_record()) {
+        if ($i++ % 2) 
+           $bgcolor=SEARCH_COLOR_1;
+        else
+           $bgcolor=SEARCH_COLOR_2;
+        ?> 
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+     <td width="19%"> 
+      <?php
+$url = SECUREURL . "?page=$modulename/function_form&amp;module_id=$module_id&amp;function_id=" . $db->f("function_id");
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+$db->p("function_name");
+echo "</a>";
+?> 
+    </td> 
+     <td width="17%"> 
+      <?php $db->p("function_class") ?> 
+    </td> 
+     <td width="24%" align="center"> 
+      <?php $db->p("function_method") ?> 
+    </td> 
+     <td width="20%"> 
+      <?php $db->p("function_perms") ?> 
+&nbsp;</td> 
+   </tr> 
+  <?php } ?> 
+</table> 
+<?php 
+  search_footer($modulename, "function_list", $offset, $num_rows, $keyword, "&module_id=$module_id"); 
+}
+?> 

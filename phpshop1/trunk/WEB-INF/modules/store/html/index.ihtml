@@ -1,0 +1,289 @@
+<!-- BEGIN body -->
+<!-- interface borrowed, with credit from the phpshop-commerce preview -->
+ <h1><?php echo $rpt_sales_page_title; ?></h1>
+<form action="<?php $sess->purl(SECUREURL); ?>" method="post"> 
+  <input type="hidden" name="page" value="store/index" /> 
+  <?php $sess->hidden_session; ?> 
+  <table class="box" width="100%" border="0" cellspacing="0"
+      cellpadding="1"> 
+    <tr> 
+      <td> 
+        <table class="listlabels" width="100%" border="0" cellspacing="1"
+            cellpadding="0"> 
+          <tr> 
+            <td>View</td> 
+            <td> 
+              <input type="checkbox" name="show_products" value="show_products"<?php
+                if ($show_products) { echo ' checked="checked"'; } ?> /> 
+              Individual Product Listings &nbsp; &nbsp; </td> 
+          </tr> 
+          <tr> 
+            <td colspan="2"> 
+              <hr noshade="noshade" size="2" /> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td><?php echo $interval_title; ?></td> 
+            <td> 
+              <input type="radio" name="interval" value="byMonth" checked="checked" /> 
+              <?php echo $interval_monthly_title; ?> &nbsp; &nbsp; 
+              <input type="radio"
+                name="interval" value="byWeek" /> 
+              <?php echo $interval_weekly_title; ?> &nbsp; &nbsp; 
+              <input type="radio" name="interval" value="byDay" /> 
+              <?php echo $interval_daily_title; ?></td> 
+          </tr> 
+          <tr> 
+            <td colspan="2"> 
+              <hr noshade="noshade" size="2" /> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td>Show</td> 
+            <td> 
+              <input type="submit" name="thisMonth"
+                value="<?php echo $thisMonth_button; ?>" /> 
+&nbsp; 
+              <input type="submit"
+                name="lastMonth" value="<?php echo $lastMonth_button; ?>" /> 
+&nbsp; 
+              <input
+                type="submit" name="last60" value="<?php echo $last60_button; ?>" /> 
+&nbsp; 
+              <input type="submit" name="last90" value="<?php echo $last90_button; ?>" /> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td colspan="2"> 
+              <hr noshade="noshade" size="2" /> 
+            </td> 
+          </tr> 
+          <tr valign="top"> 
+            <td width="100"><?php echo $start_date_title; ?></td> 
+            <td> 
+              <?php
+                $nh_report->make_date_popups("s",date("Ymd", mktime (0,0,0,date("m"),1,date("Y"))) );
+                ?> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td width="100"><?php echo $end_date_title; ?></td> 
+            <td> 
+              <?php $nh_report->make_date_popups("e"); ?> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td>&nbsp;</td> 
+            <td> 
+              <input type="submit" name="submit"
+                value="Show this selected range" /> 
+            </td> 
+          </tr> 
+        </table> 
+      </td> 
+    </tr> 
+  </table> 
+</form> 
+<!-- begin output of report --> 
+<?php 
+ /* assemble start date */
+ if ($thisMonth) {
+   $start_date = mktime(0,0,0,date("n"),1,date("Y"));
+   $end_date = mktime(23,59,59,date("n")+1,0,date("Y"));
+ }
+ else if ($lastMonth) {
+   $start_date = mktime(0,0,0,date("n")-1,1,date("Y"));
+   $end_date = mktime(23,59,59,date("n"),0,date("Y"));
+ }
+ else if ($last60) {
+   $start_date = mktime(0,0,0,date("n"),date("j")-60,date("Y"));
+   $end_date = mktime(23,59,59,date("n"),date("j"),date("Y"));
+ }
+ else if ($last90) {
+   $start_date = mktime(0,0,0,date("n"),date("j")-90,date("Y"));
+   $end_date = mktime(0,0,0,date("n"),date("j"),date("Y"));
+ }
+ else if ($submit) {
+   /* start and end dates should have been given, assign accordingly */
+   $start_max_day = date("j",mktime(0,0,0,$smonth+1,0,$syear));
+   if (! (intval($sday) <= $start_max_day)) {
+     $sday = $start_max_day;
+   }
+   $start_date = mktime(0,0,0,intval($smonth),intval($sday),$syear);
+
+   $end_max_day = date("j",mktime(0,0,0,intval($smonth)+1,0,$syear));
+   if (! (intval($eday) <= $end_max_day)) {
+     $eday = $end_max_day;
+   }
+   $end_date = mktime(23,59,59,intval($emonth),intval($eday),$eyear);
+ }
+ else {
+ /* nothing was sent to the page, so create default inputs */
+   $start_date = mktime(0,0,0,date("n"),1,date("Y"));
+   $end_date = mktime(23,59,59,date("n")+1,0,date("Y"));
+   $interval = "byMonth";
+ }
+
+ /* get the interval and set the date line for the query */
+ switch ($interval) {
+    case 'byMonth':
+     $query_date_line = "FROM_UNIXTIME(cdate, '%M, %Y') as order_date, ";
+     $query_group_line = "GROUP BY order_date";
+     break;
+   case 'byWeek':
+     $query_date_line .= "WEEK(FROM_UNIXTIME(cdate, '%Y-%m-%d')) as week_number, ";
+     $query_date_line .= "FROM_UNIXTIME(cdate, '%M %d, %Y') as order_date, ";
+     $query_group_line = "GROUP BY week_number";
+     break;
+   case 'byDay':
+   /* query for days */
+     $query_date_line = "FROM_UNIXTIME(cdate, '%M %d, %Y') as order_date, ";
+     $query_group_line = "GROUP BY order_date";
+     break;
+   default:
+     $query_date_line = '';
+     $query_group_line = '';
+    break;
+  }
+  /* better way of setting up query */
+  $q  = "SELECT ";
+  $r  = $q;
+  $u  = $q;
+
+  $query_between_line = "WHERE cdate BETWEEN '" . $start_date . "' AND '" . $end_date . "' ";
+  if ($query_date_line) {
+    $q .= $query_date_line;
+  }
+  $q .= "FROM_UNIXTIME(cdate, '%Y%m%d') as date_num, ";
+  $q .= "COUNT(order_id) as number_of_orders, ";
+  $q .= "SUM(order_subtotal) as revenue ";
+  $q .= "FROM orders ";
+  $q .= $query_between_line;
+  if ($query_group_line) {
+    $q .= $query_group_line;
+  }
+  $q .= " ORDER BY date_num ASC";
+
+  /** setup items sold query */
+  if ($query_date_line) {
+    $r .= $query_date_line;
+  }
+  $r .= "FROM_UNIXTIME(cdate, '%Y%m%d') as date_num, ";
+  $r .= "SUM(product_quantity) as items_sold ";
+  $r .= "FROM order_item ";
+  $r .= $query_between_line;
+  if ($query_group_line) {
+    $r .= $query_group_line;
+  }
+  $r .= " ORDER BY date_num ASC";
+
+// added for v0.2 PRODUCT LISTING QUERY!
+if ($show_products) {
+/* setup end of product listing query */
+  $u .= "product_name, product_sku, ";
+  if ($query_date_line) {
+    $u .= str_replace ("cdate", "order_item.cdate", $query_date_line);
+  }
+  $u .= "FROM_UNIXTIME(order_item.cdate, '%Y%m%d') as date_num, ";
+  $u .= "SUM(product_quantity) as items_sold ";
+  $u .= "FROM order_item, orders, product ";
+  $u .= str_replace ("cdate", "order_item.cdate", $query_between_line);
+  $u .= "AND orders.order_id=order_item.order_id ";
+  $u .= "AND order_item.product_id=product.product_id ";
+  $u .= "GROUP BY product_sku, product_name, order_date ";
+  $u .= " ORDER BY date_num, product_name ASC";
+  $dbpl = new ps_DB;
+  $dbpl->query($u);
+}
+
+
+/* setup the db and query */
+  $db = new ps_DB;
+  $dbis = new ps_DB;
+  
+  $db->query($q);
+  $dbis->query($r);
+ ?> 
+<h4>Report for <b><?php echo date("M j, Y", $start_date); ?></b> --&gt; <b> 
+  <?php
+    echo date("M j, Y", $end_date); ?> 
+  </b></h4> 
+<table class="box" width="100%" border="0" cellspacing="0" cellpadding="1"> 
+  <tr> 
+    <td> 
+      <table bgcolor="#cccccc" width="100%" border="0" cellspacing="0"
+          cellpadding="1"> 
+        <tr> 
+          <td><b>Date</b></td> 
+          <td><b>Orders</b></td> 
+          <td><b>Total Items sold</b></td> 
+          <td><b>Revenue</b></td> 
+        </tr> 
+        <?php
+  if ($show_products) {
+    $dbpl->next_record();
+  }
+  while ($db->next_record()) {
+    $dbis->next_record();
+    
+    if ($i++ % 2) {
+      $bgcolor=SEARCH_COLOR_1;
+    }
+    else {
+      $bgcolor=SEARCH_COLOR_2;
+    }
+        ?> 
+        <tr bgcolor="<?php echo $bgcolor ?>"> 
+          <td> 
+            <?php $db->p("order_date"); ?> 
+          </td> 
+          <td> 
+            <?php $db->p("number_of_orders"); ?> 
+          </td> 
+          <td> 
+            <?php $dbis->p("items_sold"); ?> 
+          </td> 
+          <td> 
+            <?php 
+      $db->p("revenue");
+    ?> 
+&nbsp;</td> 
+        </tr> 
+        <?php
+    // BEGIN product listing
+    if ($show_products) {
+    ?> 
+        <tr bgcolor="#ffffff"> 
+          <td colspan="5" align="left"><b>Product Listing</b></td> 
+        </tr> 
+        <tr bgcolor="#ffffff"> 
+          <td>&nbsp;</td> 
+          <td colspan="2" align="left"><b>Product Name</b></td> 
+          <td colspan="2" align="left"><b>Quantity</b></td> 
+        </tr> 
+        <?php
+      while ($dbpl->f("order_date") == $db->f("order_date")) {
+        echo "<tr bgcolor=\"#ffffff\">\n";
+        echo "<td>&nbsp;</td>\n";
+        echo '<td colspan=2 align="left">' . $dbpl->f("product_name") . " (" . $dbpl->f("product_sku") . ")</td>\n";
+        echo '<td colspan=2 align="left">' . $dbpl->f("items_sold") . "</td>\n";
+        echo "</tr>\n";
+        $dbpl->next_record();
+      }
+    ?> 
+        <tr> 
+          <td colspan="5"> 
+            <hr width="85%" /> 
+          </td> 
+        </tr> 
+        <?php
+    }
+    // END product listing
+
+  } ?> 
+      </table> 
+    </td> 
+  </tr> 
+</table> 
+<!-- end output of report --> 
+<!-- END body --> 

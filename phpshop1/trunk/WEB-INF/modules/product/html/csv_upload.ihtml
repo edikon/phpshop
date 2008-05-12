@@ -1,0 +1,55 @@
+<h1> Product Import </h1>
+<table width="100%"  border="0" cellspacing="0" cellpadding="4" class="RecordsTable">
+<tr>
+  <td class="RecordsTableHeader">Instructions</td>
+</tr>
+<tr>
+  <td>
+    <p>First you need a csv file with the required product information. See docs/upload_sample.csv for an example.
+</p>
+    <p>The following product information can be included: </p>
+    <blockquote>
+      <p>      product_sku<br />
+      product_s_desc<br />
+      product_desc<br />
+      product_thumb_image<br />
+      product_full_image<br />
+      product_weight<br />
+      product_weight_uom<br />
+      product_length<br />
+      product_width<br />
+      product_height<br />
+      product_lwh_uom<br />
+      product_in_stock<br />
+      product_available_date<br />
+      product_special<br />
+      product_discount_id<br />
+      product_name<br />
+      product_price<br />
+      category_path</p>
+      <p>Minimum required information:<br />
+      product_sku<br />
+      product_name<br />
+      product_price<br />
+      category_path</p>
+    </blockquote>
+    <p>category_path is a slash delimited string which begins with a top-level category and follows with sub-categories, e.g. category/sub-category_1/sub_category_2</p>
+      <p>product_thumb_image and product_full_image are the names of the respective image files. You will need to FTP the image directly to the image folder.</p>
+      <p>In the csv table, each of the above product fields is assigned a number which represents it's position in the delimited line. You can change these to suit the positions in your own lines. The positions set in the the csv database table relate to the included upload_sample.csv so you can test your installation.</p>
+      <p>After you use the csv_upload script you need to FTP your images to the shop_image/product directory to match the image names from the csv file. This script will get all the image names from the product table and check if the images are in the shop_image/product folder and report which files are missing.</p>
+  </td>
+</tr>  
+<tr>
+  <td class="RecordsTableHeader">Upload</td>
+</tr>
+<tr>
+    <td>
+      <form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="input" enctype="multipart/form-data">
+<?php $sess->hidden_session(); ?> 
+<input type="hidden" name="func" value="product_csv" />
+<input type="hidden" name="page" value="product/csv_complete" />
+<input type="file" name="file" />
+<input type="submit" name="submit" value="submit" />
+</form></td>
+  </tr>
+</table>

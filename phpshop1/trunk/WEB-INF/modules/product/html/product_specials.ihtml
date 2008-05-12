@@ -1,0 +1,127 @@
+<?php
+// ----------------------------------------------------------------------
+// Special Products Manager
+// ----------------------------------------------------------------------
+// Module designed by Mr PHP
+// W: www.mrphp.com.au
+// E: info@mrphp.com.au
+// P: +61 418 436 690
+// ----------------------------------------------------------------------
+// LICENSE
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License (GPL)
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// To read the license please visit http://www.gnu.org/copyleft/gpl.html
+// ----------------------------------------------------------------------
+
+
+  search_header("Featured &amp; Discounted Products", "product", "specialprod");
+  // Enable the multi-page search result display
+  if (empty($offset))
+         $offset=0;
+
+  // Check to see if this is a search or a browse by category
+  // Default is to show all products
+  if ($category_id) {
+     $list  = "SELECT * FROM product, product_category_xref WHERE ";
+     $count  = "SELECT count(*) as num_rows FROM product,
+                product_category_xref, category WHERE ";
+     $q  = "product.vendor_id = '$ps_vendor_id' ";
+     $q .= "AND product_category_xref.category_id='$category_id' ";
+     $q .= "AND product.product_id=product_category_xref.product_id ";
+     $q .= "AND (product_special='Y' OR product_discount_id>'0') ";
+     $q .= "ORDER BY product_name ";
+     $list .= $q . " LIMIT $offset, 50";
+     $count .= $q;
+  }
+  elseif ($keyword) {
+	$list = "SELECT * FROM product, category WHERE ";
+	$count = "SELECT count(*) as num_rows FROM product, category WHERE ";
+     $q  = "product.vendor_id = '$ps_vendor_id' ";
+     $q .= "AND (product.product_name LIKE '%$keyword%' OR ";
+     $q .= "product.product_sku LIKE '%$keyword%' OR ";
+     $q .= "product.product_s_desc LIKE '%$keyword%' OR ";
+     $q .= "category.category_name LIKE '%$keyword%' OR ";
+     $q .= "product.product_desc LIKE '%$keyword%'";
+     $q .= ") ";
+     $q .= "AND (product_special='Y' OR product_discount_id>'0') ";
+     $q .= "ORDER BY product_name ";
+     $list .= $q . " LIMIT $offset, 50";
+     $count .= $q;
+  }
+  else
+  {
+     $list  = "SELECT * FROM product WHERE ";
+     $count = "SELECT count(*) as num_rows FROM product WHERE ";
+     $q  = "product.vendor_id = '$ps_vendor_id' ";
+     if (!$allproducts){ $q .= "AND (product_special='Y' OR product_discount_id>0) "; }
+     $q .= "ORDER BY product_name ";
+     $list .= $q . " LIMIT $offset, 50";
+     $count .= $q;
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else { ?>
+    <table width="100%" border="0" cellspacing="0" cellpadding="5" class="RecordsTable">
+    <tr class="RecordsTableHeader">
+     <td><?php echo $product_list_name?></td>
+     <td><?php echo $product_list_sku?></td>
+     <td><?php echo $product_inventory_price ?></td>
+     <td>Featured</td>
+     <td>Discount(%)</td>
+     <td>Publish</td>
+    </tr>
+<?php
+    $db->query($list);
+    $i = 0;
+    while ($db->next_record()) {
+      if ($i++ % 2)
+        $bgcolor=SEARCH_COLOR_1;
+      else
+        $bgcolor=SEARCH_COLOR_2;
+?>
+      <tr bgcolor="<?php echo $bgcolor; ?>">
+       <td nowrap="nowrap"><?php
+       $url = SECUREURL . "?page=$modulename/product_form&amp;product_id=" . $db->f("product_id");
+       if ($db->f("product_parent_id")) {
+           $url .= "&amp;product_parent_id=" . $db->f("product_parent_id");
+       }
+       echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+       echo $db->f("product_name");
+       echo "</a>"; ?></td>
+       <td nowrap="nowrap"><?php echo $db->f("product_sku"); ?></td>
+       <td nowrap="nowrap"><?php $price=$ps_product->get_price($db->f("product_id"));
+        if ($price) {
+            if ($price["item"]) {
+              echo $price["product_price"];
+            } else {
+              echo "none";
+            }
+          } else {
+            echo "none";
+          }
+       ?></td>
+       <td nowrap="nowrap"><?php echo $db->f("product_special"); ?></td>
+       <td nowrap="nowrap"><?php echo $db->f("product_discount_id"); ?></td>
+       <td nowrap="nowrap"><?php echo $db->f("product_publish"); ?></td>
+      </tr>
+<?php
+    }
+  }
+?>
+</table>
+<?php
+  search_footer($modulename, "specialprod", $offset, $num_rows, $keyword);
+?>

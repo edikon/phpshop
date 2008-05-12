@@ -1,0 +1,72 @@
+<?php 
+  search_header($module_list_lbl, "admin", "module_list"); 
+?>
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM module WHERE ";
+     $count = "SELECT count(*) as num_rows FROM module WHERE ";
+     $q  = "(module_name LIKE '%$keyword%' OR ";
+     $q .= "module_description LIKE '%$keyword%'";
+     $q .= ") ";
+     $q .= "ORDER BY list_order ASC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $q = "";
+     $list  = "SELECT * FROM module ORDER BY list_order ASC ";
+     $count = "SELECT count(*) as num_rows FROM module ORDER BY list_order "; 
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+ <table width="100%" border="0" cellspacing="0" cellpadding="5" class="RecordsTable"> 
+  <tr align="left"> 
+     <th nowrap="nowrap" class="RecordsTableHeader"><?php echo $module_list_name ?></th> 
+     <th class="RecordsTableHeader"><?php echo $module_list_perms ?></th> 
+     <th class="RecordsTableHeader" align="center"><?php echo $module_list_functions ?></th> 
+     <th class="RecordsTableHeader" align="center"><?php echo $module_list_order ?></th> 
+   </tr> 
+  <?php
+$db->query($list);
+$i = 0;
+while ($db->next_record()) {
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?> 
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+     <td width="19%"> 
+      <?php
+$url = SECUREURL . "?page=$modulename/module_form&amp;module_id=" . $db->f("module_id");
+echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+echo $db->f("module_name");
+echo "</a>"; 
+?> 
+    </td> 
+     <td width="20%"> 
+      <?php $db->p("module_perms") ?> 
+&nbsp;</td> 
+     <td width="20%" align="center"><a class="bLink" href="<?php $sess->purl(SECUREURL . "?page=$modulename/function_list&amp;module_id=" . $db->f("module_id")); ?>">list</a></td> 
+     <td width="20%" align="center"> 
+      <?php $db->p("list_order") ?> 
+    </td> 
+   </tr> 
+  <?php }  ?> 
+</table> 
+<?php 
+  search_footer($modulename, "module_list", $offset, $num_rows, $keyword); 
+}
+?> 

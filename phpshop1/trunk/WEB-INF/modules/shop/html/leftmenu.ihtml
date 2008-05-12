@@ -1,0 +1,119 @@
+<?php require_once("product/lib/ps_product_category.inc");
+      $ps_product_category = new ps_product_category;
+?>
+<!-- Start leftbar --> 
+  <!-- Welcome notice --> <?php 
+  if ($perm->check("admin,storeadmin,demo")) {
+?> 
+<table width="100%" border="0" cellspacing="0" cellpadding="1">
+  <tr align="center"> 
+    <td class="RecordsTableHeader"> <a class="wLink" href="<?php $sess->purl(SECUREURL . "?page=store/index"); ?>">Administration</a></td>
+  </tr>
+  <tr align="center"> 
+    <td><br />
+  </td>
+  </tr>
+</table>
+  <?php
+ }
+?> <!-- Begin Navigation --> 
+<table width="100%" border="0" cellspacing="0" cellpadding="1" class="MenuTable">
+  <tr align="center"> 
+    <td bgcolor="#000000"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#663399">
+        <tr align="center"> 
+          <td class="RecordsTableHeader"><?php echo $navigation_title ?></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr align="center"> 
+    <td> <a href="<?php $sess->purl(URL . "?page=shop/index");?>"
+   ><?php echo $home_title ?></a></td>
+  </tr>
+  <tr align="center"> 
+    <td> <a href="<?php $sess->purl(URL . "?page=shop/browse");?>"
+   ><?php echo $browse_title ?></a></td>
+  </tr>
+  <tr align="center"> 
+    <td> <a href="<?php $sess->purl(URL . "?page=shop/cart");?>"
+   ><?php echo $cart_title ?></a></td>
+  </tr>
+  <tr align="center"> 
+    <td> <a href="<?php $sess->purl(SECUREURL . "?page=checkout/index");?>"
+   ><?php echo $checkout_title ?></a></td>
+  </tr>
+  <?php 
+ if ($auth["user_id"]) {
+?> 
+  <tr align="center"> 
+    <td> <a href="<?php $sess->purl(SECUREURL . "?page=account/index");?>"
+   ><?php echo $account_title ?></a></td>
+  </tr>
+ 
+  <?php
+  }
+?> <!-- End Navigation -->  
+ <tr align="center"> 
+    <td>&nbsp;</td>
+  </tr>
+<!-- Begin Browse Categories --> 
+  <tr align="center"> 
+    <td bgcolor="#000000"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#663399">
+        <tr align="center"> 
+          <td class="RecordsTableHeader"><?php echo $department_title ?></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <?php 
+  // Show only top level categories and categories that are
+  // being published
+  $q  = "SELECT * FROM category, category_xref ";
+  $q .= "WHERE category.category_publish='Y' AND ";
+  $q .= "category_xref.category_parent_id='0' AND ";
+  $q .= "category.category_id=category_xref.category_child_id ";
+  $q .= "ORDER BY category.category_name ASC";
+  $db->query($q);
+  while ($db->next_record()) {
+?> 
+  <tr align="center"> 
+    <td> <a href="<?php $sess->purl(URL . "?page=shop/browse&amp;category_id=" 
+			     . $db->f("category_id"));?>"
+   ><?php echo $db->f("category_name"); ?></a></td>
+  </tr><tr align="center"><td>
+  <?php
+     $ps_product_category->print_child_list($db->f("category_id"));
+   ?>
+</td></tr>
+<?php
+  }
+?> <!-- End browse categories --> 
+  <tr align="center">
+    <td>&nbsp;</td>
+  </tr>
+  <!-- Search Box --> 
+  <tr align="center"> 
+    <td bgcolor="#000000" height="21"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="2" bgcolor="#663399">
+        <tr align="center"> 
+          <td class="RecordsTableHeader"><?php echo $search_title ?></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr align="center"> 
+    <td> 
+      <form action="<?php echo URL ?>" method="post">
+        <?php $sess->hidden_session() ?> 
+        <input type="text" size="16" name="keyword" />
+        <input type="hidden" name="page" value="shop/browse" />
+        <br />
+        <input type="submit" name="Search" value="Search" />
+      </form>
+    </td>
+  </tr>
+  <!-- End Search Box --> 
+</table>
+<!-- End leftbar --> 

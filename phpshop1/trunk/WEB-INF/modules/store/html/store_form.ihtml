@@ -1,0 +1,165 @@
+<?php
+  require_once("vendor/lib/ps_vendor.inc");
+  $ps_vendor= new ps_vendor;
+?>
+
+<?php 
+$q = "SELECT * FROM vendor WHERE vendor_id='$ps_vendor_id'"; 
+$db->query($q);  
+$db->next_record();
+?><br />
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" enctype="multipart/form-data">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable">
+    <tr> 
+      <td width="100%" colspan="2" align="left" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $store_form_lbl ?></p></td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_full_image ?>:</td>
+      <td width="78%" ><?php  
+$ps_vendor->show_image($db->f("vendor_full_image"), "alt=\"Vendor Image\""); 
+?> 
+        <input type="hidden" name="vendor_full_image_curr" value="<?php $db->p("vendor_full_image"); ?>" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_upload ?>:</td>
+      <td width="78%" > 
+        <input type="file" name="vendor_full_image" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_store_name ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_store_name" value="<?php $db->sp("vendor_store_name") ?>" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_company_name ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_name" value="<?php $db->sp("vendor_name") ?>" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_address_1 ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_address_1" value="<?php $db->sp("vendor_address_1") ?>" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_address_2 ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_address_2" value="<?php $db->sp("vendor_address_2") ?>" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_city ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_city" value="<?php $db->sp("vendor_city") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_state ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_state" value="<?php $db->sp("vendor_state") ?>" size="5" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_country ?>:</td>
+      <td width="78%" > 
+        <?php $ps_html->list_country("vendor_country", $db->sf("vendor_country")) ?>
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_zip ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_zip" value="<?php $db->sp("vendor_zip") ?>" size="10" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_phone ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="vendor_phone" value="<?php $db->sp("vendor_phone") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" >&nbsp;</td>
+      <td width="78%" > 
+        <input type="hidden" name="func" value="<?php echo "vendorUpdate"; ?>" />
+        <input type="hidden" name="page" value="<?php echo $modulename?>/store_form" />
+        <input type="hidden" name="vendor_id" value="<?php echo $ps_vendor_id ?>" />
+        <?php
+$sess->hidden_session();
+?> </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" ><?php echo $store_form_currency ?>: </td>
+      <td width="78%" > 
+        <?php $ps_html->list_currency("vendor_currency", $db->sf("vendor_currency")) ?>
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right"  valign="top"><?php echo $store_form_description ?>:</td>
+      <td width="78%" > 
+        <textarea name="vendor_store_desc" cols="40" rows="4" ><?php echo htmlentities($db->sf("vendor_store_desc")) ?></textarea>
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $store_form_contact_lbl ?></p></td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_last_name ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_last_name" value="<?php $db->sp("contact_last_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_first_name ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_first_name" value="<?php $db->sp("contact_first_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_middle_name ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_middle_name" value="<?php $db->sp("contact_middle_name") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_title ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_title" value="<?php $db->sp("contact_title") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_phone_1 ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_phone_1" value="<?php $db->sp("contact_phone_1") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_phone_2 ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_phone_2" value="<?php $db->sp("contact_phone_2") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_fax ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_fax" value="<?php $db->sp("contact_fax") ?>" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="22%" align="right" > <?php echo $store_form_email ?>:</td>
+      <td width="78%" > 
+        <input type="text" name="contact_email" value="<?php $db->sp("contact_email") ?>" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center" ><input type="submit" class="Button" value="Save" /> 
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" align="center" >&nbsp; </td>
+    </tr>
+  </table>
+</form>

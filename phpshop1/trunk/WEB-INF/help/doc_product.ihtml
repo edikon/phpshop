@@ -1,0 +1,522 @@
+<?php
+/****************************************************************************
+*    Copyright (C) 2000 Edikon Corporation.
+*
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program; if not, write to the Free Software
+*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+****************************************************************************/   
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- #BeginTemplate "/Templates/popup.dwt" -->
+<head>
+<title>PHPShop.Org</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="/phpshop.css" />
+</head>
+
+<body link="#CE9A31" vlink="#CE9A31" alink="#FFCF00" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr valign="top">
+    <td width="50%"><img src="/ps_image/upper_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td align="right" valign="bottom" width="50%"><img src="/ps_image/bottom_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="#000000" valign="top" width="11" align="center">&nbsp;</td>
+    <td valign="top" width="10"><img src="/ps_image/top-corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" width="741">
+      <script type="text/javascript" language="javascript">
+window.focus();
+</script>
+      </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#000000" valign="top" width="11" align="center"> &nbsp; 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <br /> 
+    </td>
+    <td valign="top" width="10">&nbsp;</td>
+    <td valign="top" width="741"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr> 
+          <td width="81%" class="title"> <!-- #BeginEditable "title" --><font face="Verdana, Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">Product 
+            Administration</font></font><!-- #EndEditable --></td>
+          <td width="19%" align="center" valign="bottom"></td>
+        </tr>
+      </table>
+       
+      <table width="100%" border="0" cellspacing="0" cellpadding="1" bgcolor="#000000">
+        <tr> 
+          <td> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFCC99">
+              <tr align="center"> 
+                <td><?php echo $error; ?></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- #BeginEditable "main" --> 
+      <font face="Arial, Helvetica, sans-serif" size="2">PHPShop offers the ability 
+      to categorize products not only by vendor, but also by product category. 
+      Product categories may also contain subcategories enabling storekeepers 
+      manage their products in as much detail as possible. Because products and 
+      product categories are associated to a particular vendor, it is important 
+      to create your vendor records before creating the product and product category 
+      records.</font> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">When creating your 
+        product records, it is important to make a distinction as to whether the 
+        product that is being created can be uniquely identified by its nature 
+        or name (e.g. Compact Disks, Video Cassettes, Books, etc.), or is one 
+        of many similar items that are uniquely identified by their attributes 
+        (e.g. Apparel, Furniture, Automobiles, etc.). The reason this distinction 
+        needs to be made, is because the methods for creating, editing and deleting 
+        differ for each. Items require the creation of Item Attributes, but products 
+        do not. </font></P>
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Product 
+            Categories</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#cpc">Adding</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#epc">Editing</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#dpc">Deleting</a></font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Products</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#cp">Adding</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#ep">Editing</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#dp">Deleting</a></font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Items</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#ci">Adding</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#ei">Editing</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#di">Deleting</a></font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Item 
+            Attributes</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#cia">Adding</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#eia">Editing</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#dia">Deleting</a></font></td>
+        </tr>
+      </table>
+      <P>&nbsp;</P>
+      <FONT size=2></FONT> <font face="Arial, Helvetica, sans-serif"><a name="cpc"></a><b>Adding 
+      Product Categories</b></font> 
+      <p><font size=2><font face="Arial, Helvetica, sans-serif" size="2">PHPShop 
+        includes the ability to associate products to product categories and subcategories 
+        to enable better site management. To create a new product category, click 
+        on the Products button at the top of the PHPShop Administration pages 
+        to display a list of product categories. Then click on the Add Category 
+        button on the left side of the screen to display the product category 
+        entry form. Complete the <a href="#pcf">product category entry form</a> 
+        and click the Save button at the end of the form to save the new product 
+        category.</font> </font><font face="Arial, Helvetica, sans-serif" size="2">If 
+        the category is to be a top level category, leave the Parent drop down 
+        list with the <i>Default &#150; Top Level </i>selected<i>.</i> If the 
+        category is to be a sub category of an existing category, choose the appropriate 
+        parent category from the Parent drop down list.</font></p>
+      <font face="Arial, Helvetica, sans-serif"><a name="epc"></a><b>Editing Product 
+      Categories</b></font> 
+      <p><font size=2><font size=2><font face="Arial, Helvetica, sans-serif">To 
+        edit an existing product category, click on the Products button at the 
+        top of the PHPShop Administration pages to display a list of product categories. 
+        Then click on the name of the product category you want to edit to display 
+        the <a href="#pcf">product category entry form</a> for that product category. 
+        Make your changes and click the Save button at the end of the form to 
+        update the product category.</font></font></font></p>
+      <font face="Arial, Helvetica, sans-serif"><a name="dpc"></a><b>Deleting 
+      Product Categories</b></font> 
+      <p><font face="Arial, Helvetica, sans-serif" size="2">Before deleting an 
+        existing product category, all products and sub categories associated 
+        to the product category must be removed through either deletion or re-association. 
+        PHPShop will not allow the deletion of a product category while products 
+        or subcategories still exist for that product category. Once all products 
+        and subcategories have been removed, click on the Products button at the 
+        top of the PHPShop Administration pages to display a list of product categories. 
+        Then click on the name of the product category that you want to delete 
+        to display the <a href="#pcf">product category entry form</a> for that 
+        product category.</font><font size="2"><font face="Arial, Helvetica, sans-serif"> 
+        Then click on the Delete button at the end of the form to delete the</font></font><font face="Arial, Helvetica, sans-serif" size="2"> 
+        product category.</font></p>
+      <font face="Arial, Helvetica, sans-serif"><a name="cp"></a><b>Adding Products</b></font><FONT size=2> 
+      <P><font face="Arial, Helvetica, sans-serif" size="2">To create a new product, 
+        click on the Products button at the top of the PHPShop Administration 
+        pages to display a list of product categories. Then click on the Add Product 
+        button on the left side of the screen to display the product entry form. 
+        Complete the <a href="#pf">product entry form</a> and click the Save button 
+        at the end of the form to save the new product.</font> </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="ep"></a><b>Editing 
+      Products</b></font><FONT size=2> 
+      <P><font size=2><font face="Arial, Helvetica, sans-serif">To edit an existing 
+        product, click on the Products button at the top of the PHPShop Administration 
+        pages to display a list of product categories. Then click on the List 
+        Products button on the left side of the screen to see a list of all products, 
+        or click on List Products to the right of a product category to display 
+        a list of products in that category. Then click on the product you want 
+        to edit to display the <a href="#pf">product entry form</a> for that product. 
+        Make your changes and click the Save button at the end of the form to 
+        update the product.</font></font> </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="dp"></a><b>Deleting 
+      Products</b></font><FONT size=2> 
+      <P><font face="Arial, Helvetica, sans-serif">To delete an existing product, 
+        click on the Products button at the top of the PHPShop Administration 
+        pages to display a list of product categories. Then click on the List 
+        Products button on the left side of the screen to display a list of all 
+        products, or click on List Products to the right of a product category 
+        to display a list of all products in that category. Then click on the 
+        product you want to delete to display the <a href="#pf">product entry 
+        form</a> for that product. </font><font size=2><font size=2><font face="Arial, Helvetica, sans-serif">Then 
+        click on the Delete button at the end of the form to delete the</font></font></font><font face="Arial, Helvetica, sans-serif"> 
+        product.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="ci"></a><b>Adding 
+      Items</b></font><FONT size=2> 
+      <P><font face="Arial, Helvetica, sans-serif">To create a new item, a parent 
+        item must be created first. Click on the Products button at the top of 
+        the PHPShop Administration pages to display a list of product categories. 
+        Then click on the Add Product button to display the product entry form. 
+        </font><font size=2><font face="Arial, Helvetica, sans-serif" size="2">Complete 
+        the <a href="#pf">product entry form</a> and click the Save button at 
+        the end of the form to save the new parent item.</font></font> <font face="Arial, Helvetica, sans-serif">When 
+        completing the form, keep in mind that the product information, product 
+        dimensions, and product images entered here are the ones that will be 
+        displayed initially for all items. Once a specific item is selected by 
+        the customer, the product information, product dimensions, and product 
+        images for that item will be displayed. Next, the attributes that will 
+        be used to identify the items need to be created. Click on the Add Attributes 
+        button on the left side of the screen. A new window will open displaying 
+        the attribute entry form. Complete the <a href="#iaf">attribute entry 
+        form</a> and click the Save button at the end of the form to save the 
+        new item attribute. Once all item attributes have been defined, it is 
+        time to create the individual items. Click on the Add Items button on 
+        the left side of the screen to display the product entry form for the 
+        specific item. This form is the same as previous <a href="#pf">product 
+        entry forms</a> only the vendor and category fields have been populated 
+        for you, and item attribute fields for the attributes you have defined 
+        are now available. Complete the product entry form</font><font size=2><font face="Arial, Helvetica, sans-serif"> 
+        and click the Save button at the end of the form to save the new item.</font></font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="ei"></a><b>Editing 
+      Items</b></font><FONT size=2> 
+      <P><font size=2><font size=2><font face="Arial, Helvetica, sans-serif">To 
+        edit an existing item, click on the Products button at the top of the 
+        PHPShop Administration pages to display a list of product categories. 
+        Then click on the List Products button on the left side of the screen 
+        to see a list of all products, or click on List Products to the right 
+        of a product category to display a list of products in that category. 
+        Then click on the parent item for the item you want to edit to display 
+        the <a href="#pf">product entry form</a> for that parent item. </font><font size=2><font face="Arial, Helvetica, sans-serif">If 
+        you only want to make changes to the parent item, make your changes to 
+        this form and click the Save button at the end of the form to update the 
+        parent item. If you want to make changes to a specific item. Click on 
+        the name of the item you want to edit to display the item entry form for 
+        that item. Make your changes and click the save button at the end of the 
+        form to update the item. Click on the Return to Parent Product link at 
+        the top of the page to edit another item.</font></font></font></font> 
+      </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="di"></a><b>Deleting 
+      Items</b></font><FONT size=2> 
+      <P><font face="Arial, Helvetica, sans-serif">To delete an item, click on 
+        the Products button at the top of the PHPShop Administration pages to 
+        display a list of product categories. Then click on the List Products 
+        button to display a list of all products, or click on List Products to 
+        the right of a product category to display a list of products in that 
+        category. Then click on the parent item for the item you want to delete 
+        to display the product entry form for that parent item. If you want to 
+        delete all items, you must delete each item before deleting the parent 
+        item. Click on the name of the item you want to delete to display the 
+        <a href="#pf">product entry form</a> for that item. </font><font size=2><font size=2><font size=2><font face="Arial, Helvetica, sans-serif">Then 
+        click on the Delete button at the end of the form to delete the</font></font></font><font face="Arial, Helvetica, sans-serif"> 
+        item</font></font><font face="Arial, Helvetica, sans-serif">. Once all 
+        items have been deleted, click on the Delete button at the end of the 
+        <a href="#pf">product entry form</a> of the parent item to delete the 
+        parent item.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="cia"></a><b>Adding 
+      Item Attributes</b></font><FONT size=2> 
+      <P><font size=2><font face="Arial, Helvetica, sans-serif" size="2">To create 
+        a new item attribute, click on the Products button at the top of the PHPShop 
+        Administration pages to display a list of product categories. </font><font size=2><font face="Arial, Helvetica, sans-serif">Then 
+        click on the List Products button to display a list of all products, or 
+        click on List Products to the right of a product category to display a 
+        list of products in that category.</font></font><font face="Arial, Helvetica, sans-serif" size="2"> 
+        </font><font size=2><font face="Arial, Helvetica, sans-serif"> Then click 
+        on the name of the parent item for which the attribute is being created 
+        to display the product entry form for that parent item.</font></font> 
+        <font face="Arial, Helvetica, sans-serif"> Then click on the Add Attributes 
+        button on the left side of the screen. A new window will open displaying 
+        the attribute entry form.</font><font size=2><font face="Arial, Helvetica, sans-serif"> 
+        Complete the <a href="#iaf">attribute entry form</a> and click the Save 
+        button at the end of the form to save the new item attribute. Next, you 
+        need to define the new attribute for the items. Click on the name of an 
+        item to display the product entry form for that item. Populate the new 
+        item attribute field in the <a href="#pf">product entry form</a> and click 
+        on the Save button at the end of the form to save the new item attribute 
+        definition. </font></font></font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="eia"></a><b>Editing 
+      Item Attributes</b></font><FONT size=2> 
+      <P><font size=2><font size=2><font face="Arial, Helvetica, sans-serif" size="2">To 
+        edit an existing item attribute, click on the Products button at the top 
+        of the PHPShop Administration pages to display a list of product categories. 
+        </font><font size=2><font face="Arial, Helvetica, sans-serif">Then click 
+        on the List Products button to display a list of all products, or click 
+        on List Products to the right of a product category to display a list 
+        of products in that category.</font></font><font face="Arial, Helvetica, sans-serif" size="2"> 
+        </font><font size=2><font face="Arial, Helvetica, sans-serif"> Then click 
+        on the name of the parent item for which the attribute is being edited 
+        to display the product entry form for that parent item.</font></font> 
+        <font face="Arial, Helvetica, sans-serif"> Then click on the List Attributes 
+        button on the left side of the screen. A new window will open displaying 
+        a list of item attributes assigned to the item selected.</font><font size=2><font face="Arial, Helvetica, sans-serif"> 
+        Click on the name of the attribute you want to edit to display the attribute 
+        entry form for that attribute. Complete the <a href="#iaf">attribute entry 
+        form</a> and click the Save button at the end of the form to update the 
+        item attribute.</font></font></font></font> </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="dia"></a><b>Deleting 
+      Item Attributes</b></font><FONT size=2> 
+      <P><font face="Arial, Helvetica, sans-serif">T<font size=2><font size=2><font size="2">o</font></font></font></font><font size=2><font size=2><font face="Arial, Helvetica, sans-serif" size="2"> 
+        delete an existing item attribute, click on the Products button at the 
+        top of the PHPShop Administration pages to display a list of product categories. 
+        </font><font size=2><font face="Arial, Helvetica, sans-serif">Then click 
+        on the List Products button to display a list of all products, or click 
+        on List Products to the right of a product category to display a list 
+        of products in that category.</font></font><font face="Arial, Helvetica, sans-serif" size="2"> 
+        </font><font size=2><font face="Arial, Helvetica, sans-serif"> Then click 
+        on the name of the parent item for which the attribute is being deleted 
+        to display the product entry form for that parent item.</font></font> 
+        <font face="Arial, Helvetica, sans-serif"> Then click on the List Attributes 
+        button on the left side of the screen. A new window will open displaying 
+        a list of item attributes assigned to the item selected.</font><font size=2><font face="Arial, Helvetica, sans-serif"> 
+        Click on the name of the attribute you want to delete to display the <a href="#iaf">attribute 
+        entry form</a> for that attribute. Then click on the Delete button at 
+        the end of the form to delete the</font></font></font><font face="Arial, Helvetica, sans-serif"> 
+        item</font></font><font face="Arial, Helvetica, sans-serif"> attribute.</font> 
+      </P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="pcf"></a><b>Product 
+      Category Fields</b></font> 
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Category 
+            Name</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            name that will be used to identify the category.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Category 
+            Description</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">the 
+            description that will be displayed for the category.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Parent</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            parent category with which this category will be associated.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Publish?</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">Used 
+            to specify whether the category will be published on the site.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Checked 
+            or Unchecked</font></td>
+        </tr>
+      </table>
+      <font face="Arial, Helvetica, sans-serif"><a name="pf"></a><b>Product Form 
+      Fields</b></font> 
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Vendor</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            vendor with which the product will be associated.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">SKU</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            product SKU that will uniquely identify the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Name</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            name that will be used to identify the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Publish?</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">Used 
+            to specify whether the product will be published on the site.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Checked 
+            or Unchecked</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">URL</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">A 
+            URL that can be displayed with a product. Usually used as a link to 
+            the product vendor or manufacturer.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Description</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            description that will be displayed for the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Quantity 
+            in Stock</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            current quantity in stock for the item. Used for shipping and inventory 
+            purposes.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Availability 
+            Date</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">When 
+            the current quantity in stock is available for distribution. Used 
+            for shipping and inventory purposes.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Special?</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">Used 
+            to indicate whether there are any specials running for the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional 
+            (Y or N)</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Discount 
+            Type</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            type of special being run on the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Category</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            product category with which this product will be associated.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Length</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            length of the product. Used for shipping purposes.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Width</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            width of the product. Used for shipping purposes.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Height</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            height of the product. Used for shipping purposes</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Dimension 
+            UOM</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            unit of measure used in determining the LWH of a product. Used for 
+            shipping purposes. </font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required 
+            with LWH Optional otherwise</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Weight</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            weight of the product. For shipping purposes.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Weight 
+            UOM</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            unit of measure used in determining the weight of a product. Used 
+            for shipping purposes.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required 
+            with Weight Optional otherwise</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Thumbnail</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">A 
+            thumbnail image that can be displayed along with the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Full 
+            Image</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">A 
+            larger image that can be displayed along with the product.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Optional</font></td>
+        </tr>
+      </table>
+      <br />
+      <FONT size=2></FONT> <font face="Arial, Helvetica, sans-serif"><a name="iaf"></a><b>Item 
+      Attribute Form Fields</b></font> 
+      <table width="75%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Name</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            name used to identify the attribute.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top" width="21%"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Number 
+            in List</font></b></font></td>
+          <td align="left" valign="top" width="56%"><font face="Arial, Helvetica, sans-serif" size="-2">The 
+            order in which the attribute is listed.</font></td>
+          <td align="right" valign="top" width="23%"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+      </table>
+      <!-- #EndEditable --> 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp; </td>
+  </tr>
+  <tr> 
+    <td width="11" bgcolor="#000000" valign="bottom">&nbsp; </td>
+    <td valign="bottom" width="10"><img src="/ps_image/bottom-corner.gif" align="bottom" alt="" /></td>
+    <td width="741" valign="top" align="center"> 
+      <p><br />
+        </p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr>
+    <td valign="bottom"><img src="/ps_image/bottom_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" align="right"><img src="/ps_image/top_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td width="100%" colspan="3" align="left">Copyright 
+      1999-2000 <a href="http://www.edikon.com/">Edikon Corporation</a>. </td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>

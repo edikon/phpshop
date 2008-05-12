@@ -1,0 +1,2 @@
+<li><a href="<?php $sess->purl(SECUREURL . "?page=tax/tax_list") ?>">Tax Zones</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=tax/tax_form") ?>">Add Tax Zone</a></li>

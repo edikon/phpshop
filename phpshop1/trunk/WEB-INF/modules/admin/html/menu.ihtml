@@ -1,0 +1,8 @@
+<li><a href="<?php $sess->purl(SECUREURL . "?page=admin/user_list") ?>">User List</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=admin/user_form") ?>">Add User</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=admin/module_list") ?>">Module List</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=admin/module_form") ?>">Add Module</a></li>
+<?php if ($module_id) { ?> 
+<li><a href="<?php $sess->purl(SECUREURL . "?page=admin/function_list&amp;module_id=$module_id") ?>">List Functions</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=admin/function_form&amp;module_id=$module_id") ?>">Add Function</a></li>
+<?php } ?> 

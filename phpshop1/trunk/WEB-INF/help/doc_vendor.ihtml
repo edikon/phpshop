@@ -1,0 +1,362 @@
+<?php
+/****************************************************************************
+*    Copyright (C) 2000 Edikon Corporation.
+*
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program; if not, write to the Free Software
+*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+****************************************************************************/   
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- #BeginTemplate "/Templates/popup.dwt" -->
+<head>
+<title>PHPShop.Org</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="/phpshop.css" />
+</head>
+
+<body link="#CE9A31" vlink="#CE9A31" alink="#FFCF00" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr valign="top">
+    <td width="50%"><img src="/ps_image/upper_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td align="right" valign="bottom" width="50%"><img src="/ps_image/bottom_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="#000000" valign="top" width="11" align="center">&nbsp;</td>
+    <td valign="top" width="10"><img src="/ps_image/top-corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" width="741">
+      <script type="text/javascript" language="javascript">
+window.focus();
+</script>
+      </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#000000" valign="top" width="11" align="center"> &nbsp; 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p> 
+    </td>
+    <td valign="top" width="10">&nbsp;</td>
+    <td valign="top" width="741"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr> 
+          <td width="81%" class="title"> <!-- #BeginEditable "title" --><font face="Verdana, Arial, Helvetica, sans-serif"><font face="Arial, Helvetica, sans-serif">Vendor 
+            Administration</font></font><!-- #EndEditable --></td>
+          <td width="19%" align="center" valign="bottom"></td>
+        </tr>
+      </table>
+       
+      <table width="100%" border="0" cellspacing="0" cellpadding="1" bgcolor="#000000">
+        <tr> 
+          <td> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFCC99">
+              <tr align="center"> 
+                <td><?php echo $error; ?></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- #BeginEditable "main" --> 
+      <font size=2><font face="Arial, Helvetica, sans-serif">Vendors and Vendor 
+      Categories represent the top most tier of PHPShop administration. Through 
+      vendor administration, the store keeper is able to manage products, users, 
+      and orders by vendor or supplier. For simple stores where there are only 
+      a few products offered, vendor administration is not necessarily needed, 
+      but for larger more complex stores, such as an online mall, vendor administration 
+      can be essential.</font></font> 
+      <p><font face="Arial, Helvetica, sans-serif" size="2">Since all products, 
+        product categories, users, and orders are associated to the vendor record, 
+        establishing the vendor and vendor category structure is the first step 
+        to building the online store. It is not necessary to create the vendor 
+        categories first. Vendors can be re-associated to vendor categories after 
+        all the vendor records have been created. However, creating the vendor 
+        category records first can save some extra work if you already know how 
+        you want to categorize your vendors.</font></p>
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Vendor 
+            Categories</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#avc">Adding</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#evc">Editing</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#dvc">Deleting</a></font></td>
+        </tr>
+        <tr> 
+          <td align="left" valign="top"><font size="-2"><b><font face="Arial, Helvetica, sans-serif">Vendors</font></b></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#av">Adding</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#ev">Editing</a></font></td>
+          <td align="left" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2"><a href="#dv">Deleting</a></font></td>
+        </tr>
+      </table>
+      <br />
+      <font face="Arial, Helvetica, sans-serif"><a name="avc"></a><b>Adding Vendor 
+      Categories<br />
+      </b></font><font face="Arial, Helvetica, sans-serif" size="2">By default, 
+      PHPShop creates the vendor category name DEFAULT upon installation. It is 
+      not necessary to change this unless you choose to fully utilize the vendor 
+      category functionality. To create a new vendor category, click on the Vendors 
+      button at the top of the PHPShop Administration pages to display a list 
+      of vendor categories. Then click on the Create Category button on the left 
+      side of the screen to display the vendor category entry form. Complete the 
+      <a href="#vcf">vendor category entry form</a> and click the Save button 
+      at the end of the form to save the new vendor category.<br />
+      <br />
+      </font><font face="Arial, Helvetica, sans-serif"><a name="evc"></a><b>Editing 
+      Vendor Categories<br />
+      </b></font><font face="Arial, Helvetica, sans-serif" size="2">To edit an 
+      existing vendor category, click on the Vendors button at the top of the 
+      PHPShop Administration pages to display a list of vendor categories. Then 
+      click on the name of the vendor category you want to edit to display the 
+      <a href="#vcf">vendor category entry form</a> for that vendor category. 
+      Make your changes and click the Save button at the end of the form to update 
+      the vendor category.</font><font face="Arial, Helvetica, sans-serif"><br />
+      <br />
+      <a name="dvc"></a><b>Deleting Vendor Categories</b></font><br />
+      <font size="2"><font face="Arial, Helvetica, sans-serif">Before deleting 
+      an existing vendor category, all vendors associated to that vendor category 
+      must be removed through either deletion or re-association. PHPShop will 
+      not allow the deletion of a vendor category while vendors still exist for 
+      that vendor category. Once the vendors have been removed, click on the Vendors 
+      button at the top of the PHPShop Administration pages to display a list 
+      of vendor categories. Then click on the name of the vendor category you 
+      want to delete to display the <a href="#vcf">vendor category entry form</a> 
+      for that vendor category. Then click on the Delete button at the end of 
+      the form to delete the vendor category</font></font><font face="Arial, Helvetica, sans-serif" size="2">.</font><font face="Arial, Helvetica, sans-serif"><br />
+      <br />
+      <a name="av"></a><b>Adding Vendors</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif">By default, PHPShop creates 
+        the vendor name DEFAULT upon installation. It is recommended that you 
+        change this to identify your site. More vendors can be added later as 
+        you need. To create a new vendor, click on the Vendors button at the top 
+        of the PHPShop Administration pages to display a list of vendor categories. 
+        A DEFAULT vendor category is available upon installation. All new vendors 
+        that are created will be associated to the default vendor category until 
+        new vendor categories are created (See <a href="#avc">Adding Vendor Categories</a>). 
+        Click on the Add Vendor button on the left side of the screen to display 
+        the vendor entry form. Complete the <a href="#vf">vendor entry form</a> 
+        and click the Save button at the end of the form to save the new vendor 
+        record.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="ev"></a><b>Editing 
+      Vendors</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif">To edit an existing vendor, 
+        click on the Vendors button at the top of the PHPShop Administration pages 
+        to display a list of vendor categories. Click on the List Vendors button 
+        on the left side of the screen to see a list of all vendors, or click 
+        on the word <i>vendors </i> to the right of a vendor category to display 
+        a list of vendors in that category. Then click on the name of the vendor 
+        you want to edit to display the <a href="#vf">vendor entry form</a> for 
+        that vendor. Make your changes and click the Save button at the end of 
+        the form to update the vendor.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="dv"></a><b>Deleting 
+      Vendors</b></font><FONT SIZE=2> 
+      <P><font face="Arial, Helvetica, sans-serif"><u>Since vendors represent 
+        the top most tier of site management, deletion of vendors should be avoided 
+        unless absolutely necessary</u>. Before deleting an existing vendor, all 
+        products, product categories, users, and orders associated to that vendor 
+        must be removed through </font><font size=2><font face="Arial, Helvetica, sans-serif"></font><font face="Arial, Helvetica, sans-serif"> 
+        either deletion or re-association</font></font><font face="Arial, Helvetica, sans-serif">. 
+        PHPShop will not allow the deletion of a vendor while these child records 
+        still exist for that vendor. Once these child records have been removed, 
+        click on the Vendors button at the top of the PHPShop Administration pages 
+        to display a list of vendor categories. Click on the List Vendors button 
+        on the side of the screen to see a list of all vendors,</font><font size=2><font face="Arial, Helvetica, sans-serif"> 
+        or click on the word <i>vendors </i> to the right of a vendor category 
+        to display a list of vendors in that category</font></font><font face="Arial, Helvetica, sans-serif">. 
+        Then click on the vendor you want to delete to display the <a href="#vf">vendor 
+        entry form</a> for that vendor. Then click on the Delete button at the 
+        end of the form to delete the vendor.</font></P>
+      </FONT> <font face="Arial, Helvetica, sans-serif"><a name="vcf"></a><b>Vendor 
+      Category Form Fields</b></font> 
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr align="left" valign="top"> 
+          <td width="33%"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Vendor 
+            Category Name</b></font></font></td>
+          <td width="51%"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            name used to identify the vendor category.</font></font></td>
+          <td width="16%" align="right"><font size="-2"><font face="Arial, Helvetica, sans-serif"> 
+            Required</font></font></td>
+        </tr>
+        <tr align="left" valign="top"> 
+          <td width="33%"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Vendor 
+            Category Description</b></font></font></td>
+          <td width="51%"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            description of the vendor category.</font></font></td>
+          <td width="16%" align="right"><font size="-2"><font face="Arial, Helvetica, sans-serif"> 
+            Optional</font></font></td>
+        </tr>
+      </table>
+      <br />
+      <font face="Arial, Helvetica, sans-serif"><a name="vf"></a><b>Vendor Form 
+      Fields</b></font> 
+      <table width="75%" border="0" cellspacing="3" cellpadding="0">
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Vendor 
+            Store Name</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor&#146;s store name.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Required</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Vendor 
+            Name</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            name used to identify the vendor.</font></font></td>
+          <td width="16%" align="right" valign="top"><font face="Arial, Helvetica, sans-serif" size="-2">Required</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Address 
+            1</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor's address.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Address 
+            2</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">Extra 
+            Address information for the vendor.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>City</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor's city.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>State</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor's state.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Country</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor's country</font>.</font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Zip</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor's zip code.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Phone</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor's phone number.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Last 
+            Name</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            last name of the vendor contact..</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>First 
+            Name</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            first name of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Middle 
+            Name</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            middle name of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Title</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            title of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Phone 
+            1</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            primary phone number of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Phone 
+            2</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            secondary phone number of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Fax</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            fax number of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Email</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            email address of the vendor contact.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top" height="14"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Vendor 
+            Category</b></font></font></td>
+          <td width="51%" align="left" valign="top" height="14"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            vendor category that this vendor will be associated to.</font></font></td>
+          <td width="16%" align="right" valign="top" height="14"><font size="-2" face="Arial, Helvetica, sans-serif">Required</font></td>
+        </tr>
+        <tr> 
+          <td width="33%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif"><b>Description</b></font></font></td>
+          <td width="51%" align="left" valign="top"><font size="-2"><font face="Arial, Helvetica, sans-serif">The 
+            description of the vendor.</font></font></td>
+          <td width="16%" align="right" valign="top"><font size="-2" face="Arial, Helvetica, sans-serif">Optional</font></td>
+        </tr>
+      </table>
+      <!-- #EndEditable --> 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp; </td>
+  </tr>
+  <tr> 
+    <td width="11" bgcolor="#000000" valign="bottom">&nbsp; </td>
+    <td valign="bottom" width="10"><img src="/ps_image/bottom-corner.gif" align="bottom" alt="" /></td>
+    <td width="741" valign="top" align="center"> 
+      <p><br />
+        </p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr>
+    <td valign="bottom"><img src="/ps_image/bottom_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" align="right"><img src="/ps_image/top_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td width="100%" colspan="3" align="left">Copyright 
+      1999-2000 <a href="http://www.edikon.com/">Edikon Corporation</a>. </td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>

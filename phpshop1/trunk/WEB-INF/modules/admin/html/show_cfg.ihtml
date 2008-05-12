@@ -1,0 +1,25 @@
+<table width="100%" cellspacing="0" cellpadding="4" border="0" class="RecordsTable"> 
+  <tr> 
+    <td class="RecordsTableHeader">Directive</td> 
+    <td class="RecordsTableHeader">Value</td> 
+  </tr> 
+  <?php
+// Globalize everything for later use
+
+ksort($global_vars);
+reset($global_vars);
+$i=0;
+while (list($key, $value) = each($global_vars)) {
+  if ($i % 2)
+     $bgcolor = SEARCH_COLOR_1;
+  else
+     $bgcolor = SEARCH_COLOR_2;
+  echo "<tr bgcolor=\"$bgcolor\"><td>";
+  echo $key;
+  echo "</td><td>";
+  echo $value;
+  echo "</td></tr>";
+  $i++;
+}
+?> 
+</table>

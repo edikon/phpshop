@@ -1,0 +1,100 @@
+<?php
+require_once("product/lib/ps_product.inc");
+$ps_product = new ps_product;
+require_once("product/lib/ps_product_category.inc");
+$ps_product_category = new ps_product_category;
+require_once("product/lib/ps_product_attribute.inc");
+$ps_product_attribute = new ps_product_attribute;
+?>
+<?php
+  $q  = "SELECT * FROM product WHERE ";
+  $q .= "product_id='$product_id'";
+  $db->query($q);
+  $db->next_record();
+?>
+ <h1><?php echo $flypage_lbl ?></h1> 
+<strong> 
+<?php $ps_product_category->navigation_list($category_id);?> 
+</strong> <br /> 
+<?php $ps_product_category->print_child_list($category_id); ?> 
+<form action="<?php echo URL ?>" method="post"> 
+  <table width="100%" cellspacing="0" cellpadding="10" border="0"> 
+    <tr valign="top"> 
+      <td width="93%"> 
+        <table cellpadding="10" cellspacing="0" width="100%" border="0"> 
+          <tr> 
+            <td> 
+              <h2> 
+                <?php 
+            $db->p("product_name"); 
+           ?> 
+                <?php if ($perm->check("admin,storeadmin,demo")): ?> 
+                <br /><a href="<?php $sess->purl(SECUREURL . "?page=product/product_form&amp;product_id=$product_id");?>">[Edit This Product]</a> 
+                <?php endif; ?> 
+              </h2> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td> 
+              <?php
+        $db->p("product_desc"); 
+       ?> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td> <b>Price -
+              <?php
+      $price = $ps_product->get_price($product_id);
+      if($db->f("product_discount_id")>"0"){
+        echo "<font color=\"red\"><strike><b>Was:</b> $";
+        printf("%.2f", $price["product_price"]/(100-$db->f("product_discount_id"))*100);
+        echo "</strike></font><br />";
+      }
+      if ($price) {
+        echo $price["product_price"] . " " . $price["product_currency"];
+      } else {
+        echo "Call for Pricing";
+      }
+     ?> 
+              </b> </td> 
+          </tr> 
+          <tr> 
+            <td> 
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center"> 
+                <tr> 
+                  <td> 
+                    <?php $ps_product_attribute->list_attribute($product_id); ?> 
+                  </td> 
+                </tr> 
+              </table> 
+            </td> 
+          </tr> 
+          <tr> 
+            <td align="center"><br /> 
+              <?php $sess->hidden_session() ?> 
+              <input type="hidden" name="page" value="shop/cart" /> 
+              <input type="hidden" name="func" value="cartAdd" /> 
+              <input type="text" size="4" maxlength="4" name="quantity" value="1" /> 
+              <input type="submit" name="Order" value="<?php echo $order_button_label ?>" /> 
+            </td> 
+          </tr> 
+        </table> 
+      </td> 
+      <td width="7%"> 
+        <?php
+        /* Create an alt tag for the image: */ $alt = "alt=\"" . $db->f("product_name") . "\"";
+      if ($db->f("product_url")) { ?> 
+        <a href="<?php echo $db->f("product_url");?>"> 
+        <?php $ps_product->show_image($db->f("product_full_image"), $alt); ?> 
+        </a> 
+        <?php
+      } else {
+      
+      $ps_product->show_image($db->f("product_full_image"), $alt);
+      }
+     ?> 
+      </td> 
+    </tr> 
+  </table> 
+</form> 
+<!-- Body ends here --> 

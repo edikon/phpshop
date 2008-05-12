@@ -1,0 +1,53 @@
+<?php
+require_once("order/lib/ps_order.inc");
+$ps_order = new ps_order;
+?>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="MenuTable">
+<tr><td align="center" class="RecordsTableHeader">
+<?php
+$page_name = "Account Maintenance";
+?>
+<b>Customer Account:</b>
+<?php
+  echo $auth["first_name"] . " " . $auth["middle_name"] . " " . $auth["last_name"] . "<br />";
+?>
+</td>
+</tr>
+<tr>
+   <td><b>Order Information</b><br />
+<?php
+  $q  = "SELECT * FROM orders WHERE ";
+  $q .= "user_id='" . $auth["user_id"] . "' ";
+  $q .= "ORDER BY cdate DESC";
+  $db->query($q);
+?>
+<form action="<?php echo SECUREURL ?>" method="get">
+<?php $sess->hidden_session() ?>
+<input type="hidden" name="page" value="checkout/thankyou" />
+<table border="0" cellspacing="0" cellpadding="2" width="100%" align="center">
+<tr>
+   <td align="center">
+	<?php $ps_order->list_order("A","1"); ?>
+   <br />
+   </td></tr>
+   <tr><td align="center">
+   <input type="submit" name="SUBMIT" value="View" />
+   </td>
+</tr>
+</table>
+</form>
+</td></tr>
+
+<tr>
+   <td><b><a href="<?php $sess->purl(SECUREURL . "?page=account/billing") ?>">Account Information</a></b>
+   <br />
+   Here you can update your password and your billing information.   </td>
+</tr>
+<tr>
+   <td><b><a href="<?php $sess->purl(SECUREURL . "?page=account/shipping") ?>">Shipping Information</a></b>
+   <br />
+   Here you can add and maintain shipping addresses.   </td>
+</tr>
+
+</table>
+<!-- Body ends here -->

@@ -1,0 +1,78 @@
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+  <tr> 
+    <td align="center">
+<?php if ($vendor_category_id) {
+   $q = "SELECT * from vendor_category ";
+   $q .= "where vendor_category_id='$vendor_category_id'";
+   $db->query($q);
+   $db->next_record();
+}
+?> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="RecordsTable">
+        <tr> 
+          <td class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $vendor_cat_form_lbl ?></p></td>
+        </tr>
+        <tr> 
+          <td> 
+            <form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="vendor_category_form">
+              <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                <tr> 
+                  <td width="38%" nowrap="nowrap" align="right"><b><?php echo $vendor_cat_form_info_lbl ?></b> 
+                  </td>
+                  <td width="62%">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td width="38%" nowrap="nowrap" align="right"><?php echo $vendor_cat_form_name ?>:</td>
+                  <td width="62%"> 
+                    <input type="text" name="vendor_category_name" size="18" value="<?php $db->sp('vendor_category_name') ?>" />
+                    <input type="hidden" name="vendor_category_id" value="<?php echo $vendor_category_id ?>" />
+                    <input type="hidden" name="func" value="<?php if ($vendor_category_id) echo "vendorCategoryUpdate"; else echo "vendorCategoryAdd"; ?>" />
+                    <input type="hidden" name="page" value="<?php echo $modulename ?>/vendor_category_list" />
+                    <b><?php
+$sess->hidden_session();
+?></b></td>
+                </tr>
+                <tr> 
+                  <td width="38%" nowrap="nowrap" align="right" valign="top"><?php echo $vendor_cat_form_description ?>:</td>
+                  <td width="62%" valign="top"> 
+                    <textarea name="vendor_category_desc" cols="40" rows="2"><?php echo htmlentities($db->sf('vendor_category_desc')) ?></textarea>
+                  </td>
+                </tr>
+                <tr> 
+                  <td width="38%" nowrap="nowrap" align="right" valign="top">&nbsp;</td>
+                  <td width="62%" valign="top">&nbsp;</td>
+                </tr>
+                <tr> 
+                  <td width="38%" nowrap="nowrap" align="right" valign="top">&nbsp;</td>
+                  <td width="62%" valign="top"><?php if ($vendor_category_id) { ?> 
+                    <table width="50%" border="0" cellspacing="0" cellpadding="0">
+                      <tr align="center"> 
+                        <td width="100%"><input type="submit" class="Button" value="Save" /> 
+                        <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/vendor_category_list&amp;func=vendorCategoryDelete&amp;vendor_category_id=" . $db->f("vendor_category_id")) ?>');" />
+                        </td>
+                      </tr>
+                    </table>
+                   </td>
+                  </tr>
+                 </table>
+<?php }
+else {
+ ?> 
+                    <table width="50%" border="0" cellspacing="0" cellpadding="0">
+                      <tr align="center"> 
+                        <td width="100%"> 
+                        <input type="submit" class="Button" value="Save" /> 
+                        <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/vendor_category_form&amp;vendor_category_id") ?>';" />
+                        </td>
+                        </tr>
+                    </table></td>
+                </tr>
+              </table>
+                    <?php } ?></form></td>
+        </tr>
+      </table>
+            
+    </td>
+  </tr>
+</table>

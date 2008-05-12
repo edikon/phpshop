@@ -1,0 +1,112 @@
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="product_price_form" enctype="multipart/form-data">
+  <table width="100%" border="0" cellpadding="2" cellspacing="0" class="RecordsTable">
+    <tr> 
+      <td valign="top" colspan="2" class="RecordsTableHeader"><p class="HeaderText">&nbsp;<?php echo $price_form_lbl ?>
+<?php
+require_once("shopper/lib/ps_shopper_group.inc");
+$ps_shopper_group = new ps_shopper_group;
+require_once("vendor/lib/ps_vendor.inc");
+$ps_vendor = new ps_vendor;
+
+$db = new ps_DB;
+/* If Updating a Price */
+if ($product_price_id) {
+  /* Get field values for update */
+  $q  = "SELECT * FROM product_price ";
+  $q .= "WHERE product_price_id='$product_price_id' ";
+  $db->query($q); 
+  $db->next_record();
+} 
+/* If Adding a new Price */
+elseif (!$vars["error"]) {
+  /* Set default currency for product price */
+  $default["product_currency"] = $ps_vendor->get_field($ps_vendor_id,"vendor_currency");
+}
+?> <?php
+if ($product_price_id = $vars["product_price_id"]) {
+  if (!$product_parent_id) {
+    echo $price_form_update_for_product . " ";
+  } else {
+    echo $price_form_update_for_item . " ";
+  }
+}
+else {
+  if (!$product_parent_id) {
+    echo $price_form_new_for_product . " ";
+  } else {
+    echo $price_form_new_for_item . " ";
+  }
+}
+
+$url = SECUREURL . "?page=$modulename/product_form&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id";
+echo "<a class=\"hLink\" href=\"" . $sess->url($url) . "\">";
+echo $ps_product->get_field($product_id,"product_name");
+echo "</a>"; 
+?>
+      </p>
+      </td>
+    </tr>
+    <tr> 
+      <td valign="top" colspan="2"> 
+        <input type="hidden" name="product_id" value="<?php if ($product_price_id)  $db->sp("product_id"); else echo $product_id; ?>" />
+        <input type="hidden" name="product_price_id" value="<?php echo $product_price_id; ?>" />
+        <input type="hidden" name="func" value="<?php if ($product_price_id) { echo "productPriceUpdate";} else {echo "productPriceAdd";} ?>" />
+        <input type="hidden" name="page" value="<?php echo $modulename ?>/product_price_list" />
+        <input type="hidden" name="return_args" value="<?php echo $return_args; ?>" />
+        <?php
+$sess->hidden_session();
+?> </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="20" valign="middle" > 
+        <div align="right"><?php echo $price_form_price ?>:</div>
+      </td>
+      <td width="77%" height="20" > 
+        <input type="text" name="product_price" value="<?php $db->sp("product_price"); ?>" size="10" maxlength="10" />
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="10" valign="middle" > 
+        <div align="right"><?php echo $price_form_currency ?>:</div>
+      </td>
+      <td width="77%" height="10" > 
+        <?php $ps_html->list_currency("product_currency",$db->sf("product_currency")) ?>
+      </td>
+    </tr>
+    <tr> 
+      <td width="23%" height="10" valign="middle" > 
+        <div align="right"><?php echo $price_form_group ?>:</div>
+      </td>
+      <td width="77%" height="10" > <?php $ps_shopper_group->list_shopper_groups("shopper_group_id",$db->sf("shopper_group_id"),$db->sf("product_id")); ?> 
+      </td>
+    </tr>
+    <tr> 
+      <td colspan="2" height="2"> </td>
+    </tr>
+    <tr> 
+      <td colspan="2" height="22">&nbsp; </td>
+    </tr>
+    <tr> 
+      <td colspan="2" height="22"> <?php if (!$product_price_id) { ?> 
+        <table width="75%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr align="center"> 
+            <td width="100%" align="center"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Cancel" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/product_price_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>'" />
+            </td>
+          </tr>
+        </table>
+        <?php } else { ?> 
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr align="center"> 
+            <td width="100%" align="center"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/product_price_list&amp;func=productPriceDelete&amp;product_price_id=$product_price_id&amp;product_id=" . $db->sf("product_id") . "&amp;return_args=" . urlencode($return_args)); ?>');" /> 
+              <input type="button" class="Button" value="Cancel" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/product_price_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>'" />
+            </td>
+          </tr>
+        </table>
+        <?php } ?> </td>
+    </tr>
+  </table>
+</form>

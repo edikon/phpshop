@@ -1,0 +1,36 @@
+<h2>List User by Group</h2> 
+<?php $q = "SELECT * from auth_user_md5, user_info ";
+$q .= "where auth_user_md5.user_id=user_info.user_id ";
+$q .= "AND auth_user_md5.perms='$perms' ";
+$q .= "AND user_info.address_type='BT'";
+$q .= "order by auth_user_md5.username"; 
+$db->query($q);  
+?> 
+<table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable">
+  <tr> 
+    <td width="23%" class="RecordsTableHeader">Username</td>
+    <td width="46%" class="RecordsTableHeader">Full Name</td>
+    <td width="31%" class="RecordsTableHeader">Group</td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <hr />
+    </td>
+  </tr>
+  <?php
+while ($db->next_record()) { ?> 
+  <tr> 
+    <td width="23%" nowrap="nowrap"><?php
+$url = SECUREURL . "?page=admin/shopper_form&amp;user_id=";
+$url .= $db->f("user_id");
+echo "<a href=\"" . $sess->url($url) . "\">";
+echo $db->f("username"); 
+echo "</a>"; ?></td>
+    <td width="46%" nowrap="nowrap"><?php echo $db->f("bill_first_name") . " ";
+echo $db->f("bill_middle_name") . " ";
+echo $db->f("bill_last_name"); ?></td>
+    <td width="31%" nowrap="nowrap"><?php echo $db->f("perms");  
+?>&nbsp;</td>
+  </tr>
+  <?php } ?> 
+</table>

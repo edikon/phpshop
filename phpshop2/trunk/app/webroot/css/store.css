@@ -1,0 +1,535 @@
+* {
+margin:0;
+padding:0;
+}
+
+/* General Style Info */
+body {
+	background-color: #fff;
+	color: #000;
+	font-family: "frutiger linotype", "lucida grande", "helvetica", "arial", sans-serif;
+	font-size: 76%;
+}
+a {
+	color: #00b;
+	text-decoration: underline;
+}
+a:hover {
+	color: #003d4c;
+	text-decoration:none;
+}
+a img {
+	border:none;
+}
+em {
+	font-size: 12px;
+}
+h1, h2, h3, h4 {
+	background-color: #fff;
+	font-weight:normal;
+}
+h1 {
+	color: #900;
+	font-size: 180%;
+	margin: 0.3em 0;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+h2 {
+	color: #2C6877;
+	font-size: 160%;
+}
+h3 {
+	color: #c6c65b;
+	font-size: 140%;
+	padding-top: 1em;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #eee;
+}
+h4 {
+	color: #c6c65b;
+	font-weight: normal;
+	padding-top: 0.5em;
+}
+ul, li {
+	margin: 0 12px;
+}
+
+p {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+/* Layout */
+#container {
+	text-align: left;
+}
+
+#header{
+	background-color: #cfc;
+	padding: 10px 20px 0 20px;
+	height: 70px;
+}
+#header h1 { 
+	color: #ffffff;
+	background: url('../img/washupito.png') no-repeat;
+	padding: 5px 50px;
+	height: 60px;
+}
+#header h1 a { 
+	color: #ffffff;
+	background: #2C6877;
+	text-decoration: none;
+}
+#header h1 a:hover { 
+	color: #ffffff;
+	background: #003d4c;
+	text-decoration: none;
+}
+#content {
+	float:right;
+	width:70%;
+	background:#fff;
+	border-left: 1px solid #eee;
+	margin-right: 50px;
+	margin-top: 20px;
+	padding-left: 25px;
+	padding-bottom:20px;
+}
+
+#navigation {
+	margin-left: 20px;
+	background-color: #fff;
+	color: #333;
+}
+#navigation h1 {
+	color: #2C6877;
+	font-size: 120%;
+	margin: 0.3em 0;
+	padding-top: 1em;
+}
+#navigation a {
+	
+}
+
+#footer {
+	border-top: 1px solid #eee;
+	margin-top: 400px;
+	margin-bottom: 50px;
+	clear: both;
+	padding: 6px 10px;
+	text-align: left;
+}
+
+
+/* Browse Results */
+#results {
+	text-align: center;
+}
+
+#results ul li {
+display:block;
+float:left;
+padding:1em;
+margin:0.5em 1em 0.5em 0;
+text-align:center;
+}
+
+#results ul li a {
+display:block;
+}
+
+#results img {
+	border: 1px solid #ccc;
+}
+
+/* Flypage */
+
+#flypage {
+	background-color: #fff;
+	clear: both;
+	color: #333;
+	margin-bottom: 10px;
+	width: 100%;
+}
+#flypage tr {
+	background-color: #fff;
+}
+#flypage td {
+	padding: 10px;
+	text-align: center; 
+	vertical-align: top;
+	text-align: left;
+}
+#flypage div {
+	padding-top: 10px;
+}
+
+#flypage img {
+	border: 1px solid #ccc;
+}
+
+
+/* Cart */
+#cart {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	clear: both;
+	width: 100%;
+	margin: 0px;
+}
+#cart th {
+	background-color: #dddddd;
+	border-top: 1px solid #fff;
+	border-left: 1px solid #fff;
+	border-right: 1px solid #bbb;
+	border-bottom: 1px solid #bbb;
+	padding: 5px;
+	text-align: center;
+}
+#cart td {
+	padding: 5px;
+}
+
+#cart tr.action {
+	background-color: #dddddd;
+}
+#cart tr.action a {
+	padding: 0 6px;
+}
+
+#checkout {
+	background-color: #fff;
+	clear: both;
+	width: 100%;
+	margin: 0px;
+
+}
+
+#checkout label {
+	display: block;
+	font-size: 110%;
+	padding-right: 20px;
+	padding-bottom: 2px;
+}
+
+input, textarea {
+	clear: both;
+	display: block;
+	font-size: 14px;
+	padding: 2px;
+	margin-bottom: 5px;
+}
+
+input[type=submit] {
+	display: inline;
+	padding: 0 .4em;
+	width: auto;
+	vertical-align: bottom;
+}
+
+input[type=radio] {
+	clear: all;
+	float: left;
+	margin: 2px 6px 7px 2px;
+	width: auto;
+}
+
+input[type=checkbox] {
+	clear: none;
+	float: left;
+	margin: 2px 6px 7px 2px;
+	width: auto;
+}
+
+select {
+	clear: both;
+	font-size: 14px;
+	vertical-align: text-bottom;
+}
+
+label {
+	display: block;
+	font-size: 14px;
+	padding-right: 20px;
+}
+
+/* Tables */
+table.account {
+	background-color: #fff;
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	clear: both;
+	color: #333;
+	margin-bottom: 10px;
+	width: 100%;
+}
+.account th,td {
+	/*borders and padding to make the table readable*/
+	border:none;
+	padding:.5em;
+}
+.account th {
+	background-color: #f4f4f4;
+	border-right: 1px solid #999;
+	border-bottom: 1px solid #ccc;
+	text-align: center;
+}
+
+.account table,.account tr,.account td {
+	background: #fff;
+	border-right: 1px solid #ccc;
+	padding: 0.3em;
+	text-align: center;
+	vertical-align: top;
+}
+table tr.altrow td {
+	background: #fff;
+}
+
+/* END Tables */
+
+
+/* Forms */
+
+/*
+form {
+	margin-top: 0;
+	margin-right: 20px;
+	padding: 10px;
+	width: 100%;
+}
+
+form div {
+	border: 1px solid #ddd;
+	padding: .8em 2em 1em 1.4em;
+	clear: both;
+	margin-bottom: 1em;
+	vertical-align: text-top;
+}
+form div.required {
+	color: #333;
+	background: #f2f2f2;
+	font-weight: bold;
+}
+form div.optional, form div.input {
+	background: #f6f6f6;
+	color: #444;
+}
+form div.submit {
+	border: 0;
+	clear: both;
+	margin-top: 10px;
+	margin-left: 140px;
+}
+label {
+	display: block;
+	font-size: 14px;
+	padding-right: 20px;
+}
+input, textarea {
+	clear: both;
+	display: block;
+	font-size: 14px;
+	width: 100%;
+}
+select {
+	clear: both;
+	font-size: 14px;
+	vertical-align: text-bottom;
+}
+select[multiple=multiple] {
+	width: 100%;
+}
+option {
+	font-size: 14px;
+	padding: 0 0.3em;
+}
+input[type=checkbox] {
+	clear: left;
+	float: left;
+	margin: 2px 6px 7px 2px;
+	width: auto;
+}
+input[type=submit] {
+	display: inline;
+	padding: 0 .4em;
+	width: auto;
+	vertical-align: bottom;
+}
+input[type=radio] {
+	display: inline;
+	padding: 0 .4em;
+	width: auto;
+	vertical-align: bottom;
+}
+
+*/
+
+
+#cakeSqlLog td {
+	background: #fff;
+	border-bottom: 2px solid #ccc;
+	padding: 4px 8px;
+	text-align: left;
+}
+
+/* Paging */
+div.paging {
+	color: #ccc;
+}
+div.paging div.disabled {
+	color: #ddd;
+	display: inline;
+}
+
+
+/* Notices and Errors */
+div.message, p.error, div.error-message {
+	color: #900;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 8px 0px;
+}
+div.error-message {
+	clear: both;
+}
+div.error em {
+	font-size: 18px;
+	color: #003d4c;
+}
+span.notice {
+	background-color: #c6c65b;
+	color: #fff;
+	display: block;
+	font-size: 16px;
+	padding: 0.5em;
+	margin: 1em 0;
+}
+
+
+div.accountinfo {
+	position: absolute;
+	top: 12px;
+	right: 60px;
+	text-align: right;	
+}
+
+div.searchform {
+	position: absolute;
+	top: 50px;
+	right: 60px;
+	text-align: right;	
+}
+
+div.minicart {
+	width: auto;
+	float: right;
+	padding: 4px;	
+	background-color: #fee;
+}
+
+/* Header Menu */
+div.headermenu {
+	position: absolute;
+	top: 62px;
+	right: 60px;
+	text-align: right;
+}
+div.headermenu ul {
+	margin: 0;
+	padding: 2px 6px;
+	list-style-type: none;
+	display: inline;
+}
+div.headermenu li {
+	display: inline;
+	list-style-type: none;
+	margin: 0px 0px 3px 0px;
+	padding: 0px 2px;
+}
+div.headermenu ul li a{
+	background: #060;
+	color: #fff;
+	padding: 3px 8px;
+	text-decoration: none;
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	
+}
+div.headermenu ul li a:hover {
+	background:#fff;
+	color: #003d4c;
+	border-top: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+/* Footer Menu */
+div.footermenu {
+	text-align: center;
+}
+div.footermenu ul {
+	margin: 0;
+	padding: 2px 6px;
+	list-style-type: none;
+	display: inline;
+}
+div.footermenu li {
+	display: inline;
+	list-style-type: none;
+	margin: 0px 0px 3px 0px;
+	padding: 0px 2px;
+}
+div.footermenu ul li a{
+	padding: 3px 8px;
+	text-decoration: none;
+}
+div.footermenu ul li a:hover {
+	background:#fff;
+	color: #003d4c;
+}
+
+/* Debugging */
+pre {
+	padding: 1em;
+}
+
+pre.cake_debug {
+	margin: 2px;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+div.cake-stack-trace {
+	margin: 2px 2px 0 2px;
+	font-size: 12px;
+	line-height: 18px;
+}
+
+div.cake-stack-trace pre, div.cake-code-dump pre {
+	color: #000000;
+	background-color: #F0F0F0;
+	border: 1px dotted #606060;
+	padding: 2px 0 2px 5px;
+	margin: 0px 4px 5px 5px;
+}
+
+div.cake-code-dump pre, div.cake-code-dump pre code {
+	clear: both;
+	font-size: 12px;
+	line-height: 5px;
+	margin: 0;
+	padding: 0 0 10px 0;
+}
+
+div.cake-code-dump pre {
+	padding: 7px 8px;
+	margin: 1px 4px 2px 6px;
+}
+
+div.cake-code-dump span.code-highlight {
+	background-color: #FFFF00;
+}

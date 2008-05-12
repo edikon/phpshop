@@ -1,0 +1,341 @@
+<?php
+require_once("product/lib/ps_product.inc");
+$ps_product= new ps_product;
+
+if($print) { # Add doctype and html header info if this is a "print view" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Purchase Order</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body> 
+<?php } ?>
+
+<?php if (!$print) {
+?> 
+<h2>Thank You for Your Order</h2>
+<?php
+}
+?>
+<table width="100%" align="center" border="0" cellspacing="0" cellpadding="10">
+  <tr valign="top"> 
+    <td align="left" width="90%"><br /></td>
+    <td width="10%" align="right">&nbsp; </td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <h2>Purchase Order</h2>
+    </td>
+  </tr>
+</table>
+<?php 
+   // Order_id is returned by checkoutComplete function
+   $order_id = $vars["order_id"];
+   $q  = "SELECT * from orders WHERE order_id='$order_id' ";
+   $q .= "AND user_id='" . $auth["user_id"] . "' ";
+   $db->query($q);
+   $db->next_record(); 
+?> 
+<table border="1" cellspacing="0" cellpadding="4" width="100%">
+  <!-- Begin Customer Information --> 
+  <tr bgcolor="<?php echo $cart_header_color?>"> 
+    <td colspan="2"><b>Order Information</b></td>
+  </tr>
+  <tr> 
+    <td>Order Number:</td>
+    <td><?php printf("%08d", $db->f("order_id")); ?></td>
+  </tr>
+  <tr> 
+    <td>Order Date:</td>
+    <td><?php echo date("d-M-Y H:i", (int)$db->f("cdate")); ?></td>
+  </tr>
+  <tr> 
+    <td>Order Status:</td>
+    <td><?php
+         $q = "SELECT order_status_name FROM order_status WHERE ";
+         $q .= "order_status_code = '" . $db->f("order_status") . "'";
+         $dbos = new ps_DB;
+         $dbos->query($q);
+         $dbos->next_record();
+         echo $dbos->f("order_status_name");
+         ?>
+
+</td>
+  </tr>
+  <!-- End Customer Information --> <!-- Begin 2 column bill-ship to --> 
+  <tr bgcolor="<?php echo $cart_header_color?>"> 
+    <td colspan="2"><b>Customer Information</b></td>
+  </tr>
+  <tr valign="top"> 
+    <td width="50%"> <!-- Begin BillTo --> <?php
+    // Get ship_to information
+    $dbbt = new ps_DB;
+    $q  = "SELECT * FROM auth_user_md5, user_info WHERE ";
+    $q .= "auth_user_md5.user_id='" . $auth["user_id"] . "' ";
+    $q .= "AND auth_user_md5.user_id=user_info.user_id ";
+    $q .= "AND user_info.address_type='BT'"; 
+    $dbbt->query($q);
+    $dbbt->next_record(); 
+  ?> 
+      <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <tr> 
+          <td colspan="2"><b>Bill To</b></td>
+        </tr>
+        <tr> 
+          <td>Company:</td>
+          <td><?php $dbbt->p("company"); ?></td>
+        </tr>
+        <tr> 
+          <td>Full Name:</td>
+          <td><?php 
+         $dbbt->p("first_name"); 
+         echo " ";
+         $dbbt->p("middle_name"); 
+         echo " ";
+         $dbbt->p("last_name"); 
+         ?></td>
+        </tr>
+        <tr valign="top"> 
+          <td>Address:</td>
+          <td><?php 
+          $dbbt->p("address_1"); 
+          echo "<br />";
+          $dbbt->p("address_2");    
+         ?></td>
+        </tr>
+        <tr> 
+          <td>City:</td>
+          <td><?php $dbbt->p("city"); ?></td>
+        </tr>
+        <tr> 
+          <td>State:</td>
+          <td><?php $dbbt->p("state"); ?></td>
+        </tr>
+        <tr> 
+          <td>Zip Code:</td>
+          <td><?php $dbbt->p("zip"); ?></td>
+        </tr>
+        <tr> 
+          <td>Country:</td>
+          <td><?php $dbbt->p("country"); ?></td>
+        </tr>
+        <tr> 
+          <td>Phone:</td>
+          <td><?php $dbbt->p("phone_1"); ?></td>
+        </tr>
+        <tr> 
+          <td>Fax:</td>
+          <td><?php $dbbt->p("fax"); ?></td>
+        </tr>
+        <tr> 
+          <td>Email:</td>
+          <td><?php $dbbt->p("user_email"); ?></td>
+        </tr>
+      </table>
+      <!-- End BillTo --> </td>
+    <td width="50%"> <!-- Begin ShipTo --> <?php
+    // Get bill_to and ship_to information
+    $dbst = new ps_DB;
+    $q  = "SELECT * FROM user_info WHERE ";
+    $q .= "user_info_id='" . $db->f("user_info_id") . "'";
+    $dbst->query($q);
+    $dbst->next_record(); 
+  ?> 
+      <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <tr> 
+          <td colspan="2"><b>Ship To</b></td>
+        </tr>
+        <tr> 
+          <td>Company:</td>
+          <td><?php $dbst->p("company"); ?></td>
+        </tr>
+        <tr> 
+          <td>Full Name:</td>
+          <td><?php 
+         $dbst->p("first_name"); 
+         echo " ";
+         $dbst->p("middle_name"); 
+         echo " ";
+         $dbst->p("last_name"); 
+         ?></td>
+        </tr>
+        <tr valign="top"> 
+          <td>Address:</td>
+          <td><?php 
+          $dbst->p("address_1"); 
+          echo "<br />";
+          $dbst->p("address_2");    
+         ?></td>
+        </tr>
+        <tr> 
+          <td>City:</td>
+          <td><?php $dbst->p("city"); ?></td>
+        </tr>
+        <tr> 
+          <td>State:</td>
+          <td><?php $dbst->p("state"); ?></td>
+        </tr>
+        <tr> 
+          <td>Zip Code:</td>
+          <td><?php $dbst->p("zip"); ?></td>
+        </tr>
+        <tr> 
+          <td>Country:</td>
+          <td><?php $dbst->p("country"); ?></td>
+        </tr>
+        <tr> 
+          <td>Phone:</td>
+          <td><?php $dbst->p("phone_1"); ?></td>
+        </tr>
+        <tr> 
+          <td>Fax:</td>
+          <td><?php $dbst->p("fax"); ?></td>
+        </tr>
+      </table>
+      <!-- End ShipTo --> <!-- End Customer Information --> </td>
+  </tr>
+
+  <tr> 
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <!-- Begin Order Items Information --> 
+  <tr bgcolor="<?php echo $cart_header_color?>"> 
+    <td colspan="2"><b>Order Items</b></td>
+  </tr>
+  <tr> 
+    <td colspan="2"> 
+      <table width="100%" cellspacing="0" cellpadding="4" border="1">
+        <tr align="left"> 
+          <th>Qty</th>
+          <th>Name</th>
+          <th>SKU</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+        <?php 
+  $dbcart = new ps_DB;
+  $q  = "SELECT * FROM orders, order_item, product ";
+  $q .= "WHERE orders.order_id='$order_id' ";
+  $q .= "AND orders.order_id=order_item.order_id ";
+  $q .= "AND product.product_id=order_item.product_id";
+  $dbcart->query($q); 
+  $subtotal = 0;
+  while ($dbcart->next_record()) {
+?> 
+        <tr align="left"> 
+          <td><?php $dbcart->p("product_quantity"); ?></td>
+          <td><?php $dbcart->p("product_name"); ?></td>
+          <td><?php $dbcart->p("product_sku"); ?></td>
+          <td><?php $price = $ps_product->get_price($dbcart->f("product_id"));
+                $item_price = $price["product_price"]; 
+               printf("$%.2f", $item_price);
+           ?></td>
+          <td><?php $total = $dbcart->f("product_quantity") * $item_price; 
+                $subtotal += $total;
+                printf("$%.2f", $total);
+           ?></td>
+        </tr>   <?php
+ }
+?> 
+        <tr> 
+          <td colspan="4" align="right">&nbsp;&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="4" align="right">SubTotal:</td>
+          <td><?php printf("$%.2f", $subtotal) ?></td>
+        </tr>
+        <tr> 
+          <td colspan="4" align="right"> Shipping:</td>
+          <td><?php 
+$shipping_total = $db->f("order_shipping");
+printf("$%.2f", $shipping_total);
+?></td>
+        </tr>
+        <tr> 
+          <td colspan="4" align="right"> Sales Tax:</td>
+          <td><?php 
+$tax_total = $db->f("order_tax");
+printf("$%.2f", $tax_total);
+?></td>
+        </tr>
+     
+        <tr> 
+          <td colspan="4" align="right"><b>Total:</b></td>
+          <td><?php 
+$total = $subtotal + $tax_total + $shipping_total;
+printf("$%.2f", $total);
+?>
+
+
+</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <!-- End Order Items Information --> <!-- Begin Payment Information --> 
+  <tr bgcolor="<?php echo $cart_header_color?>"> 
+    <td colspan="2"><b>Payment Information</b></td>
+  </tr>
+  <?php
+  $dbpm = new ps_DB;
+  $q  = "SELECT * FROM payment_method, order_payment WHERE order_payment.order_id='$order_id' ";
+  $q .= "AND payment_method.payment_method_id=order_payment.payment_method_id";
+  $dbpm->query($q);
+  $dbpm->next_record();
+ 
+  // DECODE Account Number
+  $dbaccount = new ps_DB;
+  $q = "SELECT DECODE(\"". $dbpm->f("order_payment_number")."\",\"".ENCODE_KEY."\") as account_number";
+  $dbaccount->query($q);
+  $dbaccount->next_record();
+?> 
+  <tr> 
+    <td>Payment Method:</td>
+    <td><?php $dbpm->p("payment_method_name"); ?> </td>
+  </tr>
+  <tr> 
+    <td>Account Name:</td>
+    <td><?php $dbpm->p("order_payment_name"); ?> </td>
+  </tr>
+  <tr> 
+    <td>Account Number:</td>
+    <td> <?php echo $ps_checkout->asterisk_pad($dbaccount->f("account_number"),4);
+?> </td>
+  </tr>
+  <tr> 
+    <td>Expire Date:</td>
+    <td><?php echo date("M-Y", (int)$dbpm->f("order_payment_expire")); ?> </td>
+  </tr>
+
+  <!-- End Payment Information --> 
+</table>
+<br />
+<!-- Body ends here --> <?php 
+if (!$print) {
+?> 
+<div align="center"><br />
+  A confirmation email has been sent to: <br />
+  <?php $dbbt->p("user_email"); ?>.<br />
+</div>
+<center>
+  <br />
+  <br />
+  <br />
+  <a href="<?php $sess->purl(SECUREURL . "?page=$modulename/thankyou&amp;order_id=$order_id&amp;print=1"); ?>">Print 
+  View</a> <br />
+  <br />
+</center>
+<?php
+}
+?> 
+
+<?php if($print) { # Add html closure tags if this is a "print view" ?>
+</body>
+</html>
+<?php } ?>

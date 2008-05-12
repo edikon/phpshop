@@ -1,0 +1,11 @@
+<?php
+	require_once("product/lib/ps_product.inc");
+	$ps_product = new ps_product;
+?>
+<table width="100%" border="0" cellpadding="10" cellspacing="0">
+ <tr valign="top">
+  <td>   <h1>Welcome to Washupito's Tiendita
+   </h1>
+    <?php echo $vendor_store_desc; ?>
+    </td>
+  </tr></table>

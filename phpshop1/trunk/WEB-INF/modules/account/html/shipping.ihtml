@@ -1,0 +1,33 @@
+<?php
+$page_name = "Account Maintenance";
+?>
+<?php
+  $q  = "SELECT * FROM user_info WHERE ";
+  $q .= "address_type='ST' ";
+  $q .= "AND user_id='" . $auth["user_id"] . "'";
+  $db->query($q);
+?>
+<table border="0" cellspacing="0" cellpadding="10" width="100%" align="center" class="MenuTable">
+<tr>
+   <td class="RecordsTableHeader">Shipping Address Information
+   </td>
+</tr>
+<tr>
+   <td>
+
+   <br />
+   - Default (Same as Billing)
+<?php
+  while ($db->next_record()) {
+?>
+   <br />
+   -<a href="<?php $sess->purl(SECUREURL . "?next_page=account/shipping&amp;page=account/shipto&amp;user_info_id=" . $db->f("user_info_id")); ?>">
+   <?php $db->p("address_type_name"); ?></a>
+<?php
+  }
+?>
+   </td>
+</tr>
+<tr><td><a href="<?php $sess->purl(SECUREURL . "?page=account/shipto&amp;next_page=account/shipping"); ?>">Add New Address</a></td></tr>
+</table>
+<!-- Body ends here -->

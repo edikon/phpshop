@@ -1,0 +1,148 @@
+<?php
+$page_name = "Account Information";
+?>
+<!-- Body starts here -->
+<?php
+    $q =  "SELECT * FROM auth_user_md5, user_info WHERE ";
+    $q .= "auth_user_md5.user_id='" . $auth["user_id"] . "' ";
+    $q .= "AND auth_user_md5.user_id=user_info.user_id ";
+    $q .= "AND user_info.address_type='BT' ";
+    $db->query($q);
+    $db->next_record();
+?>
+<!-- Registration form -->
+<form action="<?php echo SECUREURL ?>" method="post" name="Edit" id="Edit">
+  <?php $sess->hidden_session() ?> <?php 
+   if ($next_page) {
+?> 
+  <input type="hidden" name="page" value="<?php echo $next_page?>" />
+  <?php
+   }
+   else {
+?> 
+  <input type="hidden" name="page" value="account/index" />
+  <?php
+ }
+?> 
+  <input type="hidden" name="func" value="shopperUpdate" />
+  <input type="hidden" name="username" value="<?php echo $auth["username"] ?>" />
+  <input type="hidden" name="user_info_id" value="<?php $db->p("user_info_id"); ?>" />
+  <input type="hidden" name="user_id" value="<?php echo $auth["user_id"] ?>" />
+  <input type="hidden" name="address_type" value="BT" />
+  <table align="center" width="100%" cellspacing="0" cellpadding="6" border="0" class="MenuTable">
+    <tr> 
+      <td class="RecordsTableHeader" colspan="2">Account Information</td>
+    </tr>
+    <tr> 
+      <td align="right">Username:</td>
+      <td><?php $db->p("username") ?></td>
+    </tr>
+    <tr>
+      <td align="right">Password:</td>
+      <td>
+        <input type="password" name="password_1" maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr>
+      <td align="right">Password(again):</td>
+      <td>
+        <input type="password" name="password_2" maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Company Name:</td>
+      <td>
+        <input type="text" name="company" value="<?php $db->p("company") ?>"
+     maxlength="64" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Last Name:</td>
+      <td>
+        <input type="text" name="last_name" value="<?php $db->p("last_name") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">First Name:</td>
+      <td>
+        <input type="text" name="first_name" value="<?php $db->p("first_name") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Middle Name:</td>
+      <td>
+        <input type="text" name="middle_name" value="<?php $db->p("middle_name") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Address:</td>
+      <td>
+        <input type="text" name="address_1" value="<?php $db->p("address_1") ?>"
+	maxlength="64" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Address cont.:</td>
+      <td>
+        <input type="text" name="address_2" value="<?php $db->p("address_2") ?>" maxlength="64" size="32" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">City:</td>
+      <td>
+        <input type="text" name="city" value="<?php $db->p("city") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">State:</td>
+      <td>
+        <input type="text" name="state" value="<?php $db->p("state") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Zip Code:</td>
+      <td>
+        <input type="text" name="zip" value="<?php $db->p("zip") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Country:</td>
+      <td>
+        <?php $ps_html->list_country("country", $db->sf("country")) ?>
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Telephone:</td>
+      <td>
+        <input type="text" name="phone_1" value="<?php $db->p("phone_1") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr> 
+      <td align="right">Fax:</td>
+      <td>
+        <input type="text" name="fax" value="<?php $db->p("fax") ?>"
+	maxlength="32" size="16" />
+      </td>
+    </tr>
+    <tr>
+      <td align="right">Email Address:</td>
+      <td>
+        <input type="text" name="user_email" value="<?php $db->p("user_email") ?>"
+	maxlength="64" size="32" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"> 
+        <input type="submit" name="Submit" value="Submit" />
+      </td>
+    </tr>
+  </table>
+</form>
+<!-- Body ends here --> 

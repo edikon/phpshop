@@ -1,0 +1,4 @@
+<li><a href="<?php $sess->purl(SECUREURL . "?page=vendor/vendor_list") ?>">Vendors</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=vendor/vendor_form") ?>">Add Vendor</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=vendor/vendor_category_list") ?>">Vendor Categories</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=vendor/vendor_category_form") ?>">Add Vendor Category</a></li>

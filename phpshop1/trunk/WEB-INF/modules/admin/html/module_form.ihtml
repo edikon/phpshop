@@ -1,0 +1,182 @@
+<?php
+  if ($module_id) {
+  $q = "SELECT * from module where module_id='$module_id'";
+  $db->query($q);
+  $db->next_record();
+}
+
+?>
+ <form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="module_form"> 
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable"> 
+     <tr> 
+      <td width="100%" colspan="2" align="left" class="RecordsTableHeader"> 
+         <p class="HeaderText"><?php echo $module_form_lbl ?></p> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $module_form_name ?>:</td> 
+      <td width="76%" > 
+         <input type="text" name="module_name" value="<?php echo $db->sf("module_name") ?>" size="32" /> 
+         <input type="hidden" name="module_id" value="<?php echo $module_id ?>" /> 
+         <input type="hidden" name="func" value="<?php if ($module_id) echo "moduleUpdate"; else echo "moduleAdd"; ?>" /> 
+         <input type="hidden" name="page" value="<?php echo $modulename?>/module_list" /> 
+         <b> 
+        <?php
+$sess->hidden_session();
+?> 
+        </b> </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $module_form_perms ?>:</td> 
+      <td width="76%" > 
+         <input type="text" name="module_perms" value="<?php $db->sp("module_perms") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $module_form_header ?>:</td> 
+      <td width="76%" > 
+         <input type="text" name="module_header" value="<?php $db->sp("module_header") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $module_form_footer ?>:</td> 
+      <td width="76%" > 
+         <input type="text" name="module_footer" value="<?php $db->sp("module_footer") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $module_form_menu ?>:</td> 
+      <td width="76%" > 
+         <select name="module_publish"> 
+          <option value="Y" <?php if ($db->f("module_publish")=="Y") echo "selected=\"selected\""?>>Yes</option> 
+          <option value="N" <?php if ($db->f("module_publish")=="N") echo "selected=\"selected\""?>>No</option> 
+        </select> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" align="right" ><?php echo $module_form_order ?>:</td> 
+      <td width="76%" > 
+         <input type="text" name="list_order" size="3" maxlength="2" value="<?php $db->sp("list_order") ?>" /> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" colspan="2" >&nbsp; </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" align="right" ><?php echo $module_form_description ?>:</td> 
+      <td valign="top" >&nbsp;</td> 
+    </tr> 
+     <tr align="center"> 
+      <td valign="top" colspan="2" > 
+         <textarea name="module_description" cols="50" rows="10"><?php echo htmlentities($db->sf("module_description")) ?>
+</textarea> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td width="24%" >&nbsp;</td> 
+      <td width="76%" >&nbsp;</td> 
+    </tr> 
+     <tr> 
+      <td colspan="2" > 
+         <table width="80%" border="0" cellspacing="0" cellpadding="1" align="center"> 
+          <tr> 
+             <td width="6%" nowrap="nowrap" align="right"><?php echo $module_form_language_code ?>:</td> 
+             <td width="10%"> 
+              <?php $ps_html->list_Language("language_code_1", $db->sf("language_code_1")) ?> 
+            </td> 
+             <td width="5%" nowrap="nowrap" align="right"><?php echo $module_form_module_label ?>:</td> 
+             <td width="37%"> 
+              <input type="text" size="12" name="module_label_1" value="<?php $db->sp("module_label_1") ?>" /> 
+            </td> 
+           </tr> 
+          <tr> 
+             <td width="6%" nowrap="nowrap" align="right"><?php echo $module_form_language_code ?>:</td> 
+             <td width="10%"> 
+              <?php $ps_html->list_Language("language_code_2", $db->sf("language_code_2")) ?> 
+            </td> 
+             <td width="5%" nowrap="nowrap" align="right"><?php echo $module_form_module_label ?>:</td> 
+             <td width="37%"> 
+              <input type="text" name="module_label_2" value="<?php $db->sp("module_label_2") ?>" size="12" /> 
+            </td> 
+           </tr> 
+          <tr> 
+             <td width="6%" nowrap="nowrap" align="right"><?php echo $module_form_language_code ?>:</td> 
+             <td width="10%"> 
+              <?php $ps_html->list_Language("language_code_3", $db->sf("language_code_3")) ?> 
+            </td> 
+             <td width="5%" nowrap="nowrap" align="right"><?php echo $module_form_module_label ?>:</td> 
+             <td width="37%"> 
+              <input type="text" name="module_label_3" value="<?php $db->sp("module_label_3") ?>" size="12" /> 
+            </td> 
+           </tr> 
+          <tr> 
+             <td width="6%" nowrap="nowrap" align="right"><?php echo $module_form_language_code ?>:</td> 
+             <td width="10%"> 
+              <?php $ps_html->list_Language("language_code_4", $db->sf("language_code_4")) ?> 
+            </td> 
+             <td width="5%" nowrap="nowrap" align="right"><?php echo $module_form_module_label ?>:</td> 
+             <td width="37%"> 
+              <input type="text" name="module_label_4" value="<?php $db->sp("module_label_4") ?>" size="12" /> 
+            </td> 
+           </tr> 
+          <tr> 
+             <td width="6%" nowrap="nowrap" align="right"><?php echo $module_form_language_code ?>:</td> 
+             <td width="10%"> 
+              <?php $ps_html->list_Language("language_code_5", $db->sf("language_code_5")) ?> 
+            </td> 
+             <td width="5%" nowrap="nowrap" align="right"><?php echo $module_form_module_label ?>:</td> 
+             <td width="37%"> 
+              <input type="text" name="module_label_5" value="<?php $db->sp("module_label_5") ?>" size="12" /> 
+            </td> 
+           </tr> 
+          <tr> 
+             <td width="6%">&nbsp;</td> 
+             <td width="10%">&nbsp;</td> 
+             <td width="3%">&nbsp;</td> 
+             <td width="39%">&nbsp;</td> 
+             <td width="5%">&nbsp;</td> 
+             <td width="37%">&nbsp;</td> 
+           </tr> 
+          <tr> 
+             <td width="6%">&nbsp;</td> 
+             <td width="10%">&nbsp;</td> 
+             <td width="3%">&nbsp;</td> 
+             <td width="39%">&nbsp;</td> 
+             <td width="5%">&nbsp;</td> 
+             <td width="37%">&nbsp;</td> 
+           </tr> 
+        </table> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" colspan="2" align="center">&nbsp;</td> 
+    </tr> 
+     <tr> 
+      <td valign="top" colspan="2" align="center"> 
+         <?php if ($module_id) { ?> 
+         <table width="50%" border="0" cellspacing="0" cellpadding="0"> 
+          <tr align="center"> 
+             <td width="100%" align="center"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Delete" onclick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=$modulename/module_list&amp;func=moduleDelete&amp;module_id=" . $db->f('module_id')); ?>');" /> 
+            </td> 
+           </tr> 
+        </table> 
+         <?php }
+else { ?> 
+         <table width="100%" border="0" cellspacing="0" cellpadding="0"> 
+          <tr align="center"> 
+             <td width="100%" colspan="2" align="center"> 
+              <input type="submit" class="Button" value="Save" /> 
+              <input type="button" class="Button" value="Clear" onclick="document.location.href='<?php $sess->purl(SECUREURL . "?page=$modulename/module_form&amp;module_id"); ?>';" /> 
+            </td> 
+           </tr> 
+        </table> 
+         <?php } ?> 
+       </td> 
+    </tr> 
+     <tr> 
+      <td valign="top" colspan="2" align="center">&nbsp;</td> 
+    </tr> 
+   </table> 
+</form> 

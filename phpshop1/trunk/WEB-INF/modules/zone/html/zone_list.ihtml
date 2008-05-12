@@ -1,0 +1,102 @@
+<?php
+/*
+    Copyright (C) Mike Wattier  <geek@devcompany.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+  search_header($zone_list_lbl, $modulename, "zone_list");
+?>
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT * FROM zone_shipping WHERE ";
+     $count = "SELECT count(*) as num_rows FROM zone_shipping WHERE ";
+     $q  = "(zone_name LIKE '%$keyword%')";
+     $q .= "ORDER BY zone_name ASC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  else 
+  {
+     $q = "";
+     $list  = "SELECT * FROM zone_shipping ORDER BY zone_name ASC ";
+     $count = "SELECT count(*) as num_rows FROM zone_shipping"; 
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+  if ($num_rows == 0) {
+     echo "Your search returned 0 results.<br />";
+  }
+  else {
+?>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%" class="RecordsTable">
+<tr class="RecordsTableHeader">
+<td width="25%" align="center">
+<b><?php echo $zone_list_name_lbl;?></b>
+</td>
+<td width="25%" align="center">
+<b><?php echo $zone_list_desc_lbl;?></b>
+</td>
+<td width="25%" align="center">
+<b><?php echo $zone_list_cost_per_lbl;?></b>
+</td>
+<td width="25%" align="center">
+<b><?php echo $zone_list_cost_limit_lbl;?></b>
+</td>
+</tr>
+
+
+
+<?php
+$db->query($list);
+$i = 0;
+while ($db->next_record()) {
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?>
+  <tr bgcolor="<?php echo $bgcolor ?>"> 
+<td width="25%" align="center">
+<?php
+       $url = SECUREURL . "?page=$modulename/zone_form&amp;zone_id=" . $db->f("zone_id");
+       echo "<a href=\"" . $sess->url($url) . "\">";
+       echo $db->f("zone_name"); 
+       echo "</a>"; ?>
+</td>
+<td width="25%" align="center">
+<?php $db->p("zone_description") ?>
+</td>
+<td width="25%" align="center"><?php $db->p("zone_cost") ?>
+</td>
+<td width="25%" align="center">
+<?php $db->p("zone_limit") ?>
+</td>
+</tr>
+
+
+<?php 
+}
+echo "</table>";
+  search_footer($modulename, "zone_list", $offset, $num_rows, $keyword); 
+}
+?>

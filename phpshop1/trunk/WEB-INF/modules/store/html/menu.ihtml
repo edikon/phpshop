@@ -1,0 +1,6 @@
+<li><a href="<?php $sess->purl(SECUREURL . "?page=store/index") ?>">Sales Activity</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=store/store_form&amp;vendor_id=$ps_vendor_id") ?>">Store Profile</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=store/user_list") ?>">Store Admins</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=store/user_form") ?>">Add Store Admin</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=store/payment_method_list") ?>">Payment Methods</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=store/payment_method_form") ?>">Add Payment Method</a></li>

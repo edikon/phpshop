@@ -1,0 +1,18 @@
+            <!-- END BODY --> </td> 
+        </tr> 
+    </table></td> 
+  </tr> 
+  <tr> 
+    <td height="1" valign="bottom"> <table width="100%" border="0" cellspacing="0" cellpadding="4" class="FooterTable"> 
+        <tr> 
+          <td></td> 
+        </tr> 
+        <tr> 
+          <td align="center">Powered by <a href="http://www.phpshop.org" class="wLink">phpShop</a> <?php echo PHPSHOP_VERSION ?> <br /> 
+          <a class="wLink" href="http://www.edikon.com">Copyright Edikon Corp. </a></td> 
+        </tr> 
+      </table></td> 
+  </tr> 
+</table> 
+</body>
+</html>

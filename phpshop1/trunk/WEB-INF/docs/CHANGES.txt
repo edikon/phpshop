@@ -1,0 +1,252 @@
+Edikon Release 0.8.1  of PHPShop
+
+(0.8.1)
+!!! Must Know
+* Directory structure has been updated.  Now phpshop is installed directly inside the web folder.
+* A new WEB-INF folder is where all phpshop library files are stored inside.
+* The WEB-INF folder should be protected from outside.
+* .htaccess file to restrict access.
+
+!!! Fixes and Other
+* Fixed security hole in reset_lost_password.ihtml of the shop module.
+* Fixed database error when adding new category.
+* Fixed language file selection error.
+* Fixed category browsing bug.
+* Fixed image uploads.
+* Fixed csv import.
+* Fixed image update error.
+* Fixed category change error when updating a product.
+* Replaced WYSIWYG editor with TinyMCE
+
+(0.8.0)
+!!! Must Know
+* base_dir has been renamed to PS_BASE.  PS_BASE is the where phpshop is installed.
+* Database schema has been changed.  New fields were added.  Import upgradeSQL_072-080.txt into your database for structure to be updated.
+
+!!! Fixes and Other
+* Fixed style sheet formatting and page layout for demo store and admin area.  Looks much more pleasing to the eye.
+* Created new folder structure in htdocs for images/, styles/ and javascript/.  shop images (a.k.a. shop_image) are now under images/shop/.  This means you need to change your store info to point to the new image path.
+* Change the way we generate menus in the admin area by using a slidemenu.
+* Removed all eval(load_class)) calls.  This was left over from PHP3, we don't need it anymore. require_once will do the trick.  The load_class function is still there for backwards compat.
+* Removed LIBROOT, DOCROOT, MODROOT constants.  All paths are relative.  Include path is automatically set to /path/to/phpshop/modules/
+* Changed all .ihtml files to be XHTML compliant.
+* Made the Product Special field a checkbox.  No need to type in Y or N.
+* Changed filename for phpshop.cfg to config.php
+* Changed formatting of config.php file to use one define per directive.
+* Added category name to product listing in admin.
+
+!!! Feature Specific
+* Removed Intershipper.  Bye bye!
+* Added check for magic_quotes_gpc.  phpShop will die if it's not set.
+* Added new set of templates for checkout module.  These templates are c_header.ihtml and c_footer.ihtml
+* Fixed debug output to show more information more cleanly
+* Added Zone Shipping module.  Thanks to Mike Wattier for the contribution.
+* Added better prev/next page navigation.  Thanks to Brett O'Donnell, Mr. PHP, for the code.
+* Added WYSIWYG editor.  Can be turned on/off in config.php.  Works in IE.  Thanks to Brett O'Donnell.
+* Added ability to edit product while viewing it in the store if you are logged in with sufficient access rights.  Thanks to Brett O'Donnell
+* Changed cart to use Mr. PHP's advanced cart allowing updating multiple items at once.  Thanks to Brett O'Donnell
+* Added Product Discounts Manager.  Now specials can be managed by using the fields in the product form that specify whether an item is on sale and what discount percentage to apply.  Thanks to Brett O'Donnell
+* Added Lost Password Recovery.   Thanks to Brett O'Donnell
+* Added pretty category names.  This makes search engine friendly links to categories.  Thanks to JohnS!
+* Added CSV product import capabilities.  Now products can be put into a CSV file and imported directly via the administration interface.  Thanks to John Syben
+* Added SMTP class for sending email.  Can be easily configured via the config. This is good news for when running on windows.  Updated all places that send email to use this class.  SMTP mail is optional.  Set in config.php
+* Added Sales Activity Report (Basic Reporting) from Big Drift Consulting. Thanks!
+* Added dtree.js and corresponding style sheet and images to htdocs folder.  Check www.destroydrop.com/javascript/tree/  for information on this great menu script.  The plan is to use it for product management in the future.
+
+!!! Database Changes
+* Several database changes in order to accomodate features.  See upgradeSQL_072-080.txt for SQL queries to run in order to upgrade existing database to 0.8.0.
+* Removed session table
+* Removed intershipper table
+
+
+
+March 30, 2004 (0.7.1)
+- Fixed security patches as suggested in the forums.
+- Bugs Fixed:
+  o phpShop was not letting Admins put HTML Tags in Flypage 
+    descriptions.
+  o Offset was not working.
+  o Image Uploads didn't work when register_globals=off
+  o Pager in lists was not displaying correctly.
+  o Having to sometimes login twice to get into the 
+    administration area.
+
+February 18, 2004 (0.7.0)
+- Security patches added.
+  o Basic SQL inject detection
+  o Other security issues suggested in phpshop forums. (January 26, 2004)   
+  o Cross Site Scripting avoidance.
+  o Offset variable confirmed to be numeric.
+- Applied patch so that register_globlals can be left OFF.
+- Now we use php4 sessions. The old sessions can still be used by renaming
+  modules/admin/lib/ps_session_3.inc to ps_session.inc
+- Updated admin's look. Now using CSS.
+- Updated demo store to use CSS.
+- Fixed Form to Add and Update Shopper Shipping Information.
+- Now all image directories have to be under the directory where index.php
+  resides.
+- Added option to authorize Credit Cards through Authorize.Net
+
+October  31, 2000 (0.6.1b)
+- More International Shippers have been added.
+- Added an Inventory view to the products.
+- The number of products purchased is now decremented from the number in stock.
+- Allowed zero weight items to be excluded from shipping
+  o zero weight items are not included in shipping of mixed weight carts
+  o zero weight items can be excluded from taxation as well.
+  o New variable in phpshop.cfg, IS_TAX_VIRTUAL, turns the taxing 
+    of zero weight items on or off.
+- Made the country print on screen during checkout
+- Changed the flypage.ihtml to show the full product image 
+  instead of the thumbnail.
+- Added the thumbnail to browse.ihtml Width is constrained to 80 pixels.
+- Added the price to browse.ihtml
+- Made the Featured items link to the Parent Product if it is a child.
+- Changes State to State/Region
+- Linked the full image on the flypage to product_url
+
+September 13, 2000 (0.6.1)
+- Fixed bugs reported causing problems in previous release.  Main changes were:
+      o blank line at end of files removed
+      o class names all lowercase (php3 catches case issues, but not php4)
+      o fixed problems where classes were being referenced without having
+        loaded them first.
+      o INTERSHIPPER_ENABLE changed to IS_ENABLE
+- Fixed single quote in session data problem by \ escaping any single quotes
+  before saving session data.  Only applies to the php3 session class.
+- Fixed search form so that you stay in secure mode during search.
+- Added order filter menu to show orders based on status type.
+- Added order navigation links to be able to step through orders sequentially.
+- Fixed registration page so that if registration is unsuccessful it returns to 
+  the registration page again.
+
+
+September 5, 2000 (0.6.0)
+- Added Order Status option in Order module.  Allows administrators to 
+  create order statuses.
+- Added Intershipper module to phpShop.  This module is enabled by setting the 
+  IS_ENABLE in the phpshop.cfg to 1.  
+- Made all class loading dynamic using the eval(load_class()) construct for 
+  class loading on-the-fly.
+- Fixed missing shipping and tax totals in confirmation and order emails.
+- Added ISO standard country, currency and language codes throughout forms.
+- Changed ps_function_reg classname to ps_function
+- Changes ps_module_reg classname to ps_module_reg
+- Fixed DECODE error in credit card decode string.
+- Major speed performance increase by using dynamic loading of classes. 
+- New design for Washupito's Tiendita
+
+
+August 2, 2000 (0.5.0)
+- Added a simple tax module for providing tax calculations.
+- Added a CC_ENABLE flag with which to enble Cybercash in the phpshop.cfg.
+- Fixed language selection processing.  If a specified language is nto registered
+  with a module, then the default language file (English) is chosen.
+- Fixed security issue that allowed storeadmin's to delete or add the admin user.
+- Updated Order listing in admin to show order total and not subtotal.
+- ps_include.inc files are no longer empty and now have a comment saying
+  "intentinally left blank..."
+- Renamed the ps_order_process class to ps_checkout.
+- The session ID is not a 32-byte MD5 encrypted string.  This should help the
+  problem of being behind a firewall and seeing the same session on two separate
+  clients.
+- Fixed email validation routine to allow uppercase and lowercase letters.
+
+July 13, 2000 (0.4.5)
+- Removed the use of PHPLIB from phpShop. Since mySQL is currently the only 
+  supported database, we simply wrote a database access class that is
+  heavily based on PHPLIB by using the same method names, etc.  This ensures
+  backwards compatibility with existing stores.  The new database class was 
+  placed in the /db directory.
+- Fixed list_attribute() function bugs that would print attributes repeatedly.
+- Fixed demo store links that pointed to incorrect module for shipping address
+  updates.
+- Renamed to payment_method table to order_payment.
+- Added new payment_method table to database for use with the Payment Methods Module.
+- Added Payment Methods module to allow storeadmin's to add Visa, Amex, Purchase Orders
+  dynamically.  Each payment method can be given a discount rate (+/-) and also be 
+  selected for Cybercash processing.
+- Added Cybercash Payment Processing capability for Cybercash 3.0 or above.  
+- Credit Card account numbers are stored in encypted form in the database using
+  mySQL's ENCODE and DECODE functions.  The hash key can be set in the phpshop.cfg 
+  file using the ENCODE_KEY directive.
+- Added payment processing log to admin's order display using the order_payment 
+  table to log the Cybercash or simple capture of data processing.
+
+
+June 30, 2000 (0.4.2)
+- Fixed login bugs.  This makes it necessary to build the login/registration
+  as shown in the shop/html/login.ihtml page.  Old login pages will need to be
+  updated.
+- Changed the way phpShop generates the product and vendor images.  Added the 
+  show_image() function to the ps_product and ps_vendor classes.  The show_iamge()
+  function now takes two arguments.  The name of the image file to show, and any
+  arguments that want to be sent along to the IMG tag.  The old show_image() 
+  function in ps_main.inc has been removed.
+- The get_price function was deleted from ps_main.inc and moved to the ps_product
+  class.
+- The list_attribute() function has been moved from ps_main.inc to the
+  ps_product_attribute class.  It has also been updated to accept one argument. 
+  The product_id is sent and the list_attribute function draws a drop down list
+  containing the attribute list.  It is dynamic and can handle a variable number
+  of attributes.  
+- The location of the shop_images has been moved to be relative to the URL paths. 
+  That is, images will be resolved by first prepending the URL or
+  http://www.phpshop.org/demo/
+  Then the vendor_image path is used:
+  http://www.phpshop.org/demo/shop_images/
+  Then if it is a product or vendor...
+  http://www.phpshop.org/demo/shop_images/product/
+  Then the image name
+  http://www.phpshop.org/demo/shop_images/product/image_name.gif
+  Image generation will check for SSL and create the path accordingly.
+- File upload now handles PNG files.
+- Cart does not accept fractional quantities.
+- VERSION.txt moved to DOCROOT directory.
+
+June 10, 2000 (0.4-1)
+- Modularization of phpShop.
+
+April 13, 2000 (0.2)
+- Installation procedure rewritten.  No more PHPLIB install woes.
+- The PHPLIB session, auth, and perm class have been removed.
+- The ps_cart class has been modified.
+- New perm class for permission checking.
+- New auth and cart arrays used for these pruposes.  Please look
+  at the new store to understand the changes made.  Some important
+  information found in these classes:
+
+  $auth["user_id"]
+  $auth["username"]
+  $auth["last_name"]
+  $auth["first_name"]
+  $auth["perms"]
+
+  $cart["idx"]
+  $cart[$i]["quantity"]
+  $cart[$i]["product_id"]
+
+- Many bug fixes reported by users.
+- Cleaned up the class definition files to be in ps_class.inc.
+- Fixes file upload routines to be platform independent.  Now works on NT.
+- Fixed class definitions to work on PHP4.
+- Updated demo store to include most requested features.
+- Fixed many validation routines. 
+  Cart will not accept negative numbers.
+  Shoppers must provide complete address information.
+- Category listing fixed.
+- Price listing fixed.
+- Price form fixed.
+- Database configuration parameters are now in phpshop.cfg.  
+- This centralizes administration.
+- Cleaned up phpshop.cfg.  Removed unused parameters.
+
+February 21, 2000. (0.1)
+
+- Updated all administrative pages with latest design layout.
+- Added administrator password maintenance page.
+- Created the /etc directory which now has the phpshop.cfg and ps_local.inc files.
+- Removed several bugs.  See bug tracker at http://www.sourceforge.net/bugs/?group_id=747.
+
+February 15, 2000. (pre0.1)
+- Initial Release of phpShop pre0.1.   

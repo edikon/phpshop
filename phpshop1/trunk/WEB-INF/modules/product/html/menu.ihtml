@@ -1,0 +1,28 @@
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_list"); ?>">Product Catalog</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/csv_upload"); ?>">Product Import</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_inventory"); ?>">Product Inventory</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_specials"); ?>">Discounted Products</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_category_list"); ?>">Product Categories</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_category_form"); ?>">Add Product Category</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_form"); ?>">Add Product</a></li>
+<?php
+  $product_id = $vars["product_id"];
+  $product_parent_id = $vars["product_parent_id"];
+  if (!$return_args) {
+    $return_args = "page=$page&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id";
+  }
+  if ($product_id and !$product_parent_id) { 
+  ?> 
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_attribute_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>">List Attributes</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_attribute_form&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>">Add Attribute</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_price_list&amp;product_id=$product_id&amp;return_args=" . urlencode($return_args)); ?>">Add Product Price</a></li>
+<?php if ($ps_product->product_has_attributes($product_id)) { ?>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_form&amp;product_parent_id=" . $product_id); ?>">Add Product Item</a></li>
+<?php } 
+} elseif ($product_parent_id) { ?> 
+<?php if ($product_id) { ?>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_price_list&amp;product_id=$product_id&amp;product_parent_id=$product_parent_id&amp;return_args=" . urlencode($return_args)); ?>">Add Product</a></li>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_form&amp;product_parent_id=" . $product_parent_id); ?>">Add Another Product Item</a></li>
+<?php } ?>
+<li><a href="<?php $sess->purl(SECUREURL . "?page=product/product_form&amp;product_id=" . $product_parent_id); ?>">Return to Product</a></li>
+<?php }  ?> 

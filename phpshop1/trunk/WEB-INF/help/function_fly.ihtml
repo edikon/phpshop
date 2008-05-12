@@ -1,0 +1,131 @@
+<?php
+/****************************************************************************
+*    Copyright (C) 2000 Edikon Corporation.
+*
+*    This program is free software; you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation; either version 2 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program; if not, write to the Free Software
+*    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+****************************************************************************/   
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- #BeginTemplate "/Templates/popup.dwt" -->
+<head>
+<title>PHPShop.Org</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="stylesheet" href="/phpshop.css" />
+</head>
+
+<body link="#CE9A31" vlink="#CE9A31" alink="#FFCF00" bgcolor="#FFFFFF">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr valign="top">
+    <td width="50%"><img src="/ps_image/upper_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td align="right" valign="bottom" width="50%"><img src="/ps_image/bottom_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td bgcolor="#000000" valign="top" width="11" align="center">&nbsp;</td>
+    <td valign="top" width="10"><img src="/ps_image/top-corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" width="741">
+      <script type="text/javascript" language="javascript">
+window.focus();
+</script>
+      </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td bgcolor="#000000" valign="top" width="11" align="center"> &nbsp; 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <br /> 
+    </td>
+    <td valign="top" width="10">&nbsp;</td>
+    <td valign="top" width="741"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr> 
+          <td width="81%" class="title"> <!-- #BeginEditable "title" -->Function 
+            Definition<!-- #EndEditable --></td>
+          <td width="19%" align="center" valign="bottom"></td>
+        </tr>
+      </table>
+       
+      <table width="100%" border="0" cellspacing="0" cellpadding="1" bgcolor="#000000">
+        <tr> 
+          <td> 
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFCC99">
+              <tr align="center"> 
+                <td><?php echo $error; ?></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!-- #BeginEditable "main" --> 
+      <?php $q = "SELECT * from function where function_id='$function_id'";
+$db->query($q);
+$db->next_record();
+?><br />
+      <br />
+      <table width="70%" cellpadding="4" cellspacing="0" border="0" align="center">
+        <tr> 
+          <td><b><font size="-1"><?php echo $db->f("function_name"); ?></font></b></td>
+        </tr>
+        <tr> 
+          <td><font size="-2" face="Verdana, Arial, Helvetica, sans-serif"><b>Description:</b><br />
+            <pre><?php echo $db->f("function_description"); ?></pre>
+            </font></td>
+        </tr>
+        <tr> 
+          <td><font size="-2" face="Verdana, Arial, Helvetica, sans-serif"><b>Class:<br />
+            </b><?php echo $db->f("function_class");
+?><b> </b></font></td>
+        </tr>
+        <tr> 
+          <td><font size="-2" face="Verdana, Arial, Helvetica, sans-serif"><b>Method: 
+            <br />
+            </b><?php echo $db->f("function_method"); ?></font></td>
+        </tr>
+      </table>
+      <!-- #EndEditable --> 
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp; </td>
+  </tr>
+  <tr> 
+    <td width="11" bgcolor="#000000" valign="bottom">&nbsp; </td>
+    <td valign="bottom" width="10"><img src="/ps_image/bottom-corner.gif" align="bottom" alt="" /></td>
+    <td width="741" valign="top" align="center"> 
+      <p><br />
+        </p>
+      <p>&nbsp;</p>
+    </td>
+    <td width="18" valign="top">&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#000000">
+  <tr>
+    <td valign="bottom"><img src="/ps_image/bottom_left_corner.gif" width="11" height="11" alt="" /></td>
+    <td valign="top" align="right"><img src="/ps_image/top_right_corner.gif" width="11" height="11" alt="" /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center"> 
+    <td width="100%" colspan="3" align="left">Copyright 
+      1999-2000 <a href="http://www.edikon.com/">Edikon Corporation</a>. </td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>
