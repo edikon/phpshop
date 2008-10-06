@@ -131,40 +131,7 @@ if ($category) {
 <tr align="center"><td colspan="4" class="RecordsTableHeader">-
 <!-- Build previous/next navigation links -->
 <?php
-   // Check to see if we need to have previous button
-   if ($offset >= SEARCH_ROWS) {
-     $prevoffset=$offset-SEARCH_ROWS;
-     echo "<a href=\"";
-     $sess->purl(URL . "?page=$modulename/browse&amp;category=$category&amp;category_id=$category_id&amp;keyword=$keyword&amp;offset=$prevoffset");
-     echo "\">PREV</a>&nbsp;";
-   }
-
-   // Get total pages
-   $num_pages = intval($num_rows / SEARCH_ROWS);
-   if ($num_rows % SEARCH_ROWS) {
-      $num_pages++;
-   }
-   if ($num_pages != 1)
-     for ($i=1;$i<=$num_pages;$i++) {
-        if (($offset < $i*SEARCH_ROWS) && ($offset >= ($i-1)*SEARCH_ROWS)) {
-           $pagenumber = "$i";
-        }
-        else
-           $pagenumber = $i;
-
-        $newoffset = SEARCH_ROWS * ($i-1);
-        echo "<a href=\"";
-        $sess->purl(URL . "?page=$modulename/browse&amp;offset=$newoffset&amp;category=$category&amp;category_id=$category_id&amp;keyword=$keyword");
-        echo "\">$pagenumber</a>&nbsp;";
-     }
-   
-   if (($offset+SEARCH_ROWS < $num_rows) && $num_pages != 1) {
-      $newoffset = $offset + SEARCH_ROWS;
-      echo "<a href=\"";
-      $sess->purl(URL . "?page=$modulename/browse&amp;offset=$newoffset&amp;category=$category&amp;category_id=$category_id&amp;keyword=$keyword");
-      echo "\">NEXT</a>\n";
-   }
-
+search_footer($modulename, "browse", $offset, $num_rows, $keyword, "&category=$category"); 
 ?>
 </td></tr></table>
 <!-- Body ends here -->
