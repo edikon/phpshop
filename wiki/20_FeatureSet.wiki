@@ -1,4 +1,4 @@
-#summary Official list of features for the phpShop administrative interface.
+#summary Official list of features for the phpShop 2.0 administrative interface.
 #labels Phase-Requirements
 
 = Introduction =
