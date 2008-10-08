@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: core.php 418 2008-01-31 22:37:17Z pablo $ */
+/* SVN FILE: $Id: core.php 7690 2008-10-02 04:56:53Z nate $ */
 /**
  * This is core configuration file.
  *
@@ -8,7 +8,7 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) :  Rapid Development Framework <http://www.cakephp.org/>
- * Copyright 2005-2007, Cake Software Foundation, Inc.
+ * Copyright 2005-2008, Cake Software Foundation, Inc.
  *								1785 E. Sahara Avenue, Suite 490-204
  *								Las Vegas, Nevada 89104
  *
@@ -16,14 +16,14 @@
  * Redistributions of files must retain the above copyright notice.
  *
  * @filesource
- * @copyright		Copyright 2005-2007, Cake Software Foundation, Inc.
+ * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
  * @link				http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
  * @package			cake
  * @subpackage		cake.app.config
  * @since			CakePHP(tm) v 0.2.9
- * @version			$Revision: 5818 $
- * @modifiedby		$LastChangedBy: phpnut $
- * @lastmodified	$Date: 2007-10-20 07:01:30 -0500 (Sat, 20 Oct 2007) $
+ * @version			$Revision: 7690 $
+ * @modifiedby		$LastChangedBy: nate $
+ * @lastmodified	$Date: 2008-10-02 00:56:53 -0400 (Thu, 02 Oct 2008) $
  * @license			http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 /**
@@ -40,7 +40,11 @@
  * In production mode, flash messages redirect after a time interval.
  * In development mode, you need to click the flash message to continue.
  */
-	Configure::write('debug', 1);
+	Configure::write('debug', 2);
+/**
+ * Application wide charset encoding
+ */
+	Configure::write('App.encoding', 'UTF-8');
 /**
  * To configure CakePHP *not* to use mod_rewrite and to
  * use CakePHP pretty URLs, remove these .htaccess
@@ -129,7 +133,7 @@
  * When set to false, HTTP_USER_AGENT will not be checked
  * in the session
  */
-	Configure::write('Session.checkAgent', false);
+	Configure::write('Session.checkAgent', true);
 /**
  * The level of CakePHP security. The session timeout time defined
  * in 'Session.timeout' is multiplied according to the settings here.
@@ -146,72 +150,80 @@
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi99999');
+	Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
 /**
  * Compress CSS output by removing comments, whitespace, repeating tags, etc.
  * This requires a/var/cache directory to be writable by the web server for caching.
+ * and /vendors/csspp/csspp.php
  *
- * To use, prefix the CSS link URL with '/ccss/' instead of '/css/' or use Controller::cssTag().
+ * To use, prefix the CSS link URL with '/ccss/' instead of '/css/' or use HtmlHelper::css().
  */
-	define('COMPRESS_CSS', false);
+	//Configure::write('Asset.filter.css', 'css.php');
+/**
+ * Plug in your own custom JavaScript compressor by dropping a script in your webroot to handle the
+ * output, and setting the config below to the name of the script.
+ *
+ * To use, prefix your JavaScript link URLs with '/cjs/' instead of '/js/' or use JavaScriptHelper::link().
+ */
+	//Configure::write('Asset.filter.js', 'custom_javascript_output_filter.php');
 /**
  * The classname and database used in CakePHP's
  * access control lists.
  */
-	Configure::write('Acl.classname', 'DB_ACL');
+	Configure::write('Acl.classname', 'DbAcl');
 	Configure::write('Acl.database', 'default');
 /**
+ *
  * Cache Engine Configuration
+ * Default settings provided below
  *
  * File storage engine.
- * default dir is /app/tmp/cache/
- * 	 Cache::config('default', array('engine' => 'File' //[required]
- *									'duration'=> 3600, //[optional]
- *									'probability'=> 100, //[optional]
- * 		 							'path' => '/tmp', //[optional] use system tmp directory - remember to use absolute path
- * 									'prefix' => 'cake_', //[optional]  prefix every cache file with this string
- * 									'lock' => false, //[optional]  use file locking
- * 									'serialize' => true, [optional]
- *								)
- * 					);
  *
- * APC (Alternative PHP Cache)
- * 	 Cache::config('default', array('engine' => 'Apc' //[required]
- *									'duration'=> 3600, //[optional]
- *									'probability'=> 100, //[optional]
- *								)
- * 					);
+ * 	 Cache::config('default', array(
+ *		'engine' => 'File', //[required]
+ *		'duration'=> 3600, //[optional]
+ *		'probability'=> 100, //[optional]
+ * 		'path' => CACHE, //[optional] use system tmp directory - remember to use absolute path
+ * 		'prefix' => 'cake_', //[optional]  prefix every cache file with this string
+ * 		'lock' => false, //[optional]  use file locking
+ * 		'serialize' => true, [optional]
+ *	));
  *
- * Xcache (PHP opcode cacher)
- * 	 Cache::config('default', array('engine' => 'Xcache' //[required]
- *									'duration'=> 3600, //[optional]
- *									'probability'=> 100, //[optional]
- *									'user' => 'admin', //user from xcache.admin.user settings
- *      							password' => 'your_password', //plaintext password (xcache.admin.pass)
- *								)
- * 					);
  *
- * Memcache
- * 	 Cache::config('default', array('engine' => 'Memcache' //[required]
- *									'duration'=> 3600, //[optional]
- *									'probability'=> 100, //[optional]
- * 									'servers' => array(
- * 												'127.0.0.1', // localhost, default port
- * 												'10.0.0.1:12345', // port 12345
- * 											), //[optional]
- * 									'compress' => true, // [optional] compress data in Memcache (slower, but uses less memory)
- *								)
- * 					);
+ * APC (http://pecl.php.net/package/APC)
  *
- * Cake Model
- * 	 Cache::config('default', array('engine' => 'Model' //[required]
- *									'duration'=> 3600, //[optional]
- *									'probability'=> 100, //[optional]
- * 									'className' => 'Cache', //[optional]
- * 									'fields' => array('data' => 'data', 'expires => 'expires'), //[optional]
- * 									'serialize' => true, [optional]
- *								)
- * 					);
+ * 	 Cache::config('default', array(
+ *		'engine' => 'Apc', //[required]
+ *		'duration'=> 3600, //[optional]
+ *		'probability'=> 100, //[optional]
+ * 		'prefix' => Inflector::slug(APP_DIR) . '_', //[optional]  prefix every cache file with this string
+ *	));
+ *
+ * Xcache (http://xcache.lighttpd.net/)
+ *
+ * 	 Cache::config('default', array(
+ *		'engine' => 'Xcache', //[required]
+ *		'duration'=> 3600, //[optional]
+ *		'probability'=> 100, //[optional]
+ * 		'prefix' => Inflector::slug(APP_DIR) . '_', //[optional] prefix every cache file with this string
+ *		'user' => 'user', //user from xcache.admin.user settings
+ *      'password' => 'password', //plaintext password (xcache.admin.pass)
+ *	));
+ *
+ *
+ * Memcache (http://www.danga.com/memcached/)
+ *
+ * 	 Cache::config('default', array(
+ *		'engine' => 'Memcache', //[required]
+ *		'duration'=> 3600, //[optional]
+ *		'probability'=> 100, //[optional]
+ * 		'prefix' => Inflector::slug(APP_DIR) . '_', //[optional]  prefix every cache file with this string
+ * 		'servers' => array(
+ * 			'127.0.0.1:11211' // localhost, default port 11211
+ * 		), //[optional]
+ * 		'compress' => false, // [optional] compress data in Memcache (slower, but uses less memory)
+ *	));
+ *
  */
 	Cache::config('default', array('engine' => 'File'));
 ?>

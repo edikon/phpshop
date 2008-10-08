@@ -71,8 +71,8 @@
 	/**
 	* Validation for admin users 
 	*/
-	function checkAdminSession()
-    {
+	function checkAdminSession() {
+
         // If the session info hasn't been set...
         if (!$this->Session->check('User'))
         {
