@@ -1,0 +1,32 @@
+#summary (DRAFT) Installation instructions for working with the phpShop 2.0 code in SVN
+
+= Introduction =
+
+* This document is incomplete. Working on it still... * 
+This guide explains how to install phpShop 2.0 as it is currently in the source code repository.  It is important to point out that the code in SVN is simply the application code.  You still need to install the CakePHP library in order to get it to work correctly.  Instructions follow:
+
+
+= Details =
+
+In order to install phpShop 2.0 you will need to follow 3 primary steps:
+  * Download CakePHP 1.2
+  * Checkout phpShop 2.0 code from SVN
+  * Run installer
+
+== Download CakePHP ==
+
+  # Download CakePHP 1.2 by visiting: http://cakeforge.org/frs/?group_id=23.  Be sure to grab the most recent version of CakePHP 1.2.
+  # Uncompress CakePHP inside your web directory.  This will create a folder along the lines of cake-1.2...something/
+  # Rename the folder to phpshop/ (or whatever you prefer; for the purposes of this guide, we use phpshop/).
+  # Remove the app/ folder inside the phpshop/ directory.
+  
+== Checkout phpShop 2.0 from SVN ==
+
+  # Change to the cake directory.
+  # Checkout app/ folder from the phpshop2/ SVN folder.
+  # Run the set_permissions.sh script.
+  # Open browser to the folder.
+  # Launch installation.
+
+
+
