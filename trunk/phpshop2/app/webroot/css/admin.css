@@ -383,7 +383,6 @@ input[type=submit] {
 }
 
 
-
 /* Related */
 div.related {
 	clear: both;
@@ -517,3 +516,48 @@ div.cake-code-dump span.code-highlight {
 	padding: 4px 8px;
 	text-align: left;
 }
+
+/* Login */
+#bd div.login {
+	padding: 20px;
+	border: 5px solid #ccc;
+	background-color: #f5f5f5;
+	text-align: left;
+	width: 400px;
+	margin: 30px auto;
+	font-family: lucida grande, verdana;
+	font-size: 12px;
+}
+
+#bd div.login h2 {
+  	color: #000;
+	font-size: 12px;
+	margin: 0 0 2px 0;
+	padding: 0;
+}
+
+#bd div.login input {
+	font-size: 14px;
+	padding: 3px;
+	margin-bottom: 10px;
+}
+
+#bd div.login label {
+  margin-bottom: 10px;
+}
+
+#bd div.login label input {
+  margin-bottom: 0;
+}
+
+#bd div.login input.auto {
+	width: auto;
+}
+
+#bd div.login input.button {
+	width: auto;
+	font-size: 14px;
+	padding: 3px;
+	margin: 10px 0 0 0;
+}
+

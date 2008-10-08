@@ -24,15 +24,17 @@
  * @license			http://www.opensource.org/licenses/gpl-license.php The GNU General Public License
  */
 ?>
-<div class="login form">
-<fieldset>
-	<legend><?php __('Login');?></legend>
+<div class="login">
 
 <?php echo $form->create('User', array('action'=> 'login')); ?>
-<?php echo $form->input('User.username', array('size' => 16)); ?>
-<?php echo $form->input('User.password', array('size' => 16)); ?>
-<?php echo $form->end('Login'); ?>
+<h2><?php echo _("Username"); ?></h2>
+<input name="data[User][username]" size="16" maxlength="64" type="text" /><br />
 
-</fieldset>
+<h2><?php echo _("Password"); ?></h2>
+<input name="data[User][password]" size="16" maxlength="64" type="password" /><br />
+
+<p><strong>Help:</strong> <a href="#">I forgot my username or password</a></p>
+<input type="submit" value="Sign in" class="button" /><br /><br />
+</form>
 
 </div>
