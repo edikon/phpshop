@@ -22,11 +22,9 @@ In order to install phpShop 2.0 you will need to follow 3 primary steps:
   
 == Checkout phpShop 2.0 from SVN ==
 
-  # Change to the cake directory.
-  # Checkout app/ folder from the phpshop2/ SVN folder.
+  # Change to the phpshop/ directory.
+  # Checkout app/ folder from SVN.
   # Run the set_permissions.sh script.
-  # Open browser to the folder.
+  # Open browser and point to the installation folder.
   # Launch installation.
-
-
 
