@@ -17,14 +17,31 @@ In order to install phpShop 2.0 you will need to follow 3 primary steps:
 
   # Download CakePHP 1.2 by visiting: http://cakeforge.org/frs/?group_id=23.  Be sure to grab the most recent version of CakePHP 1.2.
   # Uncompress CakePHP inside your web directory.  This will create a folder along the lines of cake-1.2...something/
+{{{
+unzip cake-1.2.XXX.zip
+}}}
   # Rename the folder to phpshop/ (or whatever you prefer; for the purposes of this guide, we use phpshop/).
+{{{
+mv cake-1.2/ phpshop/
+}}}
   # Remove the app/ folder inside the phpshop/ directory.
+{{{
+rm -rf phpshop/app
+}}}
   
 == Checkout phpShop 2.0 from SVN ==
 
   # Change to the phpshop/ directory.
+{{{
+cd phpshop/
+}}}
   # Checkout app/ folder from SVN.
+  {{{
+svn checkout https://phpshop.googlecode.com/svn/trunk/phpshop2/app app
+}}}
   # Run the set_permissions.sh script.
+{{{
+# sh app/set_permissions.sh
+}}}
   # Open browser and point to the installation folder.
-  # Launch installation.
-
+  # Launch installation.  Follow instructions.
