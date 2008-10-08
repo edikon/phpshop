@@ -88,7 +88,7 @@ class StoreController extends AppController {
 			$this->pageTitle = Configure::read('Store.name') .  ' - ' . $category['Category']['name'];
 			
 			if (isset($this->params['requested'])) {
-				$this->render();
+				echo $this->render();
 			}
 		}
 		else {
