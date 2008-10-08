@@ -50,7 +50,7 @@
 		</div>
 	</div>
 	
-	<div id="bd">
+	<div id="bd" style="width: 500px; margin:0 auto;">
 		
 			<?php if ($session->check('Message.flash'))
 					{

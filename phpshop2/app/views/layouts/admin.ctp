@@ -81,7 +81,7 @@
 				<h1>&nbsp;</h1>
 		</div>
 		<div id="yui-u" class="topnav">
-			<a href="<?php echo ini_get('session.cookie_path') ?>">/Store</a> -
+			<a href="<?php echo ini_get('session.cookie_path') ?>">Store</a> -
 			<a href="<?php echo ini_get('session.cookie_path') ?>/users/logout">Logout</a>
 		</div>
 	</div>
