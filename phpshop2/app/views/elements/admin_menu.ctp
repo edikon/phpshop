@@ -50,7 +50,7 @@
          <div class="bd">
          <ul>
          <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo ini_get('session.cookie_path') ?>/admin/settings">Settings</a></li>
-         <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo ini_get('session.cookie_path') ?>admin/users">Users</a></li>
+         <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo ini_get('session.cookie_path') ?>/admin/users">Users</a></li>
          <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo ini_get('session.cookie_path') ?>/admin/countries">Countries</a></li>
          <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo ini_get('session.cookie_path') ?>/admin/shipping_rates">Shipping</a></li>
          <li class="yuimenuitem"><a class="yuimenuitemlabel" href="<?php echo ini_get('session.cookie_path') ?>/admin/order_statuses">Order Statuses</a></li>
