@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `ps_orders` (
   `shipping_city` varchar(32) NOT NULL,
   `shipping_state` varchar(32) NOT NULL,
   `shipping_country` varchar(32) default NULL,
+  `residential` int(1) default '0',
   `shipping_zip` varchar(32) NOT NULL,
   `subtotal` decimal(10,2) NOT NULL,
   `zone_tax` decimal(10,2) default NULL,
@@ -205,8 +206,8 @@ CREATE TABLE IF NOT EXISTS `ps_orders` (
 -- Dumping data for table `ps_orders`
 --
 
-INSERT INTO `ps_orders` (`id`, `customer_id`, `email`, `billing_company`, `billing_last_name`, `billing_first_name`, `billing_phone`, `billing_address_1`, `billing_address_2`, `billing_city`, `billing_state`, `billing_country`, `billing_zip`, `shipping_company`, `shipping_last_name`, `shipping_first_name`, `shipping_phone`, `shipping_address_1`, `shipping_address_2`, `shipping_city`, `shipping_state`, `shipping_country`, `shipping_zip`, `subtotal`, `zone_tax`, `country_tax`, `shipping`, `shipping_tax`, `total`, `comments`, `order_status_id`, `created`, `modified`) VALUES
-(0000000001, 1, 'root@localhost', 'Company', 'Last Name', 'First Name', '555-555-1212', 'Street Address 1', 'Street Address 2', 'City', 'State', 'Country', '00000', 'Shipping Company', 'Last Name', 'First Name', '555-555-1212', 'Address 1', 'Address 2', 'City', 'State', 'Country', '00000', 80.97, 2.54, 0.00, 0.00, 0.00, 83.51, 'Please send in a hurry.', 1, '2007-04-24 22:14:56', '2008-01-23 17:47:18');
+INSERT INTO `ps_orders` (`id`, `customer_id`, `email`, `billing_company`, `billing_last_name`, `billing_first_name`, `billing_phone`, `billing_address_1`, `billing_address_2`, `billing_city`, `billing_state`, `billing_country`, `billing_zip`, `shipping_company`, `shipping_last_name`, `shipping_first_name`, `shipping_phone`, `shipping_address_1`, `shipping_address_2`, `shipping_city`, `shipping_state`, `shipping_country`, `shipping_zip`, `residential`, `subtotal`, `zone_tax`, `country_tax`, `shipping`, `shipping_tax`, `total`, `comments`, `order_status_id`, `created`, `modified`) VALUES
+(0000000001, 1, 'root@localhost', 'Company', 'Last Name', 'First Name', '555-555-1212', 'Street Address 1', 'Street Address 2', 'City', 'State', 'Country', '00000', 'Shipping Company', 'Last Name', 'First Name', '555-555-1212', 'Address 1', 'Address 2', 'City', 'State', 'Country', '00000', NULL, 80.97, 2.54, 0.00, 0.00, 0.00, 83.51, 'Please send in a hurry.', 1, '2007-04-24 22:14:56', '2008-01-23 17:47:18');
 
 -- --------------------------------------------------------
 
