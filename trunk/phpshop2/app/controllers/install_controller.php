@@ -5,23 +5,23 @@
  * PHP versions 4 and 5
  *
  * phpShop(tm) :  A Simple Shopping Cart <http://www.phpshop.org/>
- * Copyright 1998-2008, 	Edikon Corporation
- *							3455 Peachtree Road Suite 500
- *							Atlanta, Georgia 30326
+ * Copyright 1998-2008,	Edikon Corporation
+ *			3455 Peachtree Road Suite 500
+ *			Atlanta, Georgia 30326
  *
  * Licensed under The GNU General Public License
  * Redistributions of files must retain the above copyright notice.
  *
  * @filesource
  * @copyright		Copyright 1998-2008, Edikon Corporation
- * @link			http://www.edikon.com/ phpShop(tm) Project
- * @package			phpshop
+ * @link		http://www.edikon.com/ phpShop(tm) Project
+ * @package		phpshop
  * @subpackage		phpshop.app.controllers
- * @since			phpShop(tm)
- * @version			$Revision:$
+ * @since		phpShop(tm)
+ * @version		$Revision:$
  * @modifiedby		$LastChangedBy:$
  * @lastmodified	$Date:$
- * @license			http://www.opensource.org/licenses/gpl-license.php The GNU General Public License
+ * @license		http://www.opensource.org/licenses/gpl-license.php The GNU General Public License
  */
 
 /**
@@ -54,16 +54,16 @@ class InstallController extends AppController
    function step1() {
 	   //check for database.php file,if file exits then display a message to user.
 	   if ($this->__dbFileExists()){
-		  $this->render(null,null,'db_error');
+		  echo $this->render(null,null,'db_error');
 		  exit;
 	   }
 	   if (!function_exists('gd_info'))
 	   {
-		  $this->render(null,null,'gd_error');
+		  echo $this->render(null,null,'gd_error');
 		  exit;	   	
 	   }
 	   if($this->__testFileSystem()) {
-		   $this->redirect('/install/step2');
+		   echo $this->redirect('/install/step2');
 		   exit;
 	   }
    }
@@ -77,7 +77,7 @@ class InstallController extends AppController
 			   $this->redirect('/install/step3');
 		   }
 		}
-		$this->render(null,null,'db_error');
+		echo $this->render(null,null,'db_error');
    }
 
    /*
@@ -86,7 +86,7 @@ class InstallController extends AppController
    function step3() {
 
 	  if ($this->__createUser()) {
-		 $this->render(null, null, 'success');
+		 echo $this->render(null, null, 'success');
 		 exit;
 	  }
    }
@@ -128,7 +128,7 @@ class InstallController extends AppController
 		$this->set(array (
 			'title' => 'Install phpShop'
 		));
-		$this->render(null, null, 'admin');
+		echo $this->render(null, null, 'admin');
 		exit;
    }
    function __createDatabase()
@@ -162,7 +162,7 @@ class InstallController extends AppController
 		$this->set(array (
 			'title' => 'Install phpShop'
 		));
-		$this->render(null, null, 'database');
+		echo $this->render(null, null, 'database');
 		exit;
    }
    function __testFileSystem()
@@ -194,7 +194,7 @@ class InstallController extends AppController
 			$this->set(array (
 				'title' => 'Install phpShop'
 			));
-			$this->render(null, null, 'fileSystem');
+			echo $this->render(null, null, 'fileSystem');
 			exit;
 		}
 		return true;
