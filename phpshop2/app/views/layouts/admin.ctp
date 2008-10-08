@@ -32,28 +32,28 @@
 	<link rel="shortcut icon" href="<?php echo $this->webroot . 'favicon.ico';?>" type="image/x-icon" />
 
 	<!--reset-fonts-grids.css & base.css --> 
-	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>yui/build/reset-fonts-grids/reset-fonts-grids.css"> 
-	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>yui/build/reset-fonts-grids/base.css"> 
+	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>/yui/build/reset-fonts-grids/reset-fonts-grids.css"> 
+	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>/yui/build/reset-fonts-grids/base.css"> 
 
 	<!-- Custom CSS -->
 	<?php echo $html->css(array('admin')); ?>
 	
 	<!-- Dependencies -->  
-	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>yui/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>yui/build/container/container_core-min.js"></script> 
+	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>/yui/build/container/container_core-min.js"></script> 
 
 	<!-- Menu  + CSS --> 
-	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>yui/build/menu/menu-min.js"></script> 
-	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>yui/build/menu/assets/skins/sam/menu.css"> 	
+	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>/yui/build/menu/menu-min.js"></script> 
+	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>/yui/build/menu/assets/skins/sam/menu.css"> 	
 
 	<!-- Button  + CSS --> 
-	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>yui/build/element/element-beta-min.js"></script> 
-	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>yui/build/button/button-min.js"></script> 
-	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>yui/build/button/assets/skins/sam/button.css"> 	
+	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>/yui/build/element/element-beta-min.js"></script> 
+	<script type="text/javascript" src="<?php echo ini_get('session.cookie_path') ?>/yui/build/button/button-min.js"></script> 
+	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>/yui/build/button/assets/skins/sam/button.css"> 	
 
 	<!-- RTF Editor + CSS -->
-	<script src="<?php echo ini_get('session.cookie_path') ?>yui/build/editor/editor-beta-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>yui/build/editor/assets/skins/sam/editor.css"> 
+	<script src="<?php echo ini_get('session.cookie_path') ?>/yui/build/editor/editor-beta-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo ini_get('session.cookie_path') ?>/yui/build/editor/assets/skins/sam/editor.css"> 
 		
 	<!-- Additional JS -->		
 	<?php if(isset($javascript)) { echo $javascript->link(array('prototype.js','scriptaculous.js?load=effects')); } ?>
@@ -81,8 +81,8 @@
 				<h1>&nbsp;</h1>
 		</div>
 		<div id="yui-u" class="topnav">
-			<a href="<?php echo ini_get('session.cookie_path') ?>">Store</a> -
-			<a href="<?php echo ini_get('session.cookie_path') ?>users/logout">Logout</a>
+			<a href="<?php echo ini_get('session.cookie_path') ?>">/Store</a> -
+			<a href="<?php echo ini_get('session.cookie_path') ?>/users/logout">Logout</a>
 		</div>
 	</div>
 
