@@ -51,13 +51,13 @@
 		<div class="headermenu">
 			<ul>
 			<li><a href="<?php echo ini_get('session.cookie_path') ?>">Home</a></li>
-			<li><a href="<?php echo ini_get('session.cookie_path') ?>store/cart">Cart</a></li>
-			<li><a href="<?php echo ini_get('session.cookie_path') ?>checkout/index">Checkout</a></li>
+			<li><a href="<?php echo ini_get('session.cookie_path') ?>/store/cart">Cart</a></li>
+			<li><a href="<?php echo ini_get('session.cookie_path') ?>/checkout/index">Checkout</a></li>
 			<?php if ($session->check('Customer')): ?>
-			<li><a href="<?php echo ini_get('session.cookie_path') ?>account/index">My Account</a></li>
-			<li><a href="<?php echo ini_get('session.cookie_path') ?>store/logout">Logout</a></li>
+			<li><a href="<?php echo ini_get('session.cookie_path') ?>/account/index">My Account</a></li>
+			<li><a href="<?php echo ini_get('session.cookie_path') ?>/store/logout">Logout</a></li>
 			<?php else: ?>
-			<li><a href="<?php echo ini_get('session.cookie_path') ?>store/login">Login</a></li>	
+			<li><a href="<?php echo ini_get('session.cookie_path') ?>/store/login">Login</a></li>	
 			<?php endif; ?>
 			</ul>	
 		</div>
@@ -93,10 +93,10 @@
 		<div class="footermenu">
 		<ul>
 		<li><a href="<?php echo ini_get('session.cookie_path') ?>">Home</a></li>
-		<li><a href="<?php echo ini_get('session.cookie_path') ?>checkout/index">Checkout</a></li>
-		<li><a href="<?php echo ini_get('session.cookie_path') ?>account/index">My Account</a></li>
+		<li><a href="<?php echo ini_get('session.cookie_path') ?>/checkout/index">Checkout</a></li>
+		<li><a href="<?php echo ini_get('session.cookie_path') ?>/account/index">My Account</a></li>
 		<li><a href="<?php echo ini_get('session.cookie_path') ?>">Contact Us</a></li>
-		<li><a href="<?php echo ini_get('session.cookie_path') ?>admin/orders">Administration</a></li>
+		<li><a href="<?php echo ini_get('session.cookie_path') ?>/admin/orders">Administration</a></li>
 		</ul>
 			<p>
 			<a href="http://www.phpshop.org/" target="_new">phpShop(tm) Power</a>
