@@ -45,3 +45,12 @@ svn checkout https://phpshop.googlecode.com/svn/trunk/phpshop2/app app
 }}}
   # Open browser and point to the installation folder.
   # Launch installation.  Follow instructions.
+
+== Installation ==
+
+  # The installer checks that requirements are met.
+  # The installer checks if database exists, if not gives you the option to create it.
+  # You must have a database with a user/password that has access to it.
+  # The installer will create tables with demo data.
+  # The installer will create the configuration file and write it directly to disk.
+  # You are done.  Happy testing!
