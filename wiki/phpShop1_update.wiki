@@ -1,10 +1,5 @@
-#summary Roadmap adding additional features to phpShop1
+#Roadmap adding additional features to phpShop1
 
-= Introduction =
+= Updates for phpShop1 =
 
-Updates for phpShop1
-
-
-= Details =
-
-Descriptions of new features for phpShop1 and how to implement these into a running system
+= Descriptions of new features for phpShop1 and how to implement these into a running system =
