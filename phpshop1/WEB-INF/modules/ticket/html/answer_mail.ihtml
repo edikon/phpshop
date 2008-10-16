@@ -1,0 +1,40 @@
+<?php
+if ($vars["ticket_success"]) {
+  echo $vars["ticket_success"];
+}
+
+$q="SELECT user_id FROM tickets WHERE ticket_id ='$ticket_id'";
+$q .= "AND vendor_id='$ps_vendor_id'";
+$db->query($q);
+$db->next_record();
+$userid=$db->f(user_id);
+
+$q="SELECT * FROM user_info WHERE user_id ='$userid'";
+$db->query($q);
+$db->next_record();
+
+$to_name=$db->f("first_name");
+$to_name .=" ";
+$to_name .=$db->f("last_name");
+
+?>
+
+<FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+<?php $sess->hidden_session(); ?>
+<input type=HIDDEN name="page" value="ticket/ticket_list">
+<input type=hidden name="ticket_id" value="<?php echo $ticket_id ?>">
+<input type=HIDDEN name="func" value="ticket_mail">
+
+<?php echo "$shopper_form_first_name $shopper_form_last_name" ?><br>
+<INPUT TYPE="text" NAME="to_name" SIZE="30" value="<?php echo $to_name ?>"><br>
+<?php echo $email_str ?><br>
+<INPUT TYPE="text" NAME="to_email" SIZE="30" value="<?php echo $db->f("user_email") ?>"><br>
+<?php echo $subject_lbl ?><br>
+<INPUT TYPE="text" NAME="info_subject" SIZE="30" value="Ticket-Info <?php echo $ticket_id ?>"><br>
+<?php echo $infopre_str ?><br>
+<INPUT TYPE="text" NAME="info_pre" SIZE="20" ><br>
+
+<?php echo $ticket_msg_txt_lbl ?><BR>
+<TEXTAREA NAME="info_detail" ROWS="20" COLS="60"></TEXTAREA><P>
+<INPUT TYPE="submit" NAME="send" VALUE="<?php echo $send_lbl ?>">
+</FORM>
