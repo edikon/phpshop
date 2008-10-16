@@ -1,7 +1,98 @@
 <?php
-	require_once("product/lib/ps_product.inc");
-	$ps_product = new ps_product;
+require_once("product/lib/ps_product.inc");
+$ps_product = new ps_product;
+
+if ($perm->check("admin,storeadmin")) {
+  $q = "SELECT * from tickets WHERE ticket_view = 0";
+  $q .=" AND ticket_status='1' AND vendor_id='$ps_vendor_id' ";
+  $db->query($q);
+
+  while ($db->next_record()) {
+    $ticket_id=$db->f("ticket_id");
+    $url = SECUREURL . "?page=ticket/ticket_print&ticket_id=";
+    $url .= $ticket_id;
+    echo "<A class=\"bLink\" HREF=".($url).">";
+    echo "$ticket_list_id:";
+    echo $ticket_id;
+    echo "</A><BR>";
+  }
+
+  $i=0;
+  $q = "SELECT * from ticket_answer WHERE answer_view = 0";
+  $q .=" AND answer_status='1' AND vendor_id='$ps_vendor_id'";
+  $db->query($q);
+
+  while ($db->next_record()) {
+    $i++;
+
+    if ($i==1) {     
+      echo "<table>";
+    }
+
+    $answer_id=$db->f("answer_id");
+    $tick_id=$db->f("ticket_id");
+    $a_subj=$db->f("answer_subject");
+
+    $url = SECUREURL . "?page=ticket/answer_print&answer_id=";
+    $url .= $answer_id;
+
+    echo "<tr><td>";
+    echo "<A class=\"bLink\" HREF=".($url).">";
+    echo $a_subj;
+    echo "</A></td><td>";
+    echo " $ticket_list_id: ";
+    $url = SECUREURL . "?page=ticket/ticket_print&ticket_id=";
+    $url .= $tick_id;
+    echo "<A class=\"bLink\" HREF=".($url).">";
+    echo $tick_id;
+    echo "</A></td></tr>";
+  }
+
+  if ($i > 0) {     
+    echo "</table>";
+  }
+}
+
+if ($perm->check("shopper")) {
+  $i=0;
+  $q = "SELECT * from ticket_answer WHERE answer_view ='0'";
+  $q .=" AND user_id ='" . $auth["user_id"] . "'";
+  $q .=" AND answer_status='1' ";
+  $db->query($q);
+
+  while ($db->next_record()) {
+    $i++;
+
+    if ($i==1) {     
+      echo "<table>";
+    }
+
+    $answer_id=$db->f("answer_id");
+    $tick_id=$db->f("ticket_id");
+    $a_subj=$db->f("answer_subject");
+    $url = SECUREURL . "?page=account/answer_print&answer_id=";
+    $url .= $answer_id;
+    echo "<tr><td>";
+//    echo "$answer_id_str:";
+    echo "<A class=\"bLink\" HREF=".($url).">";
+    echo $a_subj;
+    echo "</A></td><td>";
+    echo "$ticket_list_id:";
+    $url = SECUREURL . "?page=account/ticket_print&ticket_id=";
+    $url .= $tick_id;
+    echo "<A class=\"bLink\" HREF=".($url).">";
+    echo $tick_id;
+    echo "</A></td></tr>";
+  }
+
+  if ($i > 0) {     
+    echo "</table>";
+  }
+
+}
 ?>
+
+
 <table width="100%" border="0" cellpadding="10" cellspacing="0">
  <tr valign="top">
   <td>   <h1>Welcome to Washupito's Tiendita
