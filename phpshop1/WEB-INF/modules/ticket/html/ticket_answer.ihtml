@@ -1,0 +1,32 @@
+<?php
+
+  $q="SELECT * FROM tickets WHERE ticket_id ='$ticket_id'";
+  $q .= "AND vendor_id='$ps_vendor_id'";
+  $db->query($q);
+  $db->next_record();
+  $userid=$db->f("user_id");
+
+  $q="SELECT * FROM user_info WHERE user_id ='$userid'";
+  $db->query($q);
+  $db->next_record();
+
+  $to_name=$db->f("first_name");
+  $to_name .=" ";
+  $to_name .=$db->f("last_name");
+?>
+
+<FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+<input type=HIDDEN name=page value="ticket/ticket_answer&$ticket_id">
+<input type=HIDDEN name=func value="ticket_answer">
+
+<?php echo "$shopper_form_first_name $shopper_form_last_name" ?><br>
+<INPUT TYPE="text" NAME="to_name" SIZE="30" value="<?php echo $to_name ?>"><br>
+<?php echo $subject_lbl ?><br>
+<INPUT TYPE="text" NAME="info_subject" SIZE="30" value="Ticket-Info <?php echo $ticket_id ?>"><br>
+
+<?php echo $ticket_msg_txt_lbl ?><BR>
+<TEXTAREA NAME="info_detail" ROWS="20" COLS="60"></TEXTAREA><P>
+<input type=HIDDEN name=ticket_id value="<?php echo $ticket_id ?>">
+<INPUT TYPE="submit" NAME="send" VALUE="<?php echo $send_lbl ?>">
+<input type=HIDDEN name=page value="ticket/answer_list">
+</FORM>

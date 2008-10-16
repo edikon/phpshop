@@ -1,0 +1,140 @@
+<?php 
+search_header($ticket_list_lbl, $modulename, "ticket_list"); 
+echo $mail_success
+?>
+
+<center>
+<?php
+if ($vars["ticket_success"]) {
+  echo $vars["ticket_success"];
+}
+
+$navi_db = new ps_DB;
+$q = "SELECT * FROM ticket_status WHERE vendor_id = '$ps_vendor_id' AND language='$lang' ";
+$navi_db->query($q);
+while ($navi_db->next_record()) {
+  $url = SECUREURL . "?page=$modulename/ticket_list&show=";
+  $url .= $navi_db->f("ticket_status_id");
+  echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>";
+  echo $navi_db->f("ticket_status_name")."</B></A> | ";
+}
+
+$url = SECUREURL . "?page=$modulename/ticket_list&show=";
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B> $show_all_lbl </B></A><BR>";
+?>
+
+</center><BR>
+
+<?php 
+// Enable the multi-page search result display
+if (empty($offset))
+  $offset=0;
+
+if ($keyword) {
+  $list  = "SELECT * ";
+  $list .= "FROM tickets WHERE ";
+  $count = "SELECT count(*) as num_rows FROM tickets, user_info, auth_user_md5 WHERE ";
+  $q  = "(tickets.ticket_id LIKE '%$keyword%' ";
+  $q .= "OR tickets.ticket_status LIKE '%$keyword%' ";
+  $q .= "OR tickets.ticket_subject LIKE '%$keyword%' ";
+  $q .= ") ";
+  $q .= "AND tickets.vendor_id='$ps_vendor_id' ";
+  $q .= "ORDER BY tickets.cdate DESC ";
+  $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+  $count .= $q;   
+}
+
+else {
+  $q = "";
+  $list  = "SELECT * FROM tickets WHERE ";
+  $count = "SELECT count(*) as num_rows FROM tickets WHERE ";
+  $q .= "tickets.vendor_id='$ps_vendor_id' ";
+  if ($show) 
+    $q .= "AND ticket_status = '$show' ";
+  $q .= "ORDER BY tickets.cdate DESC ";
+  $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+  $count .= $q;   
+}
+
+$db->query($count);
+$db->next_record();
+$num_rows = $db->f("num_rows");
+
+if ($num_rows == 0) {
+   echo "$noticket <BR>";
+}
+
+else {
+  ?>
+  <table width="100%" BORDER="1" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr> 
+  <td width="50%" class="RecordsTableHeader"><?php echo $subject_lbl ?></td>
+  <td width="20%" class="RecordsTableHeader"><?php echo $ticket_list_cdate ?></td>
+  <td width="10%" class="RecordsTableHeader"><?php echo $ftp_list_status ?></td>
+  <td width="20%" class="RecordsTableHeader" colspan="2" align="center"><?php echo $download_list_action ?></td>
+  </tr>
+  
+  <?php 
+  $db->query($list);
+  $i = 0;
+  while ($db->next_record()) { 
+    if ($i++ % 2) 
+      $bgcolor=SEARCH_COLOR_1;
+    else
+      $bgcolor=SEARCH_COLOR_2;
+    ?>
+    <tr BGCOLOR=<?php echo $bgcolor ?>> 
+    <td width="50%">
+    <?php
+    echo "<A class=\"bLink\" HREF=";
+    echo $sess->url(SECUREURL . "?page=ticket/ticket_print&ticket_id=" . $db->f("ticket_id")) . ">";
+    echo $db->f("ticket_subject");
+    echo "</A><BR>";
+    ?>
+
+    <td width="20%">
+    <?php echo strftime("%d-%b-%y %H:%M", $db->f("mdate")); ?>
+    </td>
+
+    <?php
+    $q = "SELECT ticket_status FROM tickets WHERE ";
+    $q .= "ticket_id = '" . $db->f("ticket_id") . "'";
+    $dbps = new ps_DB;
+    $dbps->query($q);
+    $dbps->next_record();
+    ?> 
+
+    <td width="25%" colspan="2">
+    <form method="post" action="<?php echo SECUREURL ?>">
+    <?php 
+    $ps_ticket_status->ticket_status_list($db->f("ticket_status"));
+    $sess->hidden_session();
+    ?>
+    <input type="hidden" name="page" value="ticket/ticket_list">
+    <input type="hidden" name="ticket_id" value="<?php echo $db->f("ticket_id") ?>">
+    <input type="hidden" name="func" value="ticket_status_set">
+    <input type="submit" name="Submit" value="<?php echo $upd_str ?>">
+    </form>
+    </td>
+
+    <td width="5%">
+    <form method="post" action="<?php echo SECUREURL ?>">
+    <?php 
+    $ps_ticket->ticket_delete($db->f("$ticket_id"));
+    $sess->hidden_session();
+    ?>
+    <input type="submit" name="Submit" value="<?php echo $del_str ?>">
+    <input type="hidden" name="page" value="ticket/ticket_list">
+    <input type="hidden" name="func" value="ticket_delete">
+    <input type="hidden" name="ticket_id" value="<?php echo $db->f("ticket_id")?>">
+    </form>
+    </td>
+    </tr>
+    <?php
+  }
+  ?> 
+  </table>
+  <?php 
+  search_footer($modulename, "ticket_list", $offset, $num_rows, $keyword); 
+}
+?>

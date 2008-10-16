@@ -1,0 +1,132 @@
+<?php
+if (!$answer_id) {
+  $answer_id = $vars["answer_id"];
+}
+
+$q = "SELECT answer_id,ticket_id,answer_subject,answer_content,answer_status,ticket_answer.cdate,ticket_answer.user_id,ticket_answer.vendor_id,";
+$q .= "ticket_status_id,ticket_status_name,ticket_status.language,ticket_status.vendor_id,";
+$q .= "user_info.user_id,address_type,first_name,last_name ";
+$q .= "FROM ticket_answer,ticket_status,user_info WHERE ";
+$q .= "answer_id='$answer_id' ";
+$q .= "AND answer_status=ticket_status_id ";
+$q .= "AND ticket_status.language='$lang' ";
+$q .= "AND ticket_status.vendor_id='$ps_vendor_id' ";
+$q .= "AND ticket_status.vendor_id=ticket_answer.vendor_id ";
+$q .= "AND ticket_answer.user_id=user_info.user_id ";
+$q .= "AND address_type='BT'";
+$db->query($q);
+
+if ($db->next_record()) {
+  ?>  
+
+<TABLE WIDTH=100% ALIGN=CENTER BORDER=0 CELLSPACING=0 CELLPADDING=10>
+  <TR BGCOLOR=<?php echo $leftbar_title_bgcolor?>> 
+    <TD COLSPAN=2>
+      <H3>Antwort</H3>
+    </TD>
+  </TR>
+</TABLE>
+
+<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=2 WIDTH=100%>
+
+  <!-- Begin answer Information --> 
+  <TR BGCOLOR=#FFcc00> 
+    <TD COLSPAN=2><B><?php echo $reply_info_str ?></B></TD>
+  </TR>
+  <TR> 
+    <TD><?php echo $answer_id_str ?>:</TD>
+    <TD><?php echo $db->f("answer_id"); ?></TD>
+  </TR>
+  <TR> 
+    <TD><?php echo $reply_list_cdate ?>:</TD>
+    <TD><?php echo date("d-M-Y H:i", $db->f("cdate")); ?></TD>
+  </TR>
+  <TR> 
+    <TD><?php echo $ticket_list_id ?>:</TD>
+    <TD><?php
+      $ticket_id=$db->f("ticket_id");
+      $url = SECUREURL . "?page=$modulename/ticket_print&ticket_id=";
+      $url .= $ticket_id;
+      echo "<A class=\"bLink\" HREF=".$sess->url($url).">$ticket_id</A><BR>";
+    ?></TD>
+  </TR>
+
+  <TR> 
+    <TD><?php echo $ftp_list_status ?>:</TD>
+    <TD><?php echo $db->f("ticket_status_name") ?>
+    </TD>
+  </TR>
+
+  <TR> 
+    <TD>von:</TD>
+
+
+    <TD><?php
+         $un=$db->f("first_name");
+         $un .=" ";
+         $un .=$db->f("last_name");
+         echo $un;
+         ?>
+
+    </TD>
+  </TR>
+  <!-- End Ticket Information --> <!-- Begin 2 column answer-content --> 
+
+  <TR BGCOLOR=#FFcc00> 
+    <TD COLSPAN=2><B><?php echo $ticket_msg_lbl ?>:</B></TD>
+  </TR>
+  <TR VALIGN=top> 
+    <TD WIDTH=50%> <!-- Begin TicketContent -->
+
+      <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=2 BORDER=0>
+        <TR> 
+          <TD COLSPAN=2><B><?php echo $subject_lbl ?>:</B><BR>
+          <?php echo $db->f("answer_subject"); ?></TD>
+        </TR><br>
+        <TR> 
+          <TD><B><?php echo $ticket_msg_txt_lbl ?>:</B><BR>
+          <?php echo $db->f("answer_content"); ?></TD>
+        </TR>
+
+
+      </TABLE>
+
+      <!-- End TicketContent --> </TD>
+
+    <TD WIDTH=50%>
+ <!-- End Ticket Information --> </TD>
+
+  </TR>
+<tr> 
+<td>
+<?php
+$ticket_id=$db->f("ticket_id");
+$url = SECUREURL . "?page=$modulename/answer_mail&ticket_id=";
+$url .= $ticket_id;
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>$reply_str (E-Mail)</B></A><BR>";
+
+$url = SECUREURL . "?page=$modulename/ticket_answer&ticket_id=";
+$url .= $ticket_id;
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>$reply_str (DB)</B></A><BR>";
+
+?>
+
+</td>
+  <tr> 
+  <td>
+  </tr>
+  </table>
+
+  <?php
+
+  $q = "UPDATE ticket_answer SET ";
+  $q .= "answer_view= 1";
+  $q .= " WHERE answer_id='$answer_id'";
+  $db->query($q);
+  $db->next_record();
+}
+?> 
+
+<br>
+<!-- Body ends here -->
+
