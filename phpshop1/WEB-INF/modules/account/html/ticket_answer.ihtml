@@ -1,0 +1,15 @@
+<FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+<input type=HIDDEN name="page" value="account/index">
+<input type=HIDDEN name="acmd" value="answer_print">
+<input type=HIDDEN name="ticket_id" value="<?php echo $ticket_id ?>">
+<input type=HIDDEN name=func value="ticket_answer">
+
+<?php echo $subject_lbl ?><br>
+<INPUT TYPE="text" NAME="info_subject" SIZE="30" value="<?php echo "$ticket_info_lbl $ticket_id" ?>"><br>
+
+<?php echo $ticket_msg_txt_lbl ?><BR>
+<TEXTAREA NAME="info_detail" ROWS="20" COLS="60"></TEXTAREA><P>
+<input type=HIDDEN name=ticket_id value="<?php echo $ticket_id ?>">
+<INPUT TYPE="submit" NAME="send" VALUE="<?php echo $send_lbl ?>">
+<input type=HIDDEN name=page value="account/answer_list">
+</FORM>

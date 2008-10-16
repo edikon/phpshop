@@ -1,0 +1,114 @@
+<?php
+$answer_id = $vars["answer_id"]; 
+$q = "UPDATE ticket_answer SET answer_view='1' WHERE ";
+$q .= "answer_id='$answer_id' AND vendor_id='$ps_vendor_id' ";
+$db->query($q);
+$db->next_record(); 
+?>  
+
+<TABLE WIDTH=100% ALIGN=CENTER BORDER=0 CELLSPACING=0 CELLPADDING=10>
+  <TR valign="TOP" BGCOLOR=<?php echo $leftbar_title_bgcolor?>> 
+    <TD COLSPAN=2>
+      <H3><?php echo $ticket_lbl ?></H3>
+    </TD>
+  </TR>
+</TABLE>
+
+<?php 
+   $answer_id = $vars["answer_id"];
+   $q  = "SELECT * from ticket_answer,ticket_status WHERE answer_id='$answer_id' ";
+   $q .="AND ticket_answer.vendor_id='$ps_vendor_id'  ";
+   $q .="AND ticket_answer.vendor_id=ticket_status.vendor_id ";
+   $q .="AND ticket_status.language='$lang'";
+   $db->query($q);
+   $db->next_record(); 
+   $ticket_status=$db->f("answer_status");
+?> 
+
+<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=2 WIDTH=100%>
+
+  <!-- Begin ticket Information --> 
+
+  <TR BGCOLOR=#FFcc00> 
+    <TD COLSPAN=2><B><?php echo $reply_info_str ?></B></TD>
+  </TR>
+
+  <TR> 
+    <TD><?php echo $answer_id_str ?>:</TD>
+    <TD><?php echo $db->f("answer_id"); ?></TD>
+  </TR>
+  <TR> 
+    <TD><?php echo $reply_list_cdate ?>:</TD>
+
+    <TD><?php echo date("d-M-Y H:i", $db->f("cdate")); ?></TD>
+  </TR>
+  <TR> 
+    <TD><?php echo $ticket_list_id ?>:</TD>
+    <TD><?php
+      $ticket_id=$db->f("ticket_id");
+      $url = SECUREURL . "?page=$modulename/ticket_print&ticket_id=";
+      $url .= $ticket_id;
+      echo "<A class=\"bLink\" HREF=".$sess->url($url).">$ticket_id</A><BR>";
+    ?></TD>
+  </TR>
+  <TR> 
+    <TD><?php echo $ftp_list_status ?></TD>
+    <TD><?php
+         echo $db->f("ticket_status_name");
+         ?>
+
+    </TD>
+  </TR>
+
+  <!-- End Ticket Information --> <!-- Begin 2 column ticket-content --> 
+
+  <TR BGCOLOR=#FFcc00> 
+    <TD COLSPAN=2><B><?php echo $ticket_msg_lbl ?></B></TD>
+  </TR>
+  <TR VALIGN=top> 
+    <TD WIDTH=50%> <!-- Begin TicketContent --> <?php
+
+    $dbbt = new ps_DB;
+    $q  = "SELECT * FROM ticket_answer WHERE ";
+    $q .= "answer_id = '$answer_id' ";
+    $q .= "AND vendor_id = '$ps_vendor_id' ";
+    $dbbt->query($q);
+    $dbbt->next_record(); 
+
+  ?> 
+      <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=2 BORDER=0>
+        <TR> 
+          <TD COLSPAN=2><B><?php echo $subject_lbl ?></B><BR>
+          <?php echo $dbbt->f("answer_subject"); ?></TD>
+        </TR><br>
+        <TR> 
+          <TD><B><?php echo $ticket_msg_txt_lbl ?></B><BR>
+          <?php echo $dbbt->f("answer_content"); ?></TD>
+        </TR>
+
+
+      </TABLE>
+
+      <!-- End TicketContent --> </TD>
+
+    <TD WIDTH=50%>
+ <!-- End Ticket Information --> </TD>
+
+  </TR>
+
+<tr> 
+<td>
+<?php
+$ticket_id=$db->f("ticket_id");
+
+$url = SECUREURL . "?page=account/ticket_answer&ticket_id=";
+$url .= $ticket_id;
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>$reply_str</B></A><BR>";
+
+?>
+
+</td>
+  </tr>
+  </table>
+<br>
+<!-- Body ends here -->

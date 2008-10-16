@@ -1,0 +1,12 @@
+<center>
+<FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+<input type=HIDDEN name=acmd value="ticket_list">
+<input type=HIDDEN name=page value="account/index">
+<input type=HIDDEN name=func value="new_ticket">
+<?php echo $subject_lbl ?><br>
+<INPUT TYPE="text" NAME="ticket_subject" SIZE="30" ><br>
+<?php echo $ticket_msg_lbl ?><BR>
+<TEXTAREA NAME="ticket_content" ROWS="20" COLS="60"></TEXTAREA><P>
+<INPUT TYPE="submit" NAME="send" VALUE="<?php echo $send_lbl ?>">
+</FORM>
+</center>

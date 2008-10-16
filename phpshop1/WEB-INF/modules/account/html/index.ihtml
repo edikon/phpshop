@@ -1,4 +1,8 @@
 <?php
+if ($vars["ticket_success"]) {
+  echo $vars["ticket_success"];
+}
+
 require_once("order/lib/ps_order.inc");
 $ps_order = new ps_order;
 ?>
@@ -48,6 +52,11 @@ $page_name = "Account Maintenance";
    <br />
    Here you can add and maintain shipping addresses.   </td>
 </tr>
+
+<tr><td>
+<b><a href="<?php $sess->purl(SECUREURL . "?page=account/ticket_list") ?>");"><?php echo $ticket_list_lbl ?></a></b>
+<br><a href="<?php $sess->purl(SECUREURL . "?page=account/answer_list") ?>");"><?php echo $reply_list_lbl ?></a>
+</td></tr>
 
 </table>
 <!-- Body ends here -->
