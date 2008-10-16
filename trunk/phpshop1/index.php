@@ -241,7 +241,7 @@ if ($dir_list) {
   if ($perm->check($dir_list["perms"])) {
     if (!file_exists(PS_BASE."modules/$modulename/html/$pagename.ihtml")) {
       $error_type = "Page Does Not Exist";
-      $error =  "Given filename does not exist. Cannot find file:<br />";
+      $error =  "Given filename does not exist. Cannot find file:<BR>";
       $error .= $modulename."/html/".$pagename.".ihtml";
       $page = ERRORPAGE;
     }
@@ -332,9 +332,16 @@ require("templates/global.inc");
 if (file_exists(MODROOT."$modulename/lib/lang_$lang.inc")) {
   include(MODROOT."$modulename/lib/lang_$lang.inc");
 }
-else {
-  //Default to english if not set.
+elseif(file_exists(MODROOT."$modulename/lib/lang_eng.inc")) {
   include(MODROOT."$modulename/lib/lang_eng.inc");
+}
+
+if (is_file(PS_BASE . "languages/lang_$lang.inc") && file_exists(PS_BASE . "languages/lang_$lang.inc")) {
+  include(PS_BASE . "languages/lang_$lang.inc");
+}
+
+else{
+  include(PS_BASE . "languages/lang_eng.inc");
 }
 
 // Load Header
