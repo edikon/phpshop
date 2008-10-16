@@ -1,0 +1,72 @@
+<?php 
+if ($ticket_status_id) {
+  $q = "SELECT * FROM ticket_status WHERE ticket_status_id='$ticket_status_id' "; 
+  $q .= "AND vendor_id='$ps_vendor_id' AND language='$lang'";
+  $db->query($q);  
+  $db->next_record();
+}  
+?><BR>
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>">
+  <TABLE WIDTH="80%" BORDER="0" CELLSPACING="0" CELLPADDING="0" ALIGN="center" class="RecordsTable">
+    <TR> 
+      <TD colspan="2" class="RecordsTableHeader">&nbsp;<?php echo $ticket_status_form_lbl ?></TD>
+    </TR>
+    <TR> 
+      <TD><B>&nbsp;<?php echo $ticket_status_form_lbl ?></B></TD>
+      <TD>&nbsp;</TD>
+    </TR>
+    <TR> 
+      <TD ALIGN="right" ><?php echo $ticket_s_list_name ?>:</TD>
+      <TD> 
+        <INPUT TYPE="text" NAME="ticket_status_name" VALUE="<?php $db->sp("ticket_status_name") ?>" SIZE="16">
+      </TD>
+    </TR>
+    <TR> 
+      <TD ALIGN="right" ><?php echo $all_lang_str ?>:</TD>
+      <TD> 
+        <INPUT TYPE="checkbox" NAME="all_lang">
+      </TD>
+    </TR>
+
+    <TR ALIGN="CENTER">
+      <TD COLSPAN="2" >&nbsp;</TD>
+    </TR>
+    <TR ALIGN="CENTER"> 
+      <TD COLSPAN="2" > 
+        <INPUT TYPE="hidden" NAME="ticket_status_id" VALUE="<?php echo $ticket_status_id ?>">
+        <INPUT TYPE="hidden" NAME="func" VALUE="<?php if ($ticket_status_id) echo "ticket_status_update"; else echo "ticket_status_add"; ?>">
+        <INPUT TYPE="hidden" NAME="page" VALUE="ticket/ticket_status_list">
+      </TD>
+    </TR>
+    <TR ALIGN="CENTER"> 
+      <TD COLSPAN="2" ><?php if ($ticket_status_id) { ?> 
+        <TABLE WIDTH="50%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+          <TR ALIGN="center"> 
+            <TD WIDTH="100%"> 
+              <input type="submit" class="Button" BORDER="0" value="<?php echo $save_str ?>"> 
+              <input type="Button" class="Button" value="<?php echo $del_str ?>" onClick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=ticket/ticket_status_list&func=ticket_status_delete&ticket_status_id=$ticket_status_id"); ?>')">
+              <input type="Button" class="Button" value="<?php echo $delete_all_str ?>" onClick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=ticket/ticket_status_list&func=ticket_status_delete&ticket_status_id=$ticket_status_id&all_lang=on"); ?>')">
+            </TD>
+          </TR>
+
+          <TR ALIGN="center"> 
+            <TD WIDTH="100%"><BR></td> 
+          </tr>
+        </TABLE>
+        <?php }
+else {
+ ?> 
+        <TABLE WIDTH="50%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+          <TR ALIGN="center"> 
+            <TD WIDTH="100%"> 
+              <input type="submit" class="Button" BORDER="0" value="<?php echo $save_str ?>"> <input type="Button" class="Button" value="<?php echo $reset_lbl ?>" onClick="document.location.href='<?php $sess->purl(SECUREURL . "?page=ticket/ticket_status_form&ticket_status_id") ?>'">
+            </TD>
+          </TR>
+          <TR ALIGN="center"> 
+            <TD WIDTH="100%"><BR></td> 
+          </tr>
+        </TABLE>
+        <?php } ?></TD>
+    </TR>
+  </TABLE>
+</form>

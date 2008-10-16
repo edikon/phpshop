@@ -1,0 +1,4 @@
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=ticket/ticket_list") ?>"><?php echo $ticket_list_lbl ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=ticket/ticket_status_list") ?>"><?php echo $ticket_status_list_mnu ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=ticket/ticket_status_form") ?>"><?php echo $ticket_status_form_mnu ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=ticket/answer_list") ?>"><?php echo $reply_list_mnu ?></A></li>
