@@ -1,0 +1,138 @@
+<?php 
+search_header($answer_list_lbl, $modulename, "answer_list"); 
+if ($vars["ticket_success"]) {
+  echo $vars["ticket_success"];
+}
+?>
+
+<center>
+<?php
+$navi_db = new ps_DB;
+$q = "SELECT ticket_status_id, ticket_status_name ";
+$q .= "FROM ticket_status WHERE vendor_id = '$ps_vendor_id' AND language='$lang'";
+$navi_db->query($q);
+
+while ($navi_db->next_record()) {
+  $url = SECUREURL . "?page=$modulename/answer_list&show=";
+  $url .= $navi_db->f("ticket_status_id");
+  echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>";
+  echo $navi_db->f("ticket_status_name")."</B></A> | ";
+}
+
+$url = SECUREURL . "?page=$modulename/answer_list&show=";
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>alle anzeigen</B></A><BR>";
+?>
+
+</center><BR>
+
+<?php 
+// Enable the multi-page search result display
+if (empty($offset))
+  $offset=0;
+
+if ($keyword) {
+  $list  = "SELECT * ";
+  $list .= "FROM ticket_answer, auth_user_md5 WHERE ";
+  $count = "SELECT count(*) as num_rows FROM ticket_answer, auth_user_md5 WHERE ";
+  $q  = "(ticket_answer.answer_id LIKE '%$keyword%' ";
+  $q .= "OR ticket_answer.answer_status LIKE '%$keyword%' ";
+  $q .= "OR auth_user_md5.username LIKE '%$keyword%' ";
+  $q .= ") ";
+  $q .= "AND ticket_answer.user_id=auth_user_md5.user_id ";
+  $q .= "AND ticket_answer.vendor_id='$ps_vendor_id' ";
+  $q .= "ORDER BY ticket_answer.cdate DESC ";
+  $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+  $count .= $q;   
+}
+
+else {
+  $q = "";
+  $list  = "SELECT * ";
+  $list .= "FROM ticket_answer, auth_user_md5 WHERE ";
+  $count = "SELECT count(*) as num_rows FROM ticket_answer, auth_user_md5 WHERE ";
+  $q .= "ticket_answer.user_id=auth_user_md5.user_id ";
+  $q .= "AND ticket_answer.vendor_id='$ps_vendor_id' ";
+  if ($show) 
+     $q .= "AND answer_status = '$show' ";
+  $q .= "ORDER BY ticket_answer.cdate DESC ";
+  $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+  $count .= $q;   
+}
+
+$db->query($count);
+$db->next_record();
+$num_rows = $db->f("num_rows");
+
+if ($num_rows == 0) {
+  echo "$noreply <BR>";
+}
+
+else {
+  ?>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr> 
+  <tr> 
+  <td width="50%" class="RecordsTableHeader"><?php echo $subject_lbl ?></td>
+  <td width="20%" class="RecordsTableHeader"><?php echo $ticket_list_cdate ?></td>
+  <td width="10%" class="RecordsTableHeader" colspan="2"><?php echo $ftp_list_status ?></td>
+  <td width="20%" class="RecordsTableHeader" colspan="2" align="center"><?php echo $download_list_action ?></td>
+  </tr>
+  </tr>
+  
+  <?php 
+  $db->query($list);
+  $i = 0;
+  while ($db->next_record()) { 
+    if ($i++ % 2) 
+      $bgcolor=SEARCH_COLOR_1;
+    else
+      $bgcolor=SEARCH_COLOR_2;
+    ?>
+    <tr BGCOLOR=<?php echo $bgcolor ?>> 
+    <td>
+    <?php
+    $url = SECUREURL . "?page=$modulename/answer_print&answer_id=";
+    $url .= $db->f("answer_id");
+    echo "<A HREF=" . $sess->url($url) . ">";
+    echo $db->f("answer_subject");
+    echo "</A><BR>";
+    ?>
+    </td>
+
+    <td NOWRAP>
+    <?php echo strftime("%d-%b-%y %H:%M", $db->f("mdate")); ?>
+    </td>
+
+    <td NOWRAP>
+    <form method="post" action="<?php echo SECUREURL ?>">
+    <?php 
+    $ps_ticket_status->ticket_status_list($db->f("answer_status"));
+    $sess->hidden_session();
+    ?>
+    <input type="hidden" name="page" value="ticket/answer_list">
+    <input type="hidden" name="answer_id" value="<?php echo $db->f("answer_id") ?>">
+    <input type="hidden" name="func" value="answer_status_set">
+    <input type="submit" name="Submit" value="update">
+    </form>
+
+    <td>
+    <form method="post" action="<?php echo SECUREURL ?>">
+    <?php 
+    $ps_ticket->ticket_delete($db->f("$ticket_id"));
+    $sess->hidden_session();
+    ?>
+    <input type="submit" name="Submit" value="<?php echo $del_str ?>">
+    <input type="hidden" name="page" value="ticket/answer_list">
+    <input type="hidden" name="func" value="answer_delete">
+    <input type="hidden" name="answer_id" value="<?php echo $db->f("answer_id")?>">
+    </form>
+    </td>
+    </tr>
+    <?php
+  }
+  ?> 
+  </table>
+  <?php 
+  search_footer($modulename, "answer_list", $offset, $num_rows, $keyword); 
+}
+?>
