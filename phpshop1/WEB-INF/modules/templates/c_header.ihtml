@@ -90,6 +90,9 @@ $ps_product_category = new ps_product_category;
    ><?php echo $checkout_title ?></a></li>
       <li><a href="<?php $sess->purl(SECUREURL . "?page=account/index");?>"
    ><?php echo $account_title ?></a></li>
+    <li>
+    <a href="<?php $sess->purl(SECUREURL . "?page=account/new_ticket");?>"><?php echo $new_ticket_title ?></a><br>
+    </li>
     </ul></td>
   </tr>
   <?php 
