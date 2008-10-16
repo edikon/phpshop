@@ -1,0 +1,111 @@
+<?php
+$q="
+INSERT INTO `module` (`module_name`, `module_description`, `module_perms`, `module_header`, `module_footer`, `module_publish`, `list_order`, `module_label_1`, `language_code_1`) VALUES ('ticket', 'Tickets', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 18, 'Ticktes','eng');
+";
+$db->query($q);
+$db->next_record();
+
+$module_id=mysql_insert_id();
+
+$q="
+INSERT INTO `function` (`module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES
+('$module_id', 'answer_delete', 'ps_ticket', 'answer_delete', 'answer_delete', 'admin,storeadmin,shopper'),
+('$module_id', 'answer_find', 'ps_ticket', 'answer_find', 'answer_find', 'admin,storeadmin,shopper'),
+('$module_id', 'answer_list', 'ps_ticket', 'answer_list', 'answer_list', 'admin,storeadmin,shopper'),
+('$module_id', 'answer_status_set', 'ps_ticket', 'answer_status_set', 'answer_status_set', 'admin,storeadmin,shopper'),
+('$module_id', 'new_ticket', 'ps_ticket', 'new_ticket', 'new_ticket', 'admin,storeadmin,shopper'),
+('$module_id', 'ticket_answer', 'ps_ticket', 'ticket_answer', 'ticket_answer', 'admin,storeadmin,shopper'),
+('$module_id', 'ticket_delete', 'ps_ticket', 'ticket_delete', 'ticket_delete', 'admin,storeadmin,shopper'),
+('$module_id', 'ticket_find', 'ps_ticket', 'ticket_find', 'ticket_find', 'admin,storeadmin,shopper'),
+('$module_id', 'ticket_list', 'ps_ticket', 'ticket_list', 'ticket_list', 'admin,storeadmin,shopper'),
+('$module_id', 'ticket_status_add', 'ps_ticket_status', 'ticket_status_add', 'ticket_status_add', 'admin,storeadmin'),
+('$module_id', 'ticket_status_delete', 'ps_ticket_status', 'ticket_status_delete', 'ticket_status_delete', 'admin,storeadmin'),
+('$module_id', 'ticket_status_set', 'ps_ticket', 'ticket_status_set', 'ticket_status_set', 'admin,storeadmin'),
+('$module_id', 'ticket_status_update', 'ps_ticket_status', 'ticket_status_update', 'ticket_status_update', 'admin,storeadmin'),
+('$module_id', 'ticket_mail', 'ps_ticket', 'ticket_mail', 'ticket_mail', 'admin,storeadmin,shopper');
+
+";
+$db->query($q);
+$db->next_record();
+
+
+$q="
+DROP TABLE IF EXISTS `tickets`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `tickets` (
+  `ticket_num` int(32) NOT NULL auto_increment,
+  `ticket_id` varchar(255) NOT NULL default '',
+  `user_id` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `ticket_status` varchar(255) NOT NULL default '',
+  `cdate` varchar(255) NOT NULL default '',
+  `mdate` varchar(255) NOT NULL default '',
+  `ticket_subject` text NOT NULL,
+  `ticket_content` text NOT NULL,
+  `ticket_view` varchar(255) NOT NULL default '0',
+  `language` char(3) NOT NULL default '',
+  PRIMARY KEY  (`ticket_num`)
+) TYPE MYISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `ticket_answer`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `ticket_answer` (
+  `answer_num` int(32) NOT NULL auto_increment,
+  `answer_id` varchar(255) NOT NULL default '',
+  `ticket_id` varchar(255) NOT NULL default '',
+  `user_id` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `answer_status` varchar(255) NOT NULL default '',
+  `cdate` varchar(255) NOT NULL default '',
+  `mdate` varchar(255) NOT NULL default '',
+  `answer_subject` text NOT NULL,
+  `answer_content` text NOT NULL,
+  `answer_view` varchar(255) NOT NULL default '0',
+  `language` char(3) NOT NULL default '',
+  PRIMARY KEY  (`answer_num`)
+) TYPE MYISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `ticket_status`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `ticket_status` (
+  `ticket_status_num` int(11) NOT NULL auto_increment,
+  `ticket_status_id` varchar(255) NOT NULL default '',
+  `ticket_status_name` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `language` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`ticket_status_num`)
+) TYPE MYISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+INSERT INTO `ticket_status` (`ticket_status_num`, `ticket_status_id`, `ticket_status_name`, `vendor_id`, `language`) VALUES
+(1, '1', 'open', '$ps_vendor_id', 'eng'),
+(2, '2', 'closed', '$ps_vendor_id', 'eng');
+";
+$db->query($q);
+$db->next_record();
+
+?>
+
