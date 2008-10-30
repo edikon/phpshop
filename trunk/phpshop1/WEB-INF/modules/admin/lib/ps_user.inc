@@ -61,6 +61,7 @@ class ps_user {
       $valid = false;
     }
     $db = new ps_DB;
+
     $q = "SELECT * from auth_user_md5 where username='" .  $d["username"] . "'";
     $db->query($q);
     if ($db->next_record()) {
@@ -68,6 +69,15 @@ class ps_user {
       $d["error"] .= "Please try another username.<br />";
       $valid = false;
     }
+
+    $q = "SELECT * from auth_user_md5 where forum_name='" .  $d["forum_name"] . "'";
+    $db->query($q);
+    if ($db->next_record()) {
+      $d["error"] .= "The given forumname already exists.  ";
+      $d["error"] .= "Please try another forumname.<br />";
+      $valid = false;
+    }
+
     return $valid;
   }
   
@@ -127,6 +137,31 @@ class ps_user {
       $d["error"] .= "Please provide a valid email address.<br />";
       $valid = false;
     }
+
+    $db=new ps_DB;
+
+    if ($d["username"] != $d["old_username"]) {
+      $q = "SELECT * from auth_user_md5 WHERE username='" .  $d["username"] . "' ";
+      $db->query($q);
+
+      if ($db->next_record()) {
+        $d["error"] .= "The given username already exists.  ";
+        $d["error"] .= "Please try another username.<br />";
+        $valid = false;
+      }
+    }
+
+    if ($d["forum_name"] != $d["old_forum_name"]) {
+      $q = "SELECT * from auth_user_md5 where forum_name='" .  $d["forum_name"] . "' ";
+      $db->query($q);
+
+      if ($db->next_record()) {
+        $d["error"] .= "The given forumname already exists.  ";
+        $d["error"] .= "Please try another forumname.<br />";
+        $valid = false;
+      }
+    }
+
     return $valid;
   }
   
@@ -171,7 +206,7 @@ class ps_user {
     $q .= "phone_1,phone_2,fax,address_1,";
     $q .= "address_2,city,state,country, zip,";
     $q .= "user_email,extra_field_1,extra_field_2,extra_field_3,";
-    $q .= "extra_field_4,extra_field_5,cdate,mdate) VALUES ";
+    $q .= "extra_field_4,extra_field_5,cdate,mdate,forum_name,topic_group_id) VALUES ";
     $q .= "('$user_id','";
     $q .= $d["address_type"] . "','";
     $q .= $d["address_type_name"] . "','";
@@ -196,7 +231,9 @@ class ps_user {
     $q .= $d["extra_field_4"] . "','";
     $q .= $d["extra_field_5"] . "','";
     $q .= $timestamp . "','";
-    $q .= $timestamp . "') ";
+    $q .= $timestamp . "','";
+    $q .= $d["forum_name"] . "','";
+    $q .= $d["topic_group_id"] . "') ";
     $db->query($q);
     
     // Insert vendor relationship
@@ -231,7 +268,9 @@ class ps_user {
       $q  = "UPDATE auth_user_md5 SET ";
       $q .= " password='" . $d["password_1"];
       $q .= "', perms='" . $d["perms"] . "', ";
-      $q .= "username='" . $d["username"] . "' ";
+      $q .= "username='" . $d["username"] . "', ";
+      $q .= "forum_name='" . $d["forum_name"] . "', ";
+      $q .= "topic_group_id='" . $d["topic_group_id"] . "' ";
       $q .= "WHERE user_id='" . $d["user_id"] . "'";      
       $db->query($q);
     }
@@ -239,6 +278,9 @@ class ps_user {
       $q  = "UPDATE auth_user_md5 SET ";
       $q .= "perms='" . $d["perms"] . "', ";
       $q .= "username='" . $d["username"] . "' ";
+      $q .= "username='" . $d["username"] . "', ";
+      $q .= "forum_name='" . $d["forum_name"] . "', ";
+      $q .= "topic_group_id='" . $d["topic_group_id"] . "' ";
       $q .= "WHERE user_id='" . $d["user_id"] . "'";      
       $db->query($q);
     }
@@ -275,6 +317,8 @@ class ps_user {
     $q .= "extra_field_4='" . $d["extra_field_4"] . "', ";
     $q .= "extra_field_5='" . $d["extra_field_5"] . "', ";
     $q .= "mdate='" . $timestamp . "' "; 
+    $q .= "forum_name='" . $d["forum_name"] . "', ";
+    $q .= "topic_group_id='" . $d["topic_group_id"] . "', ";
     $q .= "WHERE user_id='" . $d["user_id"] . "' AND ";
     $q .= "address_type='BT'";
     $q .= $q_end;
@@ -445,6 +489,8 @@ class ps_user {
       $auth["perms"]  = $db->f("perms");
       $auth["first_name"] = $db->f("first_name");
       $auth["last_name"] = $db->f("last_name");
+      $auth["forum_name"] = $db->f("forum_name");
+      $auth["topic_group_id"] = $db->f("topic_group_id");
     }
     else {
       $d["error"] = "The username and password you entered were not found.<br />";
