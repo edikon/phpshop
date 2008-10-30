@@ -1,0 +1,183 @@
+<?php 
+// if ($data["forum"]==1) {
+if ($topic_return) {
+  echo $topic_return;
+}
+
+$topic_group_id=1000;
+$utg=$topic_group_id + 1;
+
+echo "<center>";
+echo "<H4> $topic_list_str </H4>";
+
+$navi_db = new ps_DB;
+$q = "SELECT * ";
+$q .= "FROM topic_groups WHERE topic_group_id <'$utg' ";
+$q .= "AND language='$lang'";
+
+$navi_db->query($q);
+
+while ($navi_db->next_record()) {
+  $url = SECUREURL . "?page=$modulename/topic_list&show=";
+  echo "<A class=\"bLink\" HREF=";
+  echo $sess->url(SECUREURL . "?page=$modulename/topic_list&show=" . $navi_db->f("topic_group_id"));
+  echo "><B>";
+  echo $navi_db->f("topic_group_name")."</B></A> | ";
+}
+
+$url = SECUREURL . "?page=$modulename/topic_list";
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B> $show_all_lbl </B></A><BR>";
+
+?>
+
+</center><BR>
+
+<?php 
+
+  if (empty($offset))
+ 	$offset=0;
+
+  if ($keyword) {
+     $list  = "SELECT topic_num, topic_id, topic_status, topics.mdate, topic_subject, topic_content, topics.topic_group_id,forum_name ";
+     $list .= "FROM topics,auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM topics, auth_user_md5 WHERE ";
+     $q  = "(topics.topic_subject LIKE '%$keyword%' ";
+     $q .= "OR topics.topic_content LIKE '%$keyword%' ";
+     $q .= "OR auth_user_md5.forum_name LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "AND topics.user_id=auth_user_md5.user_id ";
+     $q .= "AND topics.vendor_id='$ps_vendor_id' ";
+     $q .= "AND topics.topic_group_id < '$utg' ";
+     $q .= "AND topics.language = '$lang' ";
+
+     $q .= "ORDER BY mdate DESC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+
+  else {
+     $q = "";
+     $list  = "SELECT topic_num, topic_id, topic_status, topic_subject, topics.mdate,topics.topic_group_id,forum_name ";
+     $list .= "FROM topics,auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM topics, auth_user_md5 WHERE ";
+     $q .= "topics.user_id=auth_user_md5.user_id ";
+     $q .= "AND topics.vendor_id='$ps_vendor_id' ";
+     $q .= "AND topics.topic_group_id < '$utg' ";
+     $q .= "AND topics.language = '$lang' ";
+
+
+    if ($show) 
+      $q .= "AND topics.topic_group_id = '$show' ";
+      $q .= "ORDER BY mdate DESC";
+    $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+    $count .= $q;   
+  }
+
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+
+  if ($num_rows == 0) {
+     echo "$notopics <BR>";
+
+  }
+  else {
+
+search_header($topic_list_lbl, $modulename, "topic_list"); 
+?>
+
+<table width="100%" BORDER="0" cellspacing="0" cellpadding="0" align="center" class="RecordsTable">
+<tr> 
+<td NOWRAP class="RecordsTableHeader">
+<?php
+echo $from_str;
+
+if ($topic_group_name) {
+  echo " &nbsp &nbsp Group: $topic_group_name";
+}
+?>
+</td>
+
+<td NOWRAP class="RecordsTableHeader"><?php echo $topic_list_cdate ?></td>
+<td NOWRAP class="RecordsTableHeader"><?php echo $subject_lbl ?></td>
+<td NOWRAP class="RecordsTableHeader"><?php echo $group_str ?></td>
+</tr>
+  
+<?php 
+$db->query($list);
+$i = 0;
+while ($db->next_record()) { 
+
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+  ?>
+  <tr BGCOLOR=<?php echo $bgcolor ?>> 
+  <td>
+
+  <?php
+  echo $db->f("forum_name");
+  ?>
+
+  <td NOWRAP>
+  <?php 
+  echo strftime("%d-%b-%y %H:%M", $db->f("mdate"));
+  ?>
+  </td>
+
+  <?php
+  $q = "SELECT topic_status FROM topics WHERE ";
+  $q .= "topic_id = '" . $db->f("topic_id") . "'";
+  $q .= "AND language='$lang'";
+  $dbps = new ps_DB;
+  $dbps->query($q);
+  $dbps->next_record();
+  ?> 
+  <td NOWRAP>
+
+  <?php
+
+  if ($auth["user_id"]) {
+    $url = $sess->url(SECUREURL . "?page=account/topic_print&topic_id=" . $db->f("topic_id"));
+    echo "<A class=\"bLink\" HREF=$url>";
+    echo $db->f("topic_subject");
+    echo "</A><BR>";
+  }
+
+  else {
+    $url = $sess->url(URL . "?page=shop/topic_print&topic_id=" . $db->f("topic_id"));
+    echo "<A class=\"bLink\" HREF=$url>";
+    echo $db->f("topic_subject");
+    echo "</A><BR>";
+  }
+  ?>
+  </td>
+
+  <td NOWRAP>
+
+  <?php
+
+  $q = "SELECT topic_group_name FROM topic_groups WHERE ";
+  $q .= "topic_group_id = '" . $db->f("topic_group_id") . "'";
+  $dbps = new ps_DB;
+  $dbps->query($q);
+  $dbps->next_record();
+  echo $dbps->f("topic_group_name");
+  echo "<BR>";
+  ?>
+  </td>
+
+  </tr>
+  <?php
+}
+?> 
+</table>
+
+<?php 
+  search_footer($modulename, "topic_list", $offset, $num_rows, $keyword . "&show=$show"); 
+}
+// }
+?>
+
+
