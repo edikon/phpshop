@@ -1,0 +1,120 @@
+<?php
+$topic_group_id="";
+
+if ($vars["topic_group_id"]) {
+  $topic_group_id=$vars["topic_group_id"];
+
+  $q = "SELECT * from topic_groups ";
+  $q .= "where topic_group_id='$topic_group_id' ";
+  $q .= "AND vendor_id='$ps_vendor_id' ";
+  $q .= "AND language='$lang'";
+  $db->query($q);
+  $db->next_record();
+  $topic_group_num=$db->f("topic_group_num");
+}
+
+?> 
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" class="RecordsTable">
+<tr> 
+<td class="RecordsTableHeader" colspan=2><?php echo $topic_group_form_str ?>
+</td></tr> 
+
+<tr> 
+<td>&nbsp;</td></tr> 
+
+<?php
+if ($db->f("topic_group_num")) {
+?>
+  <tr> 
+  <td width="38%" nowrap align="right"><?php echo $number_lbl ?>:</td>
+  <td width="62%"><?php echo $topic_group_num ?></td>
+  </tr>
+
+<?php
+}
+?>
+
+<tr>
+
+<tr> 
+<td width="38%" nowrap align="right"><?php echo $cart_name ?>:</td>
+<td width="62%"><input type="text" name="topic_group_name" size="18" value="<?php echo $db->f("topic_group_name") ?>"></td>
+</tr>
+<tr> 
+<td width="38%" nowrap align="right"><?php echo $counter_list_id ?>:</td>
+<td width="62%"><input type="text" name="topic_group_id" size="18" value="<?php echo $db->f("topic_group_id") ?>"></td>
+</tr>
+
+
+<!--
+<tr> 
+<td width="38%" nowrap align="right"><?php echo $all_lang_str ?>:</td>
+<td width="62%"><input type="checkbox" name="all_lang"></td>
+</tr>
+-->
+
+<input type="hidden" name="tgi" value="<?php echo $topic_group_id ?>">
+<input type="hidden" name="vendor_id" value="<?php echo $db->f("vendor_id") ?>">
+<input type="hidden" name="topic_group_num" value="<?php echo $topic_group_num ?>">
+<input type="hidden" name="page" value="topic/topic_group_list">
+<input type="hidden" name="func" value="<?php if ($db->f("topic_group_num")) { echo "topic_group_update";} else {echo "topic_group_add";} ?>">
+
+</td></tr>
+<TR ALIGN="CENTER"> 
+<TD COLSPAN="2" >
+
+<?php 
+$sess->hidden_session();
+if ($topic_group_id) { ?> 
+  <TABLE WIDTH="50%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%">&nbsp;</td> 
+  </tr>
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"> 
+  <input type="submit" class="Button" BORDER="0" value="<?php echo $upd_str ?>">
+  <input type="Button" class="Button" value="<?php echo $del_str ?>" onClick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=topic/topic_group_list&func=topic_group_delete&topic_group_id=$topic_group_id"); ?>')">
+  </TD>
+  </TR>
+
+<!--
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"> 
+  <input type="Button" class="Button" value="<?php echo $delete_all_str ?>" onClick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=topic/topic_group_list&func=topic_group_delete&topic_group_id=$topic_group_id&all_lang=on"); ?>')">
+  </TD>
+  </TR>
+-->
+
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%">&nbsp;</td> 
+  </tr>
+  </TABLE>
+  <?php
+}
+
+else {
+   ?> 
+  <TABLE WIDTH="50%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%">&nbsp;</td> 
+  </tr>
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"> 
+  <input type="submit" class="Button" BORDER="0" value="<?php echo $save_str ?>">
+  <input type="Button" class="Button" value="<?php echo $clear_str ?>" onClick="document.location.href='<?php $sess->purl(SECUREURL . "?page=topic/topic_group_form&topic_group_id") ?>'">
+  </TD>
+  </TR>
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"><BR></td> 
+  </tr>
+  </TABLE>
+  <?php
+}
+?>
+
+</TD>
+</TR>
+</TABLE>
+</form>

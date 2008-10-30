@@ -1,0 +1,71 @@
+<?php search_header($topic_status_list_mnu, $modulename, "topic_status_list"); 
+
+// Enable the multi-page search result display
+if (empty($offset))
+  $offset=0;
+
+if ($keyword) {
+  $list  = "SELECT * FROM topic_status WHERE ";
+  $count = "SELECT count(*) as num_rows FROM topic_status WHERE ";
+  $q  = "(topic_status_name LIKE '%$keyword%' ";
+  $q .= ") ";
+  $q .= "vendor_id='$ps_vendor_id' ";
+  $q .= "AND language='$lang' ";
+  $q .= "ORDER BY topic_status_name";
+  $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+  $count .= $q;   
+}
+
+else {
+  $q = "";
+  $list  = "SELECT * FROM topic_status WHERE ";
+  $count = "SELECT count(*) as num_rows FROM topic_status WHERE ";
+  $q .= "vendor_id='$ps_vendor_id' ";
+  $q .= "AND language='$lang' ";
+  $q .= "ORDER BY topic_status_name";
+  $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+  $count .= $q;   
+}
+
+$db->query($count);
+$db->next_record();
+$num_rows = $db->f("num_rows");
+
+if ($num_rows == 0) {
+  echo "-----<BR>";
+}
+
+else {
+  ?>
+
+  <table width="100%" btopic="0" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr> 
+  <td NOWRAP class="RecordsTableHeader"><?php echo $topic_s_list_name ?></td>
+  </tr>
+  
+  <?php 
+  $db->query($list);
+  $i = 0;
+  while ($db->next_record()) { 
+    if ($i++ % 2) 
+      $bgcolor=SEARCH_COLOR_1;
+    else
+      $bgcolor=SEARCH_COLOR_2;
+    ?>
+    <tr BGCOLOR=<?php echo $bgcolor ?>> 
+    <td><?php
+    $url = SECUREURL . "?page=$modulename/topic_status_form&topic_status_id=";
+    $url .= $db->f("topic_status_id");
+    echo "<A class=\"bLink\" HREF=" . $sess->url($url) . ">";
+    echo $db->f("topic_status_name");
+    echo "</A><BR>";
+    ?>
+    </tr>
+    <?php
+  }
+  ?> 
+  </table>
+  <?php 
+  search_footer($modulename, "topic_status_list", $offset, $num_rows, $keyword); 
+}
+?>

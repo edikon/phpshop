@@ -1,0 +1,37 @@
+<?php
+//  $reply_id=$vars["reply_id"];
+
+  $q="SELECT * FROM topic_reply WHERE reply_id ='$reply_id' ";
+  $q .= "AND vendor_id='$ps_vendor_id' ";
+  $db->query($q);
+  $db->next_record();
+  $reply_subject=$db->f("reply_subject");
+  $reply_content=str_replace("<br>", "", $db->f("reply_content"));
+  $reply_content=str_replace("<br />", "", $reply_content);
+?>
+
+<FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+<TABLE width="100%" ALIGN="LEFT">
+<TR><TD>
+<B><?php echo $subject_lbl ?>: &nbsp <?php echo $reply_subject ?></B><br>
+<TEXTAREA NAME="reply_subject" ROWS="1" COLS="120"><?php echo $reply_subject ?></TEXTAREA>
+<br><br>
+<?php echo $text_lbl ?><BR>
+<TEXTAREA NAME="reply_content" ROWS="20" COLS="120"><?php echo $reply_content ?></TEXTAREA>
+<BR>
+
+<!--
+<?php 
+echo $all_lang_str;
+echo "<INPUT TYPE='checkbox' name='all_lang'>";
+?>
+-->
+
+<input type=HIDDEN name=reply_id value="<?php echo $reply_id ?>">
+<input type=HIDDEN name=func value="reply_edit">
+<input type=HIDDEN name=page value="topic/reply_edit">
+<INPUT TYPE="SUBMIT" NAME="send" VALUE="<?php echo $save_str ?>">
+
+</TD></TR>
+</TABLE>
+</FORM>

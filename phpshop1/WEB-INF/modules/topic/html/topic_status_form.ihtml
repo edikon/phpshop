@@ -1,0 +1,91 @@
+<?php 
+if ($topic_status_id) {
+  $q = "SELECT * FROM topic_status WHERE topic_status_id='$topic_status_id' "; 
+  $q .= "AND vendor_id='$ps_vendor_id' ";
+  $q .= "AND language='$lang' ";
+  $db->query($q);
+  $db->next_record();
+}
+?>
+<form method="post" action="<?php $sess->purl(SECUREURL) ?>">
+<TABLE WIDTH="80%" BORDER="0" CELLSPACING="0" CELLPADDING="0" ALIGN="center" class="RecordsTable">
+<TR> 
+<TD colspan="2" class="RecordsTableHeader"><?php echo $topic_status_form_lbl ?></TD>
+</TR>
+
+<TR> 
+<TD colspan="2">&nbsp;</TD>
+</TR>
+
+<TR> 
+<TD ALIGN="right"><?php echo $topic_s_list_name ?>:</TD>
+<TD> 
+<INPUT TYPE="text" NAME="topic_status_name" VALUE="<?php $db->sp("topic_status_name") ?>" SIZE="16">
+</TD>
+</TR>
+<!--
+<TR> 
+<TD ALIGN="right" ><?php echo $all_lang_str ?>:</TD>
+<TD> 
+<INPUT TYPE="checkbox" NAME="all_lang">
+</TD>
+</TR>
+-->
+
+<TR ALIGN="CENTER">
+<TD COLSPAN="2" >&nbsp;</TD>
+</TR>
+<TR ALIGN="CENTER"> 
+<TD COLSPAN="2" > 
+<INPUT TYPE="hidden" NAME="topic_status_id" VALUE="<?php echo $topic_status_id ?>">
+<INPUT TYPE="hidden" NAME="func" VALUE="<?php if ($topic_status_id) echo topic_status_update; else echo topic_status_add; ?>">
+<INPUT TYPE="hidden" NAME="page" VALUE="topic/topic_status_list">
+</TD>
+</TR>
+<TR ALIGN="CENTER"> 
+<TD COLSPAN="2" >
+
+<?php 
+$sess->hidden_session();
+
+if ($topic_status_id) { ?> 
+  <TABLE WIDTH="50%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"> 
+  <input type="submit" class="Button" BORDER="0" value="<?php echo $upd_str ?>">
+  <input type="Button" class="Button" value="<?php echo $del_str ?>" onClick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=topic/topic_status_list&func=topic_status_delete&topic_status_id=$topic_status_id"); ?>')">
+
+<!--
+ <input type="Button" class="Button" value="<?php echo $delete_all_str ?>" onClick="return deleteRecord('<?php $sess->purl(SECUREURL . "?page=topic/topic_status_list&func=topic_status_delete&topic_status_id=$topic_status_id&all_lang=on"); ?>')">
+-->
+
+  </TD>
+  </TR>
+
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"><BR></td> 
+  </tr>
+  </TABLE>
+  <?php
+}
+
+else {
+   ?> 
+  <TABLE WIDTH="50%" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"> 
+  <input type="submit" class="Button" BORDER="0" value="<?php echo $save_str ?>">
+  </TD>
+  </TR>
+  <TR ALIGN="center"> 
+  <TD WIDTH="100%"><BR></td> 
+  </tr>
+  </TABLE>
+  <?php
+}
+?>
+
+</TD>
+</TR>
+</TABLE>
+</form>

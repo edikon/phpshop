@@ -1,0 +1,51 @@
+<?php
+
+if ($auth["topic_group_id"]) {
+  $topic_group_id=$auth["topic_group_id"];
+}
+
+else {
+  $topic_group_id=1000;
+}
+
+$utg=$topic_group_id + 1;
+
+$q="SELECT * FROM topics WHERE topic_id ='$topic_id' AND language='$lang' AND topic_group_id < '$utg' AND vendor_id='$ps_vendor_id'";
+$db->query($q);
+
+if ($db->next_record()) {
+  $userid=$db->f("user_id");
+  $reply_subject=$db->f("topic_subject");
+  ?>
+
+  <FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+ <?php $sess->hidden_session(); ?>
+ 
+  <TABLE width="100%" ALIGN="LEFT">
+  <TR><TD>
+  <input type=HIDDEN name=page value="topic/topic_reply&topic_id=<?php echo $topic_id ?>">
+  <input type=HIDDEN name=func value="topic_reply">
+
+  <B><?php echo $subject_lbl ?>: &nbsp <?php echo $reply_subject ?></B><br><br>
+  <input type=TEXT name=reply_subject value="<?php echo $reply_subject ?>"><BR>
+  <?php echo $text_lbl ?><BR>
+  <TEXTAREA NAME="reply_content" ROWS="20" COLS="60"></TEXTAREA><P>
+  <BR>
+
+  <input type=HIDDEN name=topic_id value="<?php echo $topic_id ?>">
+  <!--
+  <?php 
+  echo $all_lang_str;
+  echo "<input type='checkbox' name='all_lang'>";
+  ?>
+  -->
+
+  <input type=HIDDEN name=page value="topic/reply_list">
+  <INPUT TYPE="submit" NAME="send" VALUE=" <?php echo $save_str ?>">
+  </TD></TR>
+  </TABLE>
+  </FORM>
+
+<?php
+}
+?>
