@@ -125,6 +125,40 @@ $ps_product_category = new ps_product_category;
   }
 ?></ul></td></tr>
 <!-- End browse categories --> 
+
+<!-- Begin Forum --> 
+  <tr><td class="RecordsTableHeader"><span class="RecordsTableHeader"><?php echo $forum_str ?></span> </td></tr>
+  <tr><td>
+  <ul>
+  <?php 
+  if ($auth["user_id"] && $auth["silent_login"] !=="1") {
+    ?>
+    <li><a href="<?php $sess->purl(SECUREURL . "?page=account/topic_list");?>"><?php echo $topic_list_lbl ?></a></li>
+    <li><a href="<?php $sess->purl(SECUREURL . "?page=account/topic_add");?>"><?php echo $new_topic_title ?></a></li>
+    <?php
+  }
+
+  else {
+    ?>
+    <li><a href="<?php $sess->purl(URL . "?page=shop/topic_list");?>"><?php echo $topic_list_lbl ?></a></li>
+    <?php 
+  }
+
+  include("topic/html/latest_topic.ihtml");
+
+  if ($t_num > 0) {
+    echo "<b>$latest_str</b><br>";
+    for($i=1;$i<=$t_num;$i++) {
+      $x++;
+      echo "<a href=" . $t_ltu[$i] . ">" . $t_lts[$i] . "</a><br>";
+    }
+  }
+  ?>
+  <ul>
+  </td></tr>
+
+<!-- End Forum --> 
+
   <!-- Search Box --> 
   <tr> 
     <td height="21" class="RecordsTableHeader"><span class="RecordsTableHeader"><?php echo $search_title ?></span> </td>
