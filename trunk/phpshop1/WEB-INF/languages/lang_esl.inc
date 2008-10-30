@@ -1,4 +1,8 @@
 <?php
+$subscribed_str="subscribed";
+$unsubscribed_str="unsubscribed";
+
+$del_support_str="delete product support";
 $show_affiliate_str="show affiliate menu";
 $continue_str="continue";
 $unkey_str_1="invalid keywords";
@@ -674,7 +678,7 @@ $help_list_title="Temas de Ayuda";
 $help_print_title="Tema de Ayuda";
 $home_title="Home";
 $ind_prod_str="Individual Product Listings";
-$info_lbl="Tema-Información";
+$info_lbl="Tema Información";
 $infopre_str="info-pre (e.g. Hello Name)";
 $interval_daily_title="Diario";
 $interval_monthly_title="Mensual";
@@ -1386,7 +1390,8 @@ $error_str_129="Ticket not found";
 
 $error_str_133="Topic not found";
 $error_str_134="Topic group ID already exists";
-$error_str_135="Topic code name already exists";
+$error_str_135="Topic group ID must be a numeric value";
+$error_str_136="Topic group name already exists";
 
 $error_str_139="You must enter a name for the store.";
 $error_str_140="You must enter a name for the vendor.";
@@ -1493,4 +1498,5 @@ $error_str_237="ERROR: product limit reached";
 $error_str_238="ERROR: Server not available";
 $error_str_239="ERROR: Server disconnected";
 $error_str_240="ERROR: Shopper Group not found";
+$error_str_241="ERROR: please enter a value field 'valid for (days)'";
 ?>
