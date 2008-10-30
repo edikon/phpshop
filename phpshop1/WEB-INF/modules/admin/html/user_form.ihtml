@@ -1,10 +1,15 @@
-<?php if ($user_id) {
-   $q = "SELECT * from auth_user_md5,user_info ";
-   $q .= "where auth_user_md5.user_id=user_info.user_id ";
-   $q .= "AND auth_user_md5.user_id='$user_id' ";
-   $q .= "AND user_info.address_type='BT'";
-   $db->query($q);
-   $db->next_record();
+<?php 
+
+require_once("topic/lib/ps_topic_group.inc");
+$ps_topic_group=new ps_topic_group;
+
+if ($user_id) {
+  $q = "SELECT * from auth_user_md5,user_info ";
+  $q .= "where auth_user_md5.user_id=user_info.user_id ";
+  $q .= "AND auth_user_md5.user_id='$user_id' ";
+  $q .= "AND user_info.address_type='BT'";
+  $db->query($q);
+  $db->next_record();
 }
 ?>
  <form method="post" action="<?php $sess->purl(SECUREURL) ?>" name="user_form"> 
@@ -44,6 +49,7 @@
           <tr> 
              <td nowrap="nowrap" align="right" width="38%" ><?php echo $user_form_username ?>:</td> 
              <td width="62%" > 
+             <input type="hidden" name="old_username" value="<?php $db->sp("username") ?>"></td>
               <input type="text" name="username" size="16" value="<?php $db->sp("username") ?>" /> 
             </td> 
            </tr> 
@@ -67,6 +73,21 @@ $ps_user->list_perms("perms", $db->sf("perms"));
 ?> 
             </td> 
            </tr> 
+
+          <tr> 
+             <td nowrap="nowrap" align="right" width="38%" ><?php echo $topic_group_str ?>:</td> 
+             <td width="62%" > 
+            <?php $ps_topic_group->list_topic_groups($db->sf("topic_group_id")); ?>
+           </td> 
+           </tr> 
+
+          <tr> 
+             <td align="right" width="38%" ><?php echo $forum_name_str ?>:</td> 
+
+             <input type="hidden" name="old_forum_name" value="<?php $db->sp("forum_name") ?>"></td>
+             <td width="62%"><input type="text" name="forum_name" size="16" value="<?php $db->sp("forum_name") ?>"></td>
+           </tr> 
+
           <tr> 
              <td nowrap="nowrap" align="right" width="38%" >&nbsp; </td> 
              <td width="62%" > 
