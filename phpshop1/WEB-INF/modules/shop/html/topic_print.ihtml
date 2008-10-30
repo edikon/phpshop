@@ -1,0 +1,162 @@
+<?php
+// if ($data["forum"]==1) {
+$utg=1001;
+
+$q = "SELECT * FROM topics WHERE topic_id='$topic_id' AND language='$lang' AND topic_group_id < '$utg' AND vendor_id='$ps_vendor_id'";
+$db->query($q);
+
+if ($db->next_record()) {
+  $topic_user_id=$db->f("user_id");
+  $topic_status=$db->f("topic_status");
+  $topic_view=$db->f("topic_view") + 1;
+  $mdate=$db->f("mdate");
+  $topic_subject=$db->f("topic_subject");
+  $topic_content=$db->f("topic_content");
+  $topic_group_id=$db->f("topic_group_id");
+
+  $q = "SELECT * FROM topic_groups WHERE ";
+  $q .= "topic_group_id='$topic_group_id' ";
+  $q .= "AND language='$lang'";
+  $db->query($q);
+  $db->next_record();
+  $topic_group_name=$db->f("topic_group_name");
+
+  $q = "UPDATE topics SET ";
+  $q .= "topic_view= '$topic_view'";
+  $q .= " WHERE topic_id='$topic_id' AND language='$lang'";
+  $db->query($q);
+  $db->next_record();
+  ?>  
+
+  <TABLE WIDTH=100% ALIGN=CENTER BORDER=0 CELLSPACING=0 CELLPADDING=0>
+  <TR VALIGN=TOP BGCOLOR=<?php echo $leftbar_title_bgcolor?>> 
+  <TD ALIGN=RIGHT>
+  <a class=bLink href=<?php $sess->purl(SECUREURL . "?page=account/topic_add");?>>
+  <?php echo $new_topic_title ?></a>
+  &nbsp &nbsp
+  <a class=bLink href=<?php $sess->purl(SECUREURL . "?page=account/topic_reply&topic_id=$topic_id");?>>
+  <?php echo $reply_str ?></a>
+  &nbsp &nbsp
+
+  </TD>
+  </TR>
+  </TABLE>
+  </form>
+
+  <table width="100%" BORDER="1" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <TR BGCOLOR=#FFcc00> 
+
+  <TD colspan=2><B><?php echo $info_lbl ?></B></TD>
+  </TR>
+  <TR> 
+  <TD width="50%"><?php echo $group_str ?></TD>
+  <TD width="50%">
+  <a class=bLink href="<?php $sess->purl(SECUREURL . "?page=shop/topic_list&show=$topic_group_id") ?>"><?php echo $topic_group_name ?>
+  </TD>
+  </TR>
+
+  <TR> 
+  <TD><?php echo $topic_list_id ?></TD>
+  <TD><?php echo $topic_id ?></TD>
+  </TR>
+
+  <TR> 
+  <TD><?php echo $date_lbl ?></TD>
+  <TD><?php echo date("d-M-Y H:i", $mdate); ?></TD>
+  </TR>
+
+  <TR> 
+  <TD><?php echo $ftp_list_status ?></TD>
+  <TD>
+  <?php
+  $q = "SELECT topic_status_name FROM topic_status WHERE ";
+  $q .= "topic_status_id = '$topic_status' AND language='$lang' ";
+  $dbos = new ps_DB;
+  $dbos->query($q);
+  $dbos->next_record();
+  echo $dbos->f("topic_status_name");
+  ?>
+
+  </TD>
+  </TR>
+
+  <TR> 
+  <TD><?php echo $from_str ?></TD>
+
+  <TD><?php
+  $q = "SELECT user_id FROM topics WHERE ";
+  $q .= "topic_id = '$topic_id' AND language='$lang' ";
+  $dbos = new ps_DB;
+  $dbos->query($q);
+  $dbos->next_record();
+  $uid=$dbos->f("user_id");
+
+  $q = "SELECT * FROM auth_user_md5 WHERE user_id = '$uid'";
+  $dbos = new ps_DB;
+  $dbos->query($q);
+  $dbos->next_record();
+  $un=$dbos->f("forum_name");
+  echo $un;
+  ?>
+
+  </TD>
+  </TR>
+
+  <TR> 
+  <TD><?php echo $clicks_lbl ?></TD>
+  <TD><?php echo $topic_view ?></TD>
+  </TR>
+
+  <TR BGCOLOR=#FFcc00 VALIGN=top> 
+  <TD colspan=2 width=100%><B><?php echo $topic_lbl ?></B></TD>
+  </TR>
+
+  <TR> 
+  <TD COLSPAN=2><B><?php echo $subject_lbl ?></B>:&nbsp
+  <?php echo $topic_subject ?></TD>
+  </TR>
+
+  <TR> 
+  <TD colspan=2>
+  <?php 
+  $topic_content=str_replace(" ","&nbsp;",$topic_content);
+  $topic_content=str_replace("&lt;a&nbsp;href","<a href",$topic_content);
+  $topic_content=str_replace("&lt;/a&gt;","</a>",$topic_content);
+  $topic_content=str_replace("&gt;",">",$topic_content);
+  echo $topic_content;
+  ?>
+  <br>
+  </TD>
+  </TR>
+
+  <?php 
+  $db = new ps_DB;
+  $q  = "SELECT * FROM topic_reply WHERE ";
+  $q .= "topic_id = '$topic_id' AND language='$lang' ";
+  $db->query($q);
+
+  $i=0;
+  while ($db->next_record()) {
+    $i++;
+
+    if ($i==1) {
+      echo "<tr><td colspan=2>";
+      echo "<B>$reply_list_mnu</B><BR>";
+    }
+
+    $rs=$db->f("reply_subject");
+    $reply_id=$db->f("reply_id");
+    $url = SECUREURL . "?page=shop/reply_print&reply_id=";
+    $url .= $reply_id;
+    echo "<A class=\"bLink\" HREF=".$sess->url($url).">$rs</A><BR>";
+  }
+
+  if ($i > 0) {
+    echo "</td></tr>";
+  }
+  ?>
+  </table>
+  <?php
+}
+// }
+?>
