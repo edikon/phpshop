@@ -1,0 +1,198 @@
+<?php
+// if ($data["forum"]==1) {
+$db = new ps_DB;
+$user_id=$auth["user_id"];
+
+$q = "SELECT * FROM auth_user_md5 WHERE user_id = '$user_id'";
+$db->query($q);
+$db->next_record();
+$utg=$db->f("topic_group_id") + 1;
+
+if ($reply_id) {
+  $auth["reply_id"]=$reply_id;
+}
+
+else {
+  $reply_id=$auth["reply_id"];
+}
+
+$q = "SELECT * FROM topic_reply WHERE ";
+$q .= "reply_id='$reply_id' AND language='$lang' AND topic_group_id < '$utg' AND vendor_id='$ps_vendor_id'";
+
+$db->query($q);
+
+if ($db->next_record()) {
+  $topic_id=$db->f("topic_id");
+  $topic_group_id=$db->f("topic_group_id");
+  $date=strftime("%d-%b-%y %H:%M:%S", $db->f("mdate"));
+  $reply_view=$db->f("reply_view") + 1;
+  $reply_subject=$db->f("reply_subject");
+  $reply_content=$db->f("reply_content");
+  $uid=$db->f("user_id");
+  $reply_status=$db->f("reply_status");
+
+//  if ($keyword) {
+//    include("account/html/update.ihtml");
+//  }
+
+  $q = "SELECT * FROM topic_groups WHERE ";
+  $q .= "topic_group_id='$topic_group_id' ";
+  $q .= "AND language='$lang'";
+
+  $db->query($q);
+  $db->next_record();
+
+  $topic_group_name=$db->f("topic_group_name");
+
+  $q = "UPDATE topic_reply SET ";
+  $q .= "reply_view='$reply_view'";
+  $q .= " WHERE reply_id='$reply_id' AND language='$lang'";
+  $db->query($q);
+  $db->next_record();
+
+  $q = "SELECT * FROM auth_user_md5 WHERE user_id = '$uid'";
+  $db->query($q);
+  $db->next_record();
+  $un=$db->f("forum_name");
+
+  ?>  
+
+  <TABLE WIDTH=100% ALIGN=CENTER BORDER=0 CELLSPACING=0 CELLPADDING=0>
+  <TR VALIGN=TOP BGCOLOR=<?php echo $leftbar_title_bgcolor?>> 
+  <TD COLSPAN=2>
+
+  <?php echo "<H4>$reply_lbl</H4>" ?>
+  <a href="<?php $sess->purl(SECUREURL . "?page=account/topic_add") ?>">
+  <?php echo $new_topic_title ?></a>
+  &nbsp &nbsp
+
+  <a href="<?php $sess->purl(SECUREURL . "?page=account/topic_reply&topic_id=$topic_id") ?>">
+  <?php
+  echo "$reply_str </a>";
+
+  if ($user_id==$uid) {
+    ?>
+    &nbsp &nbsp
+    <a class=bLink href="<?php $sess->purl(SECUREURL . "?page=$modulename/reply_edit&reply_id=$reply_id")?>">
+    <?php 
+    echo "$ban_edit </a>";
+    ?>
+    &nbsp &nbsp <a class=bLink href="<?php $sess->purl(SECUREURL . "?func=reply_delete&reply_id=$reply_id&topic_group_id=$topic_group_id&all_lang=on&page=account/topic_print&topic_id=$topic_id");?>">
+    <?php 
+    echo "$del_str </a>";
+  }
+  ?>
+  </TD>
+  </TR>
+  </TABLE>
+
+
+  <TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH=100%>
+
+  <TR BGCOLOR=#FFcc00> 
+  <TD COLSPAN=2><B><?php echo $reply_info_str ?></B></TD>
+  </TR>
+
+  <TR> 
+  <TD width="50%"><?php echo $group_str ?></TD>
+  <TD width="50%"><a class=bLink href="<?php $sess->purl(SECUREURL . "?page=account/topic_list&show=$topic_group_id") ?>"><?php echo $topic_group_name ?></TD>
+  </TR>
+
+  <TR> 
+  <TD width="50%"><?php echo $answer_id_str ?></TD>
+  <TD width="50%"><?php echo $reply_id ?></TD>
+  </TR>
+
+  <TR> 
+  <TD width="50%"><?php echo $topic_list_id ?></TD>
+  <TD width="50%"><a href="<?php $sess->purl(SECUREURL . "?page=account/topic_print&topic_id=$topic_id");?>">
+  <?php echo $topic_id ?></a>
+  </TR>
+
+  <TR> 
+  <TD width="50%"><?php echo $date_lbl ?></TD>
+  <TD width="50%"><?php echo $date ?></TD>
+  </TR>
+  <TR> 
+  <TD width="50%"><?php echo $ftp_list_status ?></TD>
+
+  <TD width="50%">
+  <?php
+  $q = "SELECT * FROM topic_status WHERE ";
+  $q .= "topic_status_id='$reply_status' ";
+  $q .= "AND language='$lang'";
+  $db->query($q);
+  $db->next_record();
+  echo $db->f("topic_status_name");
+  ?>
+  </TD>
+  </TR>
+
+  <TR> 
+  <TD width="50%"><?php echo $from_str ?></TD>
+  <TD width="50%"><?php echo $un ?> </TD>
+  </TR>
+
+  <TR> 
+  <TD width="50%"><?php echo $clicks_lbl ?></TD>
+  <TD width="50%"><?php echo $reply_view ?></TD>
+  </TR>
+
+  <!-- End reply Information --> <!-- Begin 2 column reply-content --> 
+
+  <TR BGCOLOR=#FFcc00> 
+  <TD COLSPAN="2" width="100%"><B><?php echo $reply_lbl ?></B></TD>
+  </TR>
+
+  <TR VALIGN=top> 
+  <TD><B><?php echo $subject_lbl ?></B>:&nbsp;
+  <?php echo $reply_subject ?></TD>
+  </TR>
+  <TR> 
+  <TD COLSPAN="2">
+  <?php 
+  $reply_content=str_replace(" ","&nbsp;",$reply_content);
+  $reply_content=str_replace("&lt;a&nbsp;href","<a href",$reply_content);
+  $reply_content=str_replace("&lt;/a&gt;","</a>",$reply_content);
+  $reply_content=str_replace("&gt;",">",$reply_content);
+  echo $reply_content;
+  ?>
+  </TR>
+
+  <?php
+  $db = new ps_DB;
+  $q  = "SELECT * FROM topic_reply WHERE ";
+  $q .= "topic_id = '$topic_id' AND reply_id <> '$reply_id' AND language='$lang'";
+  $db->query($q);
+
+  $i=0;
+  while ($db->next_record()) {
+    $i++;
+
+    if ($i==1) {
+      echo "<tr><td colspan=2>";
+      echo "<B> $replies_str </B><BR>";
+    }
+
+    $rs=$db->f("reply_subject");
+    $reply_id=$db->f("reply_id");
+    $url = SECUREURL . "?page=$modulename/reply_print&reply_id=";
+    $url .= $reply_id;
+    echo "<A class=\"bLink\" HREF=".$sess->url($url).">$rs</A><BR>";
+  }
+
+  if ($i > 0) {
+    echo "</td></tr>";
+  }
+
+  ?>
+  </table>
+  <?php
+}
+
+else {
+  echo $perm_err_str_1;
+  include("account/html/topic_list.ihtml");
+}
+// }
+?>
