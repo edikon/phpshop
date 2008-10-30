@@ -1,0 +1,249 @@
+<?php
+$q="
+INSERT INTO `module` (`module_name`, `module_description`, `module_perms`, `module_header`, `module_footer`, `module_publish`, `list_order`, `module_label_1`, `language_code_1`) VALUES 
+('topic', 'Mini Forum', 'admin,storeadmin', 'header.ihtml', 'footer.ihtml', 'Y', 20, 'Forum', 'eng');
+";
+
+
+$db->query($q);
+$db->next_record();
+
+$module_id=mysql_insert_id();
+
+$q="
+INSERT INTO `function` (`module_id`, `function_name`, `function_class`, `function_method`, `function_description`, `function_perms`) VALUES
+('$module_id', 'topic_reply', 'ps_topic', 'topic_reply', 'topic_reply', 'admin,storeadmin,shopper'),
+('$module_id', 'reply_edit', 'ps_topic', 'reply_edit', 'reply_edit', 'admin,storeadmin,shopper'),
+('$module_id', 'reply_delete', 'ps_topic', 'reply_delete', 'delete reply', 'admin,storeadmin'),
+('$module_id', 'reply_status_set', 'ps_topic', 'reply_status_set', 'reply_status_set', 'admin,storeadmin'),
+('$module_id', 'topic_add', 'ps_topic', 'topic_add', 'topic_add', 'admin,storeadmin,shopper'),
+('$module_id', 'topic_edit', 'ps_topic', 'topic_edit', 'topic_edit', 'admin,storeadmin,shopper'),
+('$module_id', 'topic_delete', 'ps_topic', 'topic_delete', 'topic_delete', 'admin,storeadmin'),
+('$module_id', 'topic_status_add', 'ps_topic_status', 'topic_status_add', 'topic_status_add', 'admin,storeadmin'),
+('$module_id', 'topic_status_delete', 'ps_topic_status', 'topic_status_delete', 'topic_status_delete', 'admin,storeadmin'),
+('$module_id', 'topic_status_set', 'ps_topic', 'topic_status_set', 'topic_status_set', 'admin,storeadmin'),
+('$module_id', 'topic_status_update', 'ps_topic_status', 'topic_status_update', 'topic_status_update', 'admin,storeadmin'),
+('$module_id', 'topic_group_add', 'ps_topic_group', 'topic_group_add', 'topic_group_add', 'admin,storeadmin'),
+('$module_id', 'topic_group_delete', 'ps_topic_group', 'topic_group_delete', 'topic_group_delete', 'admin,storeadmin'),
+('$module_id', 'topic_group_update', 'ps_topic_group', 'topic_group_update', 'topic_group_update', 'admin,storeadmin'),
+('$module_id', 'topic_subscribe', 'ps_topic', 'topic_subscribe', 'topic_subscribe', 'admin,storeadmin,shopper');
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `topics`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `topics` (
+  `topic_num` int(32) NOT NULL auto_increment,
+  `topic_id` varchar(255) NOT NULL default '',
+  `user_id` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `topic_status` varchar(255) NOT NULL default '',
+  `cdate` varchar(255) NOT NULL default '',
+  `mdate` varchar(255) NOT NULL default '',
+  `topic_subject` text NOT NULL,
+  `topic_content` text NOT NULL,
+  `topic_view` varchar(255) NOT NULL default '0',
+  `topic_group_id` int(8) NOT NULL,
+  `language` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`topic_num`)
+) TYPE MYISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `topic_groups`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `topic_groups` (
+  `topic_group_num` int(11) NOT NULL auto_increment,
+  `topic_group_id` int(8) NOT NULL,
+  `topic_group_name` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `language` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`topic_group_num`)
+) TYPE=MyISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+INSERT INTO `topic_groups` (`topic_group_id`, `topic_group_name`, `vendor_id`, `language`) VALUES 
+('1000', 'free', '$ps_vendor_id', 'eng'),
+('1000', 'free', '$ps_vendor_id', 'esl'),
+('2000', 'public', '$ps_vendor_id', 'eng'),
+('2000', 'public', '$ps_vendor_id', 'esl'),
+('9998', 'admin', '$ps_vendor_id', 'eng'),
+('9998', 'admin', '$ps_vendor_id', 'esl');
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `topic_reply`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `topic_reply` (
+  `reply_num` int(32) NOT NULL auto_increment,
+  `reply_id` varchar(255) NOT NULL default '',
+  `topic_id` varchar(255) NOT NULL default '',
+  `topic_group_id` int(8) NOT NULL,
+  `user_id` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `reply_status` varchar(255) NOT NULL default '',
+  `cdate` varchar(255) NOT NULL default '',
+  `mdate` varchar(255) NOT NULL default '',
+  `reply_subject` text NOT NULL,
+  `reply_content` text NOT NULL,
+  `reply_view` varchar(255) NOT NULL default '0',
+  `language` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`reply_num`)
+) TYPE=MyISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `topic_status`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `topic_status` (
+  `topic_status_num` int(11) NOT NULL auto_increment,
+  `topic_status_id` varchar(255) NOT NULL default '',
+  `topic_status_name` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `language` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`topic_status_num`)
+) TYPE=MyISAM DEFAULT CHARSET=utf8;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+INSERT INTO `topic_status` (`topic_status_num`, `topic_status_id`, `topic_status_name`, `vendor_id`, `language`) VALUES 
+(4, '1', 'open', '$ps_vendor_id', 'eng'),
+(5, '2', 'closed', '$ps_vendor_id', 'eng'),
+(7, '1', 'open', '$ps_vendor_id', 'esl'),
+(8, '2', 'closed', '$ps_vendor_id', 'esl');
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `topic_subscribe`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `topic_subscribe` (
+  `user_id` varchar(32) NOT NULL default '',
+  `vendor_id` varchar(32) NOT NULL default '',
+  `topic_id` varchar(64) NOT NULL default '',
+  `language` varchar(8) NOT NULL default ''
+) TYPE=MyISAM DEFAULT CHARSET=utf8;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `topics`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE IF NOT EXISTS `topics` (
+  `topic_num` int(32) NOT NULL auto_increment,
+  `topic_id` varchar(255) NOT NULL default '',
+  `user_id` varchar(255) NOT NULL default '',
+  `vendor_id` varchar(255) NOT NULL default '',
+  `topic_status` varchar(255) NOT NULL default '',
+  `cdate` varchar(255) NOT NULL default '',
+  `mdate` varchar(255) NOT NULL default '',
+  `topic_subject` text NOT NULL,
+  `topic_content` text NOT NULL,
+  `topic_view` varchar(255) NOT NULL default '0',
+  `topic_group_id` int(8) NOT NULL,
+  `language` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`topic_num`)
+) TYPE=MyISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+DROP TABLE IF EXISTS `latest_topic`;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+CREATE TABLE `latest_topic` (
+  `num` int(32) NOT NULL auto_increment,
+  `type` varchar(8) NOT NULL default '',
+  `vendor_id` varchar(64) NOT NULL default '',
+  `topic_group_id` int(8) NOT NULL,
+  `topic_id` varchar(64) NOT NULL default '',
+  `topic_subject` text NOT NULL,
+  `language` varchar(8) NOT NULL default '',
+  `mdate` int(32) NOT NULL default '0',
+  PRIMARY KEY  (`num`)
+) TYPE=MyISAM DEFAULT CHARSET=utf8 ;
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+ALTER TABLE `auth_user_md5` ADD `forum_name` VARCHAR(255) NOT NULL
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+ALTER TABLE `auth_user_md5` ADD `topic_group_id` int(8) NOT NULL
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+UPDATE `auth_user_md5` SET `forum_name` = `username` 
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+UPDATE `auth_user_md5` SET `topic_group_id`='9998' WHERE perms='admin'
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+UPDATE `auth_user_md5` SET `topic_group_id`='9998' WHERE perms='storeadmin'
+";
+$db->query($q);
+$db->next_record();
+
+$q="
+UPDATE `auth_user_md5` SET `topic_group_id`='2000' WHERE perms <> 'admin' AND perms <> 'storeadmin'
+";
+$db->query($q);
+$db->next_record();
+
+?>
+
