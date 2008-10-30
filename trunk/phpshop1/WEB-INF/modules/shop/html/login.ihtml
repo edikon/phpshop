@@ -56,6 +56,13 @@
         <input type="password" name="password_2" maxlength="32" size="16" value="<?php echo $password_2 ?>" />
       </td></tr>
 
+
+<tr>
+<td align="right"><?php echo $forum_name_str ?>:</td>
+<td>
+        <input type="text" name="forum_name" maxlength="32" size="16" value="<?php echo $forum_name ?>" />
+      </td></tr>
+
 <tr>
 <td align="right">Company Name:</td>
 <td>
@@ -126,6 +133,7 @@ $ps_html->list_country("country", $country);
 
 
 <tr><td colspan="2" align="center">
+<input type="hidden" name="topic_group_id" value="2000" />
 <input type="submit" name="Register" value="Register" />
 </td></tr>
 </table>
