@@ -38,6 +38,10 @@ class ps_shopper {
   ** returns:
   ***************************************************************************/
   function validate_add(&$d) {
+    global $lang;
+
+    include(PS_BASE . "languages/lang_$lang.inc");
+    
     $valid = true;
     
     if (!$d["last_name"]) {
@@ -56,6 +60,12 @@ class ps_shopper {
       $d["error"] .= "'Username' cannot contain spaces.<br />";
       $valid = false;
     }
+
+    if (!$d["forum_name"]) {
+      $d["error"] .= $shopper_err_17;
+      $valid = false;
+    }
+
     if (!$d["password_1"]) {
       $d["error"] .= "'Password' is a required field.<br />";
       $valid = false;
@@ -92,6 +102,7 @@ class ps_shopper {
       $d["error"] .= "Please provide a valid email address.<br />";
       $valid = false;
     }
+
     $db = new ps_DB;
     $q  = "SELECT * from auth_user_md5 ";
     $q .= "WHERE username='" .  $d["username"] . "'";
@@ -101,6 +112,14 @@ class ps_shopper {
       $d["error"] .= "Please try another username.<br />";
       $valid = false;
     }
+
+    $q = "SELECT * from auth_user_md5 where forum_name='" .  $d["forum_name"] . "'";
+    $db->query($q);
+    if ($db->next_record()) {
+      $d["error"] .= $shopper_err_18;
+      $valid = false;
+    }
+
     return $valid;
   }
   
@@ -130,11 +149,20 @@ class ps_shopper {
   ** returns:
   ***************************************************************************/
   function validate_update(&$d) {
-    global $perm;
+    global $perm,$auth,$lang;
+
+    include(PS_BASE . "languages/lang_$lang.inc");
+
     $valid = true;
-    
+
+   
     if (!eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*$", $d["username"])) {
       $d["error"] .= "'Username' cannot contain spaces.<br />";
+      $valid = false;
+    }
+
+    if (!$d["forum_name"]) {
+      $d["error"] .= $shopper_err_17;
       $valid = false;
     }
 
@@ -166,6 +194,7 @@ class ps_shopper {
       $d["error"] .= "'Phone Number' is a required field.<br />";
       $valid = false;
     }
+
     if ($d["password_1"] != $d["password_2"]) {
       $d["error"] .= "The passwords entered do not match.<br />";
       $valid = false;
@@ -178,6 +207,30 @@ class ps_shopper {
       $d["error"] .= "Please provide a valid email address.<br />";
       $valid = false;
     }
+
+    $db=new ps_DB;
+
+    if ($d["username"] != $d["old_username"]) {
+      $q = "SELECT * from auth_user_md5 WHERE username='" .  $d["username"] . "' ";
+      $db->query($q);
+
+      if ($db->next_record()) {
+        $d["error"] .= "The given username already exists.  ";
+        $d["error"] .= "Please try another username.<br />";
+        $valid = false;
+      }
+    }
+
+    if ($d["forum_name"] != $d["old_forum_name"]) {
+      $q = "SELECT * from auth_user_md5 where forum_name='" .  $d["forum_name"] . "' ";
+      $db->query($q);
+
+      if ($db->next_record()) {
+        $d["error"] .= $shopper_err_18;
+        $valid = false;
+      }
+    }
+
     return $valid;
   }
   
@@ -189,26 +242,29 @@ class ps_shopper {
    * returns:
    **************************************************************************/
   function add(&$d) {
-    global $ps_vendor_id,
-           $ps_user;
+    global $ps_vendor_id, $ps_user;
 
     $hash_secret = "PHPShopIsCool";
+
     $db = new ps_DB;
     $timestamp = time();
     
     if (!$this->validate_add($d)) {
       return False;
     }
-   
+
     $user_id=md5(uniqid($hash_secret));
     
-    $q = "INSERT INTO auth_user_md5 (user_id,username,password, perms) ";
+    $q = "INSERT INTO auth_user_md5 (user_id,username,password,forum_name,topic_group_id,perms) ";
     $q .= "VALUES ('";
     $q .= $user_id . "','";
     $q .= $d["username"] . "','";
-    $q .= md5($d["password_1"]) . "',";
-    $q .= "'shopper')";
+    $q .= md5($d["password_1"]) . "','";
+    $q .= $d["forum_name"] . "','";
+    $q .= $d["topic_group_id"] . "','";
+    $q .= "shopper')";
     $db->query($q);
+    $db->next_record();
 
     if (USER_INFO_XF_4 and $d["extra_field_4"] == "") {
       $d["extra_field_4"] = "N";
@@ -302,16 +358,24 @@ class ps_shopper {
     if ($d["password_1"]) {
       $d["password_1"] = md5($d["password_1"]);
       $q  = "UPDATE auth_user_md5 SET ";
-      $q .= "password='" . $d["password_1"] . "' ";
+      $q .= "password='" . $d["password_1"] . "', ";
+
       if($d["username"]) {
-        $q .= ",username='" . $d["username"] . "' ";
+        $q .= ",username='" . $d["username"] . "', ";
       }
+
+      $q .= "forum_name='" . $d["forum_name"] . "', ";
+      $q .= "topic_group_id='" . $d["topic_group_id"] . "' ";
+
       $q .= "WHERE user_id='" . $d["user_id"] . "'";      
       $db->query($q); 
     }
     elseif($d["username"]) {
       $q  = "UPDATE auth_user_md5 SET ";
-      $q .= "username='" . $d["username"] . "' ";
+      $q .= "username='" . $d["username"] . "', ";
+      $q .= "forum_name='" . $d["forum_name"] . "', ";
+      $q .= "topic_group_id='" . $d["topic_group_id"] . "' ";
+
       $q .= "WHERE user_id='" . $d["user_id"] . "'";      
       $db->query($q);
     }
