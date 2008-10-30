@@ -1,0 +1,52 @@
+<?php
+// if ($data["forum"]==1) {
+$user_id=$auth["user_id"];
+
+$q="SELECT * FROM topics WHERE topic_id ='$topic_id' AND language='$lang'";
+
+if ($auth["perms"] !=="admin") {
+  $q .=" AND user_id='$user_id'";
+}
+
+$db->query($q);
+
+if ($db->next_record()) {
+  $userid=$db->f("user_id");
+  $topic_subject=$db->f("topic_subject");
+  $topic_content=str_replace("<br>", "", $db->f("topic_content"));
+  $topic_content=str_replace("<br />", "", $topic_content);
+  ?>
+
+  <FORM METHOD="post" ACTION="<?php echo SECUREURL ?>">
+  <?php $sess->hidden_session(); ?>
+  <TABLE width="100%" ALIGN="LEFT">
+  <TR><TD>
+  <?php echo "$number_lbl &nbsp $topic_id" ?>
+  <br><br>
+
+  <B><?php echo $subject_lbl ?>: &nbsp <?php echo $topic_subject ?></B><br>
+  <?php echo $subject_lbl ?><br>
+  <TEXTAREA NAME="topic_subject" ROWS="1" COLS="120"><?php echo $topic_subject ?></TEXTAREA>
+  <br><br>
+  <?php echo $text_lbl ?><BR>
+  <TEXTAREA NAME="topic_content" ROWS="20" COLS="120"><?php echo $topic_content ?></TEXTAREA>
+  <BR>
+  <!--
+  <?php 
+  echo $all_lang_str;
+  echo "<INPUT TYPE='checkbox' name='all_lang'>";
+  ?> 
+  -->
+
+  <input type=HIDDEN name=topic_id value="<?php echo $topic_id ?>">
+  <input type=HIDDEN name=func value="topic_edit">
+  <input type=HIDDEN name=page value="account/topic_print">
+  <INPUT TYPE="submit" NAME="send" VALUE="<?php echo $save_str ?>">
+
+  </TD></TR>
+  </TABLE>
+  </FORM>
+  <?php
+}
+// }
+?>

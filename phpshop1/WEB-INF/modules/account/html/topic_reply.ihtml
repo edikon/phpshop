@@ -1,0 +1,52 @@
+<?php
+// if ($data["forum"]==1) {
+$user_id=$auth["user_id"];
+$utg=$auth["topic_group_id"] + 1;
+
+
+$q="SELECT * FROM topics WHERE topic_id ='$topic_id' AND language='$lang' ";
+$q .="AND topic_group_id < '$utg'"; 
+$db->query($q);
+
+if ($db->next_record()) {
+  $userid=$db->f("user_id");
+  $reply_subject=$db->f("topic_subject");
+  $topic_group_id=$db->f("topic_group_id");
+
+  $q = "SELECT * FROM topic_groups WHERE ";
+  $q .= "topic_group_id='$topic_group_id' ";
+  $q .= "AND language='$lang'";
+
+  $db->query($q);
+  $db->next_record();
+
+  $topic_group_name=$db->f("topic_group_name");
+  ?>
+
+  <FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+  <TABLE width="100%" ALIGN="LEFT">
+  <TR><TD>
+  <?php $sess->hidden_session() ?> 
+  <input type=HIDDEN name=tg value="<?php echo $topic_group_id ?>">
+  <input type=HIDDEN name=topic_id value="<?php echo $topic_id ?>">
+  <input type=HIDDEN name=func value="topic_reply">
+  <input type=HIDDEN name=page value="account/topic_print">
+
+  <B><?php echo $subject_lbl ?>: &nbsp <?php echo $reply_subject ?></B> &nbsp Group: <?php echo $topic_group_name ?><br><br>
+  <TEXTAREA NAME="reply_subject" ROWS="2" COLS="120"></TEXTAREA><br><br>
+  <?php echo $text_lbl ?><BR>
+  <TEXTAREA NAME="reply_content" ROWS="20" COLS="120"></TEXTAREA>
+  <BR>
+
+  <!--
+  <INPUT TYPE="hidden" name="all_lang" value="on">
+  -->
+
+  <INPUT TYPE="submit" NAME="send" VALUE=" <?php echo $save_str ?>">
+  </TD></TR>
+  </TABLE>
+  </FORM>
+  <?php
+}
+// }
+?>
