@@ -1,4 +1,8 @@
-<?php if ($user_id) {
+<?php 
+require_once("topic/lib/ps_topic_group.inc");
+$ps_topic_group=new ps_topic_group;
+
+if ($user_id) {
    $q = "SELECT * from auth_user_md5, user_info, shopper_vendor_xref ";
    $q .= "where auth_user_md5.user_id=user_info.user_id ";
    $q .= "AND auth_user_md5.user_id='$user_id' ";
@@ -38,6 +42,7 @@
      <tr> 
       <td width="24%" nowrap="nowrap" align="right" ><?php echo $shopper_form_username ?>:</td> 
       <td width="76%" > <input type="text" name="username" size="16" value="<?php $db->sp("username") ?>" /> 
+      <input type="hidden" name="old_username" value="<?php $db->sp("username") ?>"></td>
       </td> 
     </tr> 
      <tr> 
@@ -52,9 +57,9 @@
     </tr> 
      <tr> 
       <td width="24%" nowrap="nowrap" align="right" > <?php echo $shopper_form_group ?>:</td> 
-      <td width="76%" ><?php
-$ps_shopper_group->list_shopper_groups("shopper_group_id",$db->sf("shopper_group_id"));
-?> 
+      <td width="76%" >
+      <?php $ps_shopper_group->list_shopper_groups("shopper_group_id",$db->sf("shopper_group_id")); ?> 
+
          <input type="hidden" name="user_id" value="<?php $db->sp("user_id"); ?>" /> 
          <input type="hidden" name="cache" value="0" /> 
          <input type="hidden" name="func" value="<?php if ($user_id) echo "shopperUpdate"; else echo "shopperAdd"; ?>" /> 
@@ -62,6 +67,19 @@ $ps_shopper_group->list_shopper_groups("shopper_group_id",$db->sf("shopper_group
          <input type="hidden" name="nologin" value="1" /> 
          </td> 
     </tr> 
+
+    <tr> 
+    <td nowrap="nowrap" align="right" width="24%" ><?php echo $topic_group_str ?>:</td> 
+    <td width="76%" > 
+    <?php $ps_topic_group->list_topic_groups($db->sf("topic_group_id")); ?>
+    </td> 
+
+     <tr> 
+     <td align="right" width="38%" ><?php echo $forum_name_str ?>:</td> 
+     <input type="hidden" name="old_forum_name" value="<?php $db->sp("forum_name") ?>"></td>
+     <td width="62%"><input type="text" name="forum_name" size="16" value="<?php $db->sp("forum_name") ?>"></td>
+     </tr> 
+
      <tr> 
       <td colspan="2" nowrap="nowrap">&nbsp;</td> 
     </tr> 
