@@ -1,49 +1,65 @@
 <?php 
   search_header($user_list_lbl, $modulename, "user_list"); 
-?>
-<?php
+
   // Enable the multi-page search result display
   if (empty($offset))
  	$offset=0;
   if ($keyword) {
-     $list  = "SELECT * FROM auth_user_md5, user_info WHERE ";
-     $count = "SELECT count(*) as num_rows FROM auth_user_md5, user_info WHERE ";
+     $list  = "SELECT * FROM auth_user_md5, user_info,auth_user_vendor,vendor WHERE ";
+     $count = "SELECT count(*) as num_rows FROM auth_user_md5, user_info,auth_user_vendor,vendor WHERE ";
      $q  = "(auth_user_md5.username LIKE '%$keyword%' OR ";
      $q .= "auth_user_md5.perms LIKE '%$keyword%' OR ";
      $q .= "user_info.last_name LIKE '%$keyword%' OR ";
      $q .= "user_info.first_name LIKE '%$keyword%' OR ";
-     $q .= "user_info.phone_1 LIKE '%$keyword%' ";
+     $q .= "user_info.phone_1 LIKE '%$keyword%' OR ";
+     $q .= "user_info.user_email LIKE '%$keyword%' OR ";
+     $q .= "vendor_name LIKE '%$keyword%' ";
      $q .= ") ";
      $q .= "AND auth_user_md5.user_id=user_info.user_id ";
      $q .= "AND user_info.address_type='BT' ";
+     $q .="AND auth_user_vendor.user_id=auth_user_md5.user_id ";
+     $q .= "AND auth_user_vendor.vendor_id=vendor.vendor_id ";
+//     $q .= "AND vendor.language='$lang' ";
+//     $q .= "ORDER BY user_info.cdate DESC ";
      $q .= "ORDER BY auth_user_md5.username, auth_user_md5.perms ";
+
      $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
      $count .= $q;   
   }
-  else 
-  {
-     $list  = "SELECT * FROM auth_user_md5, user_info ";
+  else {
+     $list  = "SELECT * FROM auth_user_md5, user_info,auth_user_vendor,vendor ";
      $list .= "WHERE auth_user_md5.user_id=user_info.user_id ";
      $list .= "AND user_info.address_type='BT' ";
+     $list .= "AND auth_user_vendor.user_id=auth_user_md5.user_id ";
+     $list .= "AND auth_user_vendor.vendor_id=vendor.vendor_id ";
+//     $list .= "AND vendor.language='$lang' ";
      $list .= "ORDER BY auth_user_md5.username, auth_user_md5.perms ";
      $list .= "LIMIT $offset, " . SEARCH_ROWS;
-     $count = "SELECT count(*) as num_rows FROM auth_user_md5, user_info ";
+
+     $count = "SELECT count(*) as num_rows FROM auth_user_md5, user_info,auth_user_vendor,vendor ";
      $count .= "WHERE auth_user_md5.user_id=user_info.user_id ";
      $count .= "AND user_info.address_type='BT' ";
+     $count .= "AND auth_user_vendor.vendor_id=vendor.vendor_id ";
+//     $count .= "AND vendor.language='$lang' ";
+     $count .= "AND auth_user_vendor.user_id=auth_user_md5.user_id "; 
+     $count .= "ORDER BY auth_user_md5.username, auth_user_md5.perms ";
   }
   $db->query($count);
   $db->next_record();
   $num_rows = $db->f("num_rows");
   if ($num_rows == 0) {
-     echo "Your search returned 0 results.<br />";
+     echo "Your search returned 0 results.<BR>";
   }
   else {
 ?>
- <table width="100%" border="0" cellspacing="0" cellpadding="5" class="RecordsTable"> 
+ <table width="100%" border="1" cellspacing="0" cellpadding="0" class="RecordsTable"> 
   <tr> 
-     <td width="23%" class="RecordsTableHeader"><?php echo $user_list_username ?></td> 
-     <td width="50%" class="RecordsTableHeader"><?php echo $user_list_full_name ?></td> 
-     <td width="27%" class="RecordsTableHeader"><?php echo $user_list_group ?></td> 
+     <td class="RecordsTableHeader"><?php echo $user_form_username ?></td> 
+     <td class="RecordsTableHeader"><?php echo $email_str ?></td> 
+     <td class="RecordsTableHeader"><?php echo $shopper_list_name ?></td> 
+     <td class="RecordsTableHeader"><?php echo $topic_group_str ?></td> 
+     <td class="RecordsTableHeader"><?php echo $shopper_list_group ?></td> 
+     <td class="RecordsTableHeader"><?php echo $product_form_vendor ?></td> 
    </tr> 
   <?php
 
@@ -55,29 +71,55 @@ while ($db->next_record()) {
              else
                 $bgcolor=SEARCH_COLOR_2;
 ?> 
-  <tr bgcolor="<?php echo $bgcolor ?>"> 
-     <td width="23%" nowrap="nowrap"> 
+  <tr bgcolor="<?php echo $bgcolor ?>" nowrap="nowrap"> 
+     <td> 
       <?php
-$url = SECUREURL . "?page=$modulename/user_form&amp;user_id=";
+$url = SECUREURL . "?page=$modulename/user_form&user_id=";
 $url .= $db->f("user_id");
-echo "<a href=\"" . $sess->url($url) . "\" class=\"bLink\">";
+echo "<A HREF=" . $sess->url($url) . " class=\"bLink\">";
 echo $db->f("username"); 
-echo "</a>"; ?> 
-    </td> 
-     <td width="50%" nowrap="nowrap"><?php echo $db->f("first_name") . " ";
+echo "</A>"; ?> 
+</td> 
+
+<td> 
+<?php
+$url = SECUREURL . "?page=$modulename/user_form&user_id=";
+$url .= $db->f("user_id");
+echo "<A class=bLink HREF=mailto:";
+echo $db->f("user_email"); 
+echo ">";
+echo $db->f("user_email");
+echo "</A>"; ?> 
+</td> 
+
+<td><?php echo $db->f("first_name") . " ";
 echo $db->f("middle_name") . " ";
 echo $db->f("last_name"); ?></td> 
-     <td width="27%" nowrap="nowrap"> 
-      <?php
-// $url = SECUREURL . "?page=$modulename/user_by_group_list&amp;perms=";
-//$url .= $db->f("perms");
-//echo "<a href=\"" . $sess->url($url) . "\">";
-echo $db->f("perms");  
-//echo "</a>";
+
+<td>
+<?php echo $db->f("topic_group_id") ?>
+</td> 
+
+<td> 
+<?php
+$url = SECUREURL . "?page=$modulename/user_by_group_list&pe=";
+$url .= $db->f("perms");
+echo "<A class=bLink HREF=" . $sess->url($url) . ">";
+echo $db->f("perms");
+echo "</A>";
+?>
+&nbsp;
+</td> 
+
+<td> 
+<?php
+echo $db->f("vendor_name");  
 ?> 
-&nbsp;</td> 
-   </tr> 
-  <?php } ?> 
+&nbsp;
+</td> 
+
+</tr> 
+<?php } ?> 
 </table> 
 <?php 
   search_footer($modulename, "user_list", $offset, $num_rows, $keyword); 
