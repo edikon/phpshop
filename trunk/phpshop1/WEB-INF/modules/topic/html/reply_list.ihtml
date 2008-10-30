@@ -1,0 +1,162 @@
+<?php 
+  search_header($reply_list_lbl, $modulename, "reply_list"); 
+
+  if ($reply_return) {
+    echo $reply_return;
+  }
+
+  if ($error) {
+    echo $error;
+  }
+
+?>
+
+<center>
+<?php
+$navi_db = new ps_DB;
+$q = "SELECT topic_status_id, topic_status_name ";
+$q .= "FROM topic_status WHERE vendor_id = '$ps_vendor_id' AND language='$lang'";
+$navi_db->query($q);
+while ($navi_db->next_record()) {
+   $url = SECUREURL . "?page=$modulename/reply_list&show=";
+   $url .= $navi_db->f("topic_status_id");
+   echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>";
+   echo $navi_db->f("topic_status_name")."</B></A> | ";
+}
+
+$url = SECUREURL . "?page=$modulename/reply_list&show=";
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B><?php echo $show_all_lbl ?></B></A><BR>";
+
+?>
+
+</center><BR>
+
+<?php 
+  // Enable the multi-page search result display
+  if (empty($offset))
+ 	$offset=0;
+  if ($keyword) {
+     $list  = "SELECT reply_id, topic_id, topic_reply.topic_group_id, reply_subject, reply_status, topic_reply.cdate, topic_reply.mdate ";
+     $list .= "FROM topic_reply, user_info, auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM topic_reply, user_info, auth_user_md5 WHERE ";
+     $q  = "(topic_reply.reply_id LIKE '%$keyword%' ";
+     $q .= "OR topic_reply.reply_status LIKE '%$keyword%' ";
+     $q .= "OR auth_user_md5.username LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "AND topic_reply.user_id=auth_user_md5.user_id ";
+     $q .= "AND user_info.user_id=auth_user_md5.user_id ";
+     $q .= "AND topic_reply.vendor_id='$ps_vendor_id' ";
+     $q .= "AND language='$lang' ";
+     $q .= "ORDER BY topic_reply.mdate DESC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+
+  else {
+     $q = "";
+     $list  = "SELECT reply_id, topic_id, topic_reply.topic_group_id, reply_subject, reply_status, topic_reply.cdate, topic_reply.mdate ";
+     $list .= "FROM topic_reply, user_info, auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM topic_reply, user_info, auth_user_md5 WHERE ";
+     $q .= "topic_reply.user_id=auth_user_md5.user_id ";
+     $q .= "AND user_info.user_id=auth_user_md5.user_id ";
+     $q .= "AND topic_reply.vendor_id='$ps_vendor_id' ";
+     $q .= "AND language='$lang' ";
+     if ($show) 
+        $q .= "AND topic_status = '$show' ";
+     $q .= "ORDER BY topic_reply.mdate DESC ";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+
+
+  if ($num_rows == 0) {
+     echo "$notopics<BR>";
+
+  }
+  else {
+  ?>
+
+  <table width="100%" border="1" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr> 
+    <td NOWRAP class="RecordsTableHeader"><?php echo $subject_lbl ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $reply_list_cdate ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $ftp_list_mdate ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $ftp_list_status ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $download_list_action ?></td>
+  </tr>
+  
+  <?php 
+  $db->query($list);
+  $i = 0;
+  while ($db->next_record()) { 
+
+    if ($i++ % 2) 
+       $bgcolor=SEARCH_COLOR_1;
+    else
+       $bgcolor=SEARCH_COLOR_2;
+   ?>
+   <tr BGCOLOR=<?php echo $bgcolor ?>> 
+
+   <td>
+
+  <?php
+  echo "<A class=\"bLink\" HREF=" . $sess->url(SECUREURL . "?page=$modulename/reply_print&reply_id=" . $db->f("reply_id")) . ">";
+  echo $db->f("reply_subject");
+  echo "</A>";
+  ?>
+
+  </td>
+
+  <td NOWRAP>
+  <?php 
+    echo strftime("%d-%b-%y %H:%M", $db->f("cdate"));
+  ?>
+  </td>
+
+  <td NOWRAP>
+  <?php 
+    echo strftime("%d-%b-%y %H:%M", $db->f("mdate"));
+  ?>
+  </td>
+
+  <td NOWRAP>
+   <form method="post" action="<?php echo SECUREURL ?>">
+      <?php $ps_topic_status->topic_status_list($db->f("topic_status")) ?>
+
+      <?php $sess->hidden_session();?>
+      <input type="hidden" name="page" value="topic/reply_list">
+      <input type="hidden" name="reply_id" value="<?php echo $db->f("reply_id") ?>">
+      <input type="hidden" name="func" value="reply_status_set">
+      <?php echo $all_lang_str ?>
+      <input type="checkbox" name="all_lang">
+      <input type="submit" name="Submit" value="<?php echo $upd_str ?>">
+  </form>
+
+  <td>
+  <form method="post" action="<?php echo SECUREURL ?>"><?php 
+      $ps_topic->reply_delete($db->f("$reply_id"));
+      $sess->hidden_session();?>
+      <input type="hidden" name="func" value="reply_delete">
+      <input type="hidden" name="reply_id" value="<?php echo $db->f("reply_id")?>">
+      <input type="hidden" name="topic_group_id" value="<?php echo $db->f("topic_reply.topic_group_id")?>">
+      <input type="hidden" name="page" value="topic/reply_list">
+
+      <?php echo $all_lang_str ?>
+      <input type="checkbox" name="all_lang">
+      <input type="submit" name="Submit" value="<?php echo $del_str ?>">
+  </form>
+  </td>
+
+  </tr>
+  <?php } ?> 
+  </table>
+
+<?php
+  search_footer($modulename, "reply_list", $offset, $num_rows, $keyword); 
+  $sess->hidden_session();
+}
+?>

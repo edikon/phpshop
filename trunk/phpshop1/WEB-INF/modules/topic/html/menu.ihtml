@@ -1,0 +1,7 @@
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=topic/topic_list") ?>"><?php echo $topic_list_lbl ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=topic/topic_status_list") ?>"><?php echo $topic_status_list_mnu ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=topic/topic_status_form") ?>"><?php echo $topic_status_form_mnu ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=topic/reply_list") ?>"><?php echo $reply_list_mnu ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=topic/topic_group_list") ?>"><?php echo $topic_group_lbl ?></A></li>
+<li><A HREF="<?php $sess->purl(SECUREURL . "?page=topic/topic_group_form") ?>"><?php echo $add_topic_group_lbl ?></A></li>
+

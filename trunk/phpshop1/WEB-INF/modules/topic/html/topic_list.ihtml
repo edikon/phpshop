@@ -1,0 +1,156 @@
+<?php 
+  search_header($topic_list_lbl, $modulename, "topic_list"); 
+
+  if ($topic_return) {
+    echo $topic_return;
+  }
+
+?>
+
+<center>
+<?php
+$navi_db = new ps_DB;
+$q = "SELECT topic_status_id, topic_status_name ";
+$q .= "FROM topic_status WHERE vendor_id = '$ps_vendor_id' AND language='$lang' ";
+$navi_db->query($q);
+while ($navi_db->next_record()) {
+   $url = SECUREURL . "?page=$modulename/topic_list&show=";
+   $url .= $navi_db->f("topic_status_id");
+   echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B>";
+   echo $navi_db->f("topic_status_name")."</B></A> | ";
+}
+
+$url = SECUREURL . "?page=$modulename/topic_list&show=";
+echo "<A class=\"bLink\" HREF=".$sess->url($url)."><B><?php echo $show_all_lbl ?></B></A><BR>";
+
+?>
+
+</center><BR>
+
+<?php 
+  // Enable the multi-page search result display
+
+  if (empty($offset))
+ 	$offset=0;
+
+  if ($keyword) {
+     $list  = "SELECT topic_id, topics.topic_group_id, topic_status, topic_subject, topics.cdate, topics.mdate ";
+     $list .= "FROM topics, auth_user_md5 WHERE ";
+     $count = "SELECT count(*) as num_rows FROM topics, auth_user_md5 WHERE ";
+     $q  = "(topics.topic_id LIKE '%$keyword%' ";
+     $q .= "OR topics.topic_status LIKE '%$keyword%' ";
+     $q .= "OR auth_user_md5.username LIKE '%$keyword%' ";
+     $q .= ") ";
+     $q .= "AND topics.vendor_id='$ps_vendor_id' ";
+     $q .= "AND language='$lang' ";
+     $q .= "ORDER BY topics.mdate DESC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+
+  else 
+  {
+     $q = "";
+     $list  = "SELECT topic_id, topic_group_id, topic_status, topic_subject, topics.cdate, topics.mdate ";
+     $list .= "FROM topics ";
+     $count = "SELECT count(*) as num_rows FROM topics ";
+     $q .= "WHERE language='$lang' ";
+     if ($show) 
+        $q .= " WHERE topic_status = '$show' ";
+     $q .= "AND topics.vendor_id='$ps_vendor_id' ";
+     $q .= "ORDER BY topics.mdate DESC";
+     $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
+     $count .= $q;   
+  }
+  $db->query($count);
+  $db->next_record();
+  $num_rows = $db->f("num_rows");
+
+
+  if ($num_rows == 0) {
+     echo "$notopics<BR>";
+
+  }
+  else {
+?>
+
+<table width="100%" border="1" cellspacing="0" cellpadding="2" align="center" class="RecordsTable">
+  <tr> 
+    <td NOWRAP class="RecordsTableHeader"><?php echo $subject_lbl ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $topic_list_cdate ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $ftp_list_mdate ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $ftp_list_status ?></td>
+    <td NOWRAP class="RecordsTableHeader"><?php echo $download_list_action ?></td>
+  </tr>
+  
+<?php 
+$db->query($list);
+$i = 0;
+while ($db->next_record()) { 
+
+  if ($i++ % 2) 
+     $bgcolor=SEARCH_COLOR_1;
+  else
+     $bgcolor=SEARCH_COLOR_2;
+?>
+  <tr BGCOLOR=<?php echo $bgcolor ?>> 
+    <td>
+
+<?php
+echo "<A class=\"bLink\" HREF=";
+echo $sess->url(SECUREURL . "?page=$modulename/topic_print&topic_id=" . $db->f("topic_id"));
+echo ">";
+echo $db->f("topic_subject");
+echo "</A><BR>";
+?>
+
+<td NOWRAP>
+  <?php 
+    setlocale(LC_TIME,strtolower($lang)."_".$lang);
+    echo strftime("%d-%b-%y %H:%M", $db->f("cdate"));
+  ?>
+</td>
+
+<td NOWRAP>
+  <?php 
+    setlocale(LC_TIME,strtolower($lang)."_".$lang);
+    echo strftime("%d-%b-%y %H:%M", $db->f("mdate"));
+  ?>
+</td>
+
+<td NOWRAP>
+ <form method="post" action="<?php echo SECUREURL ?>">
+     <?php $ps_topic_status->topic_status_list($db->f("topic_status")) ?>
+
+      <?php $sess->hidden_session();?>
+      <input type="hidden" name="page" value="topic/topic_list">
+      <input type="hidden" name="topic_id" value="<?php echo $db->f("topic_id") ?>">
+      <input type="hidden" name="func" value="topic_status_set">
+      <?php echo $all_lang_str ?>
+      <input type="checkbox" name="all_lang">
+      <input type="submit" name="Submit" value="update">
+</form>
+
+<td>
+<form method="post" action="<?php echo SECUREURL ?>"><?php 
+      $ps_topic->topic_delete($db->f("$topic_id"));
+      $sess->hidden_session();?>
+      <input type="submit" name="Submit" value="<?php echo $del_str?>">
+      <input type="hidden" name="page" value="topic/topic_list">
+      <input type="hidden" name="func" value="topic_delete">
+      <?php echo $all_lang_str ?>
+      <input type="checkbox" name="all_lang">
+      <input type="hidden" name="topic_id" value="<?php echo $db->f("topic_id")?>">
+      <input type="hidden" name="topic_group_id" value="<?php echo $db->f("topic_group_id") ?>">
+</form>
+</td>
+
+</tr>
+  <?php } ?> 
+</table>
+
+<?php
+  search_footer($modulename, "topic_list", $offset, $num_rows, $keyword); 
+  $sess->hidden_session();
+}
+?>

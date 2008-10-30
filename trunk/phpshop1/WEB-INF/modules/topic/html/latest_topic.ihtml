@@ -1,0 +1,61 @@
+<?php
+if ($auth["user_id"] && !$auth["silent_login"]) {
+  $user_id=$auth["user_id"];
+  $utg=$auth["topic_group_id"] + 1;
+}
+
+else {
+  $utg=1001;
+}
+
+$i=0;
+$q="SELECT * FROM latest_topic WHERE vendor_id='$ps_vendor_id' AND topic_group_id < '$utg' AND language='$lang' ORDER BY mdate DESC";
+$db->query($q);
+
+$t_lts=array();
+$t_ltu=array();
+
+$t_num=0;
+while($db->next_record()) {
+  $t_num++;
+  $type=$db->f("type");
+  $latest_id=$db->f("topic_id");
+  $subj=$db->f("topic_subject");
+
+  if ($auth["user_id"] && $auth["silent_login"] !=="1") {
+    $t_pg="account/";
+    $t_pg .=$type;
+    $t_pg .="_print&";
+    $t_pg .=$type;
+    $t_pg .="_id=";
+    $t_pg .=$latest_id;
+    $ltu=$sess->url(SECUREURL . "?page=$t_pg");
+  }
+
+  else {
+    $t_pg="shop/";
+    $t_pg .=$type;
+    $t_pg .="_print&";
+    $t_pg .=$type;
+    $t_pg .="_id=";
+    $t_pg .=$latest_id;
+    $ltu=$sess->url(URL . "?page=$t_pg");
+  }
+
+  if ($subj) {
+    if (strlen($subj) > 20) {
+      $lts=substr($subj,0,20) . "...";
+    }
+
+    else {
+      $lts=$subj;
+    }
+  }
+
+  $t_ltu[$t_num]=$ltu;
+  $t_lts[$t_num]=$lts;
+
+}
+?>
+
+

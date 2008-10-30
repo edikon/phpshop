@@ -1,0 +1,69 @@
+<?php 
+
+if (!$tg) {
+
+  echo "<h4> $new_topic_title </h4><b>$group_str</b><br>";
+
+  if ($auth["topic_group_id"]) {
+    $topic_group_id=$auth["topic_group_id"];
+  }
+
+  else {
+    $topic_group_id=1000;
+  }
+
+  $utg=$topic_group_id + 1;
+
+  $db = new ps_DB;
+  $q ="SELECT * FROM topic_groups ";
+  $q .="WHERE language='$lang'";
+
+  if ($auth["perms"] !== "admin") {
+    $q .="AND topic_group_id < '$utg'";
+  }
+
+  $db->query($q);
+
+  while ($db->next_record()) {
+    $tg=$db->f("topic_group_id");
+    $tn=$db->f("topic_group_name");
+    $url="<a class=bLink href=?page=$page&tg=$tg>$tn</a>";
+    echo $url;
+    echo "<br>";
+  }
+}
+
+else { 
+  $q ="SELECT * FROM topic_groups ";
+  $q .="WHERE language='$lang' ";
+  $q .="AND topic_group_id ='$tg'";
+  $db->query($q);
+  $db->next_record();
+
+  $tn=$db->f("topic_group_name");
+
+  echo "<h3> $new_topic_title</h3> $group_str $tn</p>";
+  ?>
+  <FORM METHOD="post" ACTION="<?php $sess->purl(SECUREURL) ?>">
+  <?php $sess->hidden_session(); ?>
+  <input type=HIDDEN name=page value="topic/topic_list">
+  <input type=HIDDEN name=func value="topic_add">
+  <input type=HIDDEN name=tg value="<?php echo $tg ?>">
+  <?php echo $subject_lbl ?><br>
+  <INPUT TYPE="text" NAME="topic_subject" SIZE="30" ><br>
+  <?php echo $text_lbl ?><BR>
+  <TEXTAREA NAME="topic_content" ROWS="20" COLS="120"></TEXTAREA>
+  <BR>
+
+  <!--
+  <?php 
+  echo $all_lang_str ;
+  echo "<INPUT TYPE='checkbox' name='all_lang'>";
+  ?>
+  -->
+
+  <INPUT TYPE="submit" NAME="send" VALUE="<?php echo $save_str ?>">
+  </FORM>
+  <?php
+}
+?>
