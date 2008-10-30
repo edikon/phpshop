@@ -15,14 +15,20 @@
      $q .= "AND shopper_vendor_xref.vendor_id='$ps_vendor_id' ";
      $q .= "AND user_info.address_type='BT' ";
      $q .= "AND (auth_user_md5.perms = 'shopper' "; 
+     $q .= "OR auth_user_md5.perms = 'admin' "; 
+     $q .= "OR auth_user_md5.perms = 'storeadmin' "; 
      $q .= "OR auth_user_md5.perms = 'anonymous') "; 
      $q .= "AND (user_info.last_name LIKE '%$keyword%' ";
      $q .= "OR user_info.first_name LIKE '%$keyword%' ";
      $q .= "OR user_info.middle_name LIKE '%$keyword%' ";
      $q .= "OR user_info.phone_1 LIKE '%$keyword%' ";
+     $q .= "OR user_info.user_email LIKE '%$keyword%' ";
      $q .= "OR shopper_group.shopper_group_name LIKE '%$keyword%' ";
      $q .= ") ";
      $q .= "AND shopper_group.shopper_group_id=shopper_vendor_xref.shopper_group_id ";
+     $q .= "AND shopper_vendor_xref.vendor_id='$ps_vendor_id' ";
+//     $q .= "AND language='$lang' ";
+//     $q .= "ORDER BY reg_date DESC DESC"; 
      $q .= "ORDER BY auth_user_md5.username "; 
      $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
      $count .= $q;   
@@ -37,26 +43,33 @@
      $q .= "AND shopper_vendor_xref.vendor_id='$ps_vendor_id' ";
      $q .= "AND user_info.address_type='BT' ";
      $q .= "AND (auth_user_md5.perms = 'shopper' "; 
-     $q .=   "OR auth_user_md5.perms = 'anonymous') "; 
+     $q .= "OR auth_user_md5.perms = 'admin' "; 
+     $q .= "OR auth_user_md5.perms = 'storeadmin' "; 
+     $q .= "OR auth_user_md5.perms = 'anonymous') "; 
      $q .= "AND shopper_group.shopper_group_id=shopper_vendor_xref.shopper_group_id ";
+     $q .= "AND shopper_vendor_xref.vendor_id='$ps_vendor_id' ";
      $q .= "ORDER BY auth_user_md5.username "; 
+//     $q .= "AND language='$lang' ";
+//     $q .= "ORDER BY reg_date DESC "; 
      $list .= $q . " LIMIT $offset, " . SEARCH_ROWS;
      $count .= $q;   
   }
   $db->query($count);
   $db->next_record();
+
   $num_rows = $db->f("num_rows");
   if ($num_rows == 0) {
-     echo "Your search returned 0 results.<br />";
+     echo "Your search returned 0 results.<BR>";
   }
   else {
 ?>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="2" class="RecordsTable">
+<table width="100%" border="1" cellspacing="0" cellpadding="0" class="RecordsTable">
   <tr> 
-    <td width="23%" class="RecordsTableHeader"><?php echo $shopper_list_username ?></td>
-    <td width="50%" class="RecordsTableHeader"><?php echo $shopper_list_name ?></td>
-    <td width="27%" class="RecordsTableHeader"><?php echo $shopper_list_group ?></td>
+    <td class="RecordsTableHeader"><?php echo $shopper_form_username ?></td>
+    <td class="RecordsTableHeader"><?php echo $shopper_list_name ?></td>
+    <td class="RecordsTableHeader"><?php echo $shopper_list_group ?></td>
+    <td class="RecordsTableHeader"><?php echo $topic_group_str ?></td> 
   </tr>
 
 <?php
@@ -68,23 +81,29 @@ while ($db->next_record()) {
              else
                 $bgcolor=SEARCH_COLOR_2;
 ?> 
-  <tr bgcolor="<?php echo $bgcolor ?>"> 
-    <td width="23%" nowrap="nowrap"><?php
-$url = SECUREURL . "?page=$modulename/shopper_form&amp;user_id=";
+  <tr bgcolor="<?php echo $bgcolor ?>" nowrap="nowrap"> 
+    <td><?php
+$url = SECUREURL . "?page=$modulename/shopper_form&user_id=";
 $url .= $db->f("user_id");
-echo "<a class=\"bLink\" href=\"" . $sess->url($url) . "\">";
+echo "<A class=\"bLink\" HREF=" . $sess->url($url) . ">";
 echo $db->f("username"); 
-echo "</a>"; ?></td>
-    <td width="50%" nowrap="nowrap"><?php echo $db->f("first_name") . " ";
+echo "</A>"; 
+?></td>
+    <td><?php echo $db->f("first_name") . " ";
 echo $db->f("middle_name") . " ";
 echo $db->f("last_name"); ?></td>
-    <td width="27%" nowrap="nowrap"><?php
-//$url = SECUREURL . "?page=$modulename/shopper_by_group_list&amp;perms=";
-//$url .= $db->f("perms");
-//echo "<a href=\"" . $sess->url($url) . "\">";
+    <td><?php
+$url = SECUREURL . "?page=$modulename/shopper_by_group_list&sg=";
+$url .= $db->f("shopper_group_id");
+echo "<A class=bLink HREF=" . $sess->url($url) . ">";
 echo $db->f("shopper_group_name");  
-//echo "</a>";
+echo "</A>";
 ?></td>
+
+<td>
+<?php echo $db->f("topic_group_id") ?>
+</td> 
+
   </tr>
   <?php } ?> 
 </table>
