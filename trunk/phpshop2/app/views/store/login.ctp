@@ -39,7 +39,7 @@
 <?php echo $form->create('Customer', array('url'=>'/store/login'));?>
 <?php echo $form->hidden('login', array('value'=> '1'));?>
 <?php echo $form->input('login_email', array('class' => 'required', 'label'=> __('Email', true)));?>
-<?php echo $form->input('login_password', array('class' => 'required', 'label'=> __('Password', true)));?>
+<?php echo $form->input('login_password', array('type' => 'password', 'class' => 'required', 'label'=> __('Password', true)));?>
 <?php echo $form->checkbox('lost_password');?><?php __('Email Lost Password'); ?>
 <p>&nbsp;</p>
 <?php echo $form->submit('Login');?>
